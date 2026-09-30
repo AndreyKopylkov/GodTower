@@ -52,3 +52,6 @@ sysinfo.txt
 .claude/
 .DS_Store
 Thumbs.db
+
+# Test output
+/TestResults/
