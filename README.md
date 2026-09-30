@@ -38,7 +38,29 @@ Trigger instructions (editor and Android device) will be documented here once im
 
 ## Third-party assets
 
-Only free-to-use or AI-generated assets are used. Full list with licenses and source links will be added here.
+Only free-to-use or AI-generated assets are used. No paid assets, no human artist contributions.
+
+| Asset | Author | Used for | License | Source | In repo |
+|---|---|---|---|---|---|
+| Cartoon FX Remaster Free | Jean Moreno (JMO) | Hit / explosion VFX | Standard Unity Asset Store EULA | [Asset Store](https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-remaster-free-109565) | No — import manually |
+| Magic Effects FREE | Hovl Studio | Hero boost / aura VFX | Standard Unity Asset Store EULA | [Asset Store](https://assetstore.unity.com/packages/vfx/particles/spells/magic-effects-free-247933) | No — import manually |
+| FREE Casual Game SFX Pack | Dustyroom | UI and gameplay SFX | CC0 | [Asset Store](https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116) | Yes |
+| Climbing character + animations *(planned)* | Quaternius / Kenney | Player character | CC0 | TBD | Yes |
+| Tower segments and top platform *(planned)* | Made for this project in Blender | Level geometry | Original work | — | Yes |
+| Textures, icons, sky images *(planned)* | AI-generated | UI, tower ornaments, backgrounds | AI-generated, no third-party rights | — | Yes |
+| Additional SFX and music *(planned)* | AI-generated | Impacts, whooshes, music | AI-generated, no third-party rights | — | Yes |
+
+### Importing the Asset Store packages
+
+The Standard Unity Asset Store EULA allows these packages in a shipped game (they are included in the APK),
+but not public redistribution of their source files, so they are excluded from this repository.
+To open the project with all effects:
+
+1. Add both free packages to your Unity account via the links above.
+2. Open the project, then **Window → Package Manager → My Assets**, and import:
+   - *Cartoon FX Remaster Free* (into `Assets/JMO Assets`)
+   - *Magic Effects FREE* (into `Assets/Hovl Studio`)
+3. Project prefabs reference the effects by GUID, so they relink automatically after import.
 
 ## Assumptions
 

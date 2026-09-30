@@ -38,6 +38,16 @@
 crashlytics-buildid.txt
 sysinfo.txt
 
+# Asset Store packages (Standard Unity Asset Store EULA forbids public redistribution of source files).
+# Import them from the Asset Store — see README "Third-party assets".
+/[Aa]ssets/JMO Assets/
+/[Aa]ssets/JMO Assets.meta
+/[Aa]ssets/Hovl Studio/
+/[Aa]ssets/Hovl Studio.meta
+
+# Private reference material from the brief
+/Reference/
+
 # Local tooling
 .claude/
 .DS_Store
