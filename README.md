@@ -45,7 +45,7 @@ Only free-to-use or AI-generated assets are used. No paid assets, no human artis
 | Cartoon FX Remaster Free | Jean Moreno (JMO) | Hit / explosion VFX | Standard Unity Asset Store EULA | [Asset Store](https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-remaster-free-109565) | No — import manually |
 | Magic Effects FREE | Hovl Studio | Hero boost / aura VFX | Standard Unity Asset Store EULA | [Asset Store](https://assetstore.unity.com/packages/vfx/particles/spells/magic-effects-free-247933) | No — import manually |
 | FREE Casual Game SFX Pack | Dustyroom | UI and gameplay SFX | CC0 | [Asset Store](https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116) | Yes |
-| Climbing character + animations *(planned)* | Quaternius / Kenney | Player character | CC0 | TBD | Yes |
+| Climbing character + animations *(planned)* | AI-generated (see [Docs/CharacterPipeline.md](Docs/CharacterPipeline.md)) | Player character — original design inspired by the reference | AI-generated, no third-party rights | — | Yes |
 | Tower segments and top platform *(planned)* | Made for this project in Blender | Level geometry | Original work | — | Yes |
 | Textures, icons, sky images *(planned)* | AI-generated | UI, tower ornaments, backgrounds | AI-generated, no third-party rights | — | Yes |
 | Additional SFX and music *(planned)* | AI-generated | Impacts, whooshes, music | AI-generated, no third-party rights | — | Yes |
