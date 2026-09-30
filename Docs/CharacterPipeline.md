@@ -137,7 +137,7 @@ Unity import settings (the game side will verify):
 
 - [ ] Imports into Unity 6000.5 without errors; Humanoid avatar is valid (green in Configure Avatar).
 - [ ] ≤ 8k triangles, 1 material, textures within budget.
-- [ ] All 8 clips present, named as above; looping clips have no pop at the seam.
+- [ ] All 9 clips present, named as above; looping clips have no pop at the seam.
 - [ ] Reads clearly from the back at ~15% screen height (orange gi + black hair silhouette).
 - [ ] No franchise emblems, kanji or copied likeness; no Roblox logos.
 - [ ] Short note for the README: tools used for image generation, image-to-3D and animation, stating the assets are AI-generated.
