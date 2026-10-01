@@ -119,28 +119,28 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 
 ### M6 — Content, asset integration, polish (≈1 h + integrations as assets arrive)
 
-- [ ] **U-60 · U · U-30** — Author `Level_01..05` exactly per `Plan.md` level table.
-- [ ] **U-61 · U** — 5 `SkyPreset`s (sky gradient, fog, directional light color, cloud tint): Day → Bright afternoon → Golden hour → Sunset → Dusk.
+- [x] **U-60 · U · U-30** — Author `Level_01..05` exactly per `Plan.md` level table.
+- [x] **U-61 · U** — 5 `SkyPreset`s (sky gradient, fog, directional light color, cloud tint): Day → Bright afternoon → Golden hour → Sunset → Dusk.
 - [x] **U-62 · U · A-07** — Integrate hero: Humanoid import, avatar, `Hero.controller` with 9 clips mapped to states, replace capsule.
 - [x] **U-63 · U · B-03** — Integrate tower segments + top platform into `TowerSet`, materials, static batching.
 - [x] **U-64 · U · B-04..B-09** — Integrate props: glove, missile, truck, axe, jetpack, phoenix.
 - [x] **U-65 · U · S-12** — `AudioService` + mixer (Music/SFX), clip mapping for all events and UI; music loop in levels.
 - [x] **U-66 · U · I-02..I-05** — Integrate UI sprites (panels, buttons, banners, icons, logo), app icon.
-- [ ] **U-67 · U** — Visual polish: URP bloom (needed by Hovl FX), HDR on, lighting/colors matched to `ref.mp4` (saturated blue sky, pale grey-green stone),
+- [x] **U-67 · U** — Visual polish: URP bloom (needed by Hovl FX), HDR on, lighting/colors matched to `ref.mp4` (saturated blue sky, pale grey-green stone),
   cloud layer, texture import settings (≤1024, ASTC, mipmaps), SRP Batcher on.
-- [ ] **U-68 · U** — Asset hygiene: nothing from Asset Store demo scenes referenced; no missing references (editor validation script over all scenes/prefabs).
+- [x] **U-68 · U** — Asset hygiene: nothing from Asset Store demo scenes referenced; no missing references (editor validation script over all scenes/prefabs).
   **Commit** after each integration: `feat: integrate <asset>`.
 
 ### M7 — Verification and delivery (≈1 h)
 
-- [ ] **U-70 · U · M5** — Autoplay harness (PlayMode): bot player via `InputTestFixture` (hold, release, swipes away from telegraphed lanes),
+- [x] **U-70 · U · M5** — Autoplay harness (PlayMode): bot player via `InputTestFixture` (hold, release, swipes away from telegraphed lanes),
   "commentators" = background client sending `/bump` at seeded random intervals (4–10 s), screenshot capture 1080×1920
   (start, first villain hit, first bump, hero boost, win) → `TestResults/Screenshots/Level_0N_*.png`. Run without `-nographics`.
-- [ ] **U-71 · U · U-60, U-70** — Autoplay **Level 1**: Win before timer, zero errors in log, all in-play `/bump` → 200.
-- [ ] **U-72 · U** — Autoplay **Level 2** (same criteria).
-- [ ] **U-73 · U** — Autoplay **Level 3**.
-- [ ] **U-74 · U** — Autoplay **Level 4**.
-- [ ] **U-75 · U** — Autoplay **Level 5**. If a level is not winnable by the bot, tune that level's numbers (log in `decisions.md`), never the bot to cheat.
+- [x] **U-71 · U · U-60, U-70** — Autoplay **Level 1**: Win before timer, zero errors in log, all in-play `/bump` → 200.
+- [x] **U-72 · U** — Autoplay **Level 2** (same criteria).
+- [x] **U-73 · U** — Autoplay **Level 3**.
+- [x] **U-74 · U** — Autoplay **Level 4**.
+- [x] **U-75 · U** — Autoplay **Level 5**. If a level is not winnable by the bot, tune that level's numbers (log in `decisions.md`), never the bot to cheat.
 - [ ] **U-76 · U** — Full-flow PlayMode test: Menu → Level 1…5 with unlocks, bumps throughout.
 - [ ] **U-77 · U** — Build `Builds/GodTower.apk` via CLI (not committed). Record APK size in `Docs/Status/unity.md`; target < 100 MB.
 - [ ] **U-78 · U** — Write (do not run) `Tools/Video/record_playthrough.py` for the morning: waits for device, `adb forward tcp:56789 tcp:56789`,
