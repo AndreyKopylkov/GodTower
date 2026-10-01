@@ -58,3 +58,5 @@ Thumbs.db
 
 # Frames extracted from the private reference video
 /Art/Source/**/RefFrames/
+__pycache__/
+*.pyc
