@@ -46,28 +46,28 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 
 ### M0 — Project setup (≈0.5 h)
 
-- [ ] **U-01 · U · O-01** — Add packages to `Packages/manifest.json`: VContainer (git URL), UniTask (git URL), PrimeTween (OpenUPM scoped registry),
+- [x] **U-01 · U · O-01** — Add packages to `Packages/manifest.json`: VContainer (git URL), UniTask (git URL), PrimeTween (OpenUPM scoped registry),
   `com.unity.cinemachine` 3.x, `"testables": ["com.unity.inputsystem"]`. **Done when:** batchmode import resolves with no errors.
-- [ ] **U-02 · U** — Remove template leftovers: `Assets/TutorialInfo`, `Assets/Readme.asset`, `Assets/Scenes/SampleScene.unity`, unused default input actions if replaced.
+- [x] **U-02 · U** — Remove template leftovers: `Assets/TutorialInfo`, `Assets/Readme.asset`, `Assets/Scenes/SampleScene.unity`, unused default input actions if replaced.
   **Done when:** no references broken, compiles.
-- [ ] **U-03 · U** — Folder layout per `Plan.md` §3 and asmdefs `GodTower.Runtime`, `GodTower.Editor`, `GodTower.Tests.EditMode`, `GodTower.Tests.PlayMode`.
-- [ ] **U-04 · U** — `GodTower.Editor.BuildTools.SetupProject` (CLI entry): portrait only, IL2CPP, ARM64 only, min API 26,
+- [x] **U-03 · U** — Folder layout per `Plan.md` §3 and asmdefs `GodTower.Runtime`, `GodTower.Editor`, `GodTower.Tests.EditMode`, `GodTower.Tests.PlayMode`.
+- [x] **U-04 · U** — `GodTower.Editor.BuildTools.SetupProject` (CLI entry): portrait only, IL2CPP, ARM64 only, min API 26,
   package `com.andreykopylkov.godtower`, product name "God Tower", Internet Access = Require, Android quality → `Mobile_RPAsset`, target 60 fps, ASTC.
   **Done when:** method runs in batchmode and `ProjectSettings` reflect all values.
-- [ ] **U-05 · U** — `BuildTools.BuildAndroid` (CLI entry) → `Builds/GodTower.apk`. Not run yet, only compiles.
-- [ ] **U-06 · U** — VContainer root: `RootLifetimeScope` via VContainerSettings; scenes `Menu.unity`, `Game.unity` with `MenuLifetimeScope`/`GameLifetimeScope`;
+- [x] **U-05 · U** — `BuildTools.BuildAndroid` (CLI entry) → `Builds/GodTower.apk`. Not run yet, only compiles.
+- [x] **U-06 · U** — VContainer root: `RootLifetimeScope` via VContainerSettings; scenes `Menu.unity`, `Game.unity` with `MenuLifetimeScope`/`GameLifetimeScope`;
   build scene list = Menu, Game. **Done when:** both scenes load in a PlayMode smoke test. **Commit** `chore: project setup`.
 
 ### M1 — Webhook `/bump` (≈1.5 h) — highest priority feature
 
-- [ ] **U-10 · U · U-06** — `BumpRequestParser` (pure C#): parse request line, method, path; tolerate headers/body; reject malformed.
-- [ ] **U-11 · U** — `BumpResponse` builder: 200 `{"status":"triggered"}`, 409 `{"status":"ignored","reason":"not_playing"}`, 404, 405, 400; JSON, `Connection: close`.
-- [ ] **U-12 · U** — `BumpHttpServer`: `TcpListener` on `IPAddress.Loopback:56789`, background thread, cancellation, `IDisposable`;
+- [x] **U-10 · U · U-06** — `BumpRequestParser` (pure C#): parse request line, method, path; tolerate headers/body; reject malformed.
+- [x] **U-11 · U** — `BumpResponse` builder: 200 `{"status":"triggered"}`, 409 `{"status":"ignored","reason":"not_playing"}`, 404, 405, 400; JSON, `Connection: close`.
+- [x] **U-12 · U** — `BumpHttpServer`: `TcpListener` on `IPAddress.Loopback:56789`, background thread, cancellation, `IDisposable`;
   port in use → error log + game keeps running; started from root scope, disposed on quit.
-- [ ] **U-13 · U** — `MainThreadDispatcher` (`ITickable`, `ConcurrentQueue`), request → main thread → `TaskCompletionSource` answer, 1 s timeout.
-- [ ] **U-14 · U** — `IPlayState` (Playing / Paused / Menu / Result) + gate deciding 200 vs 409; `BumpRequested` C# event for the effect.
-- [ ] **U-15 · U** — EditMode tests: parser (valid GET/POST, query string, lowercase method, garbage), responses (codes, headers, body).
-- [ ] **U-16 · U** — PlayMode test with real `HttpClient`: 200 while playing, 409 in menu and while paused, 404, 405; 10 parallel requests → all answered.
+- [x] **U-13 · U** — `MainThreadDispatcher` (`ITickable`, `ConcurrentQueue`), request → main thread → `TaskCompletionSource` answer, 1 s timeout.
+- [x] **U-14 · U** — `IPlayState` (Playing / Paused / Menu / Result) + gate deciding 200 vs 409; `BumpRequested` C# event for the effect.
+- [x] **U-15 · U** — EditMode tests: parser (valid GET/POST, query string, lowercase method, garbage), responses (codes, headers, body).
+- [x] **U-16 · U** — PlayMode test with real `HttpClient`: 200 while playing, 409 in menu and while paused, 404, 405; 10 parallel requests → all answered.
   **Done when:** EditMode + PlayMode green via CLI. **Commit** `feat: webhook bump server`.
 
 ### M2 — Core loop (≈2 h)
@@ -156,14 +156,14 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 
 ## 3. Lane A — Astra (character) · follows `CharacterPipeline.md`
 
-- [ ] **A-01 · A** — Study `Reference/ref.mp4` at the listed timestamps and `ref.png`; note proportions and poses in `Docs/Status/astra.md`.
-- [ ] **A-02 · A** — T-pose turnaround (front, back, left, right, ¾ front, ¾ back), transparent PNG, ≥1024² → `Art/Source/Character/Concept/`.
+- [x] **A-01 · A** — Study `Reference/ref.mp4` at the listed timestamps and `ref.png`; note proportions and poses in `Docs/Status/astra.md`.
+- [x] **A-02 · A** — T-pose turnaround (front, back, left, right, ¾ front, ¾ back), transparent PNG, ≥1024² → `Art/Source/Character/Concept/`.
   Original "inspired by" fighter, no franchise IP.
-- [ ] **A-03 · A** — Image-to-3D + Blender cleanup: ≤ 8k tris, 1 material, 1024² albedo, 1 unit = 1 m, height 1.8 m, Y-up, faces +Z, pivot at feet.
-- [ ] **A-04 · A** — Humanoid rig + skinning, T-pose bind.
-- [ ] **A-05 · A** — 9 clips at 30 fps, no root motion: `ClimbUp`, `HangIdle`, `ShiftLeft`, `ShiftRight`, `Hit`, `Fall`, `Carried`, `Win`, `Lose` (names prefixed `Hero_`).
-- [ ] **A-06 · A** — Export to `Assets/Art/Characters/Hero/` (`Hero.fbx`, `Hero_Animations.fbx`, `Textures/`).
-- [ ] **A-07 · A** — Status file: file list, tri count, tools used (for README), acceptance checklist from `CharacterPipeline.md` §4 ticked.
+- [x] **A-03 · A** — Image-to-3D + Blender cleanup: ≤ 8k tris, 1 material, 1024² albedo, 1 unit = 1 m, height 1.8 m, Y-up, faces +Z, pivot at feet.
+- [x] **A-04 · A** — Humanoid rig + skinning, T-pose bind.
+- [x] **A-05 · A** — 9 clips at 30 fps, no root motion: `ClimbUp`, `HangIdle`, `ShiftLeft`, `ShiftRight`, `Hit`, `Fall`, `Carried`, `Win`, `Lose` (names prefixed `Hero_`).
+- [x] **A-06 · A** — Export to `Assets/Art/Characters/Hero/` (`Hero.fbx`, `Hero_Animations.fbx`, `Textures/`).
+- [x] **A-07 · A** — Status file: file list, tri count, tools used (for README), acceptance checklist from `CharacterPipeline.md` §4 ticked.
 
 ---
 
@@ -192,19 +192,19 @@ Budgets: segment ≤ 3k tris, prop ≤ 1.5k tris, textures ≤ 1024², one mater
 Output: WAV 44.1 kHz 16-bit mono (music stereo) → `Assets/_Project/Audio/Generated/`; generator scripts → `Tools/Audio/` (committed by U).
 Loudness: SFX peaks ≤ −1 dBFS, consistent perceived level; music around −16 LUFS integrated.
 
-- [ ] **S-01 · S** — Tooling: `Tools/Audio/synth.py` (oscillators, noise, ADSR, filters, pitch sweeps, distortion, reverb tail), run via `uv run --with numpy --with scipy`.
-- [ ] **S-02 · S** — Reference analysis (optional, ≤ 20 min): extract audio from `Reference/ref.mp4` with `uv run --with imageio-ffmpeg`,
+- [x] **S-01 · S** — Tooling: `Tools/Audio/synth.py` (oscillators, noise, ADSR, filters, pitch sweeps, distortion, reverb tail), run via `uv run --with numpy --with scipy`.
+- [-] **S-02 · S** — Reference analysis (optional, ≤ 20 min): extract audio from `Reference/ref.mp4` with `uv run --with imageio-ffmpeg`,
   compute onsets/spectra around 10 s, 68 s, 86 s, 95–100 s; write findings to `Docs/Status/sound.md` to guide timbre and tempo.
-- [ ] **S-03 · S** — `sfx_punch` ×3 variations (glove impact, comedic "thwack").
-- [ ] **S-04 · S** — `sfx_explosion` ×2 (missile).
-- [ ] **S-05 · S** — `sfx_truck_crash` (metal crunch + thud).
-- [ ] **S-06 · S** — `sfx_axe_whoosh` (spinning swoosh).
-- [ ] **S-07 · S** — `sfx_missile_flyby`, `sfx_warning_beep` (telegraph).
-- [ ] **S-08 · S** — `sfx_jetpack` (loopable burn), `sfx_phoenix` (screech + fire roar).
-- [ ] **S-09 · S** — `sfx_climb_step` (soft grab, ×3), `sfx_lane_shift` (swish), `sfx_fall` (descending whistle).
-- [ ] **S-10 · S** — `sfx_win` (fanfare), `sfx_lose` (sad trombone-like), `sfx_countdown_tick`.
-- [ ] **S-11 · S** — UI: `ui_click`, `ui_locked`, `ui_open` (or pick matching CC0 samples from Dustyroom pack and list them instead).
-- [ ] **S-12 · S** — `music_level_loop` (60–90 s seamless loop, upbeat, ~140 BPM) and `music_menu_loop` (30–60 s). Status file with list and durations.
+- [x] **S-03 · S** — `sfx_punch` ×3 variations (glove impact, comedic "thwack").
+- [x] **S-04 · S** — `sfx_explosion` ×2 (missile).
+- [x] **S-05 · S** — `sfx_truck_crash` (metal crunch + thud).
+- [x] **S-06 · S** — `sfx_axe_whoosh` (spinning swoosh).
+- [x] **S-07 · S** — `sfx_missile_flyby`, `sfx_warning_beep` (telegraph).
+- [x] **S-08 · S** — `sfx_jetpack` (loopable burn), `sfx_phoenix` (screech + fire roar).
+- [x] **S-09 · S** — `sfx_climb_step` (soft grab, ×3), `sfx_lane_shift` (swish), `sfx_fall` (descending whistle).
+- [x] **S-10 · S** — `sfx_win` (fanfare), `sfx_lose` (sad trombone-like), `sfx_countdown_tick`.
+- [x] **S-11 · S** — UI: `ui_click`, `ui_locked`, `ui_open` (or pick matching CC0 samples from Dustyroom pack and list them instead).
+- [x] **S-12 · S** — `music_level_loop` (60–90 s seamless loop, upbeat, ~140 BPM) and `music_menu_loop` (30–60 s). Status file with list and durations.
 
 ---
 
@@ -213,12 +213,12 @@ Loudness: SFX peaks ≤ −1 dBFS, consistent perceived level; music around −1
 Output: PNG with alpha where relevant → `Assets/Art/UI/` and `Assets/Art/Environment/Sky/`. Style: bright casual mobile game, thick outlines, readable at phone size.
 No text baked into buttons/banners (text is TMP), except the logo.
 
-- [ ] **I-01 · I** — Cloud sprites ×4 (soft cartoon clouds like the reference), transparent, 512².
-- [ ] **I-02 · I** — UI kit: panel 9-slice, button 9-slice (normal/pressed/disabled), round icon button, height-bar frame + fill.
-- [ ] **I-03 · I** — Event banners 9-slice: blue (hero, left) and red/orange (villain, right), like the reference banner shapes.
-- [ ] **I-04 · I** — Icons 256²: missile, truck, axes, jetpack, phoenix, boxing glove, lock, star, pause, play, home, retry, next, trophy.
-- [ ] **I-05 · I** — Logo "God Tower" (transparent, 1024×512) and app icon 1024².
-- [ ] **I-06 · I** — Status file: file list, sizes, 9-slice border values, tool used.
+- [x] **I-01 · I** — Cloud sprites ×4 (soft cartoon clouds like the reference), transparent, 512².
+- [x] **I-02 · I** — UI kit: panel 9-slice, button 9-slice (normal/pressed/disabled), round icon button, height-bar frame + fill.
+- [x] **I-03 · I** — Event banners 9-slice: blue (hero, left) and red/orange (villain, right), like the reference banner shapes.
+- [x] **I-04 · I** — Icons 256²: missile, truck, axes, jetpack, phoenix, boxing glove, lock, star, pause, play, home, retry, next, trophy.
+- [x] **I-05 · I** — Logo "God Tower" (transparent, 1024×512) and app icon 1024².
+- [x] **I-06 · I** — Status file: file list, sizes, 9-slice border values, tool used.
 
 ---
 
