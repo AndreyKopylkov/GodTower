@@ -65,45 +65,59 @@ Updated by the lane agent. Format: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] U-56 `SceneFlow` (`ISceneFlow`, root) + `ScreenFader`: fade out → load → fade in, `IsLoading` guard.
   Tests: EditMode 134/134 (`ProgressServiceTests`), PlayMode 19/19 (`GameFlowPlayModeTests`: Menu → Level 1 → Win → Next → Level 2 → Pause → Menu; double click = one load; pause press does not climb; 409 while paused and in the menu).
 
+### Integrations (run 3)
+- [x] U-65 Audio: `AudioService` (root, `IAudioService`: one-shots on 16 pooled voices, loops, music cross-fade, gameplay pause via `AudioListener.pause`), `AudioLibrary` (`Configs/AudioLibrary.asset`, built by `AudioSetup`: import settings — music Streaming/Vorbis, SFX Decompress On Load mono — and the `SoundId` → clip map; assigned to the root scope prefab). `GameAudioPresenter` (telegraph beep, missile fly-by, explosion on hit, truck crash, axe whoosh, jetpack loop for the boost, phoenix, climb steps every 0.3 s, lane hop, fall); punches in `BumpStage`; UI click/open/locked, win/lose, level/menu music in the presenters; countdown tick in `HudPresenter`. Loop flag lives on the AudioSource (music, jetpack).
+- [x] U-66 UI sprites: kit (panel, buttons, round buttons, height bar), banners, icons (play/pause/home/retry/next/lock/star/trophy + event icons), logo — all used by `GameHudBuilder` / `MenuUiBuilder` / event configs. App icon: `PlayerSettingsSetup.ApplyIcon` (default icon for all platforms from `Art/UI/Logo/app_icon_1024.png`). Clouds (`Art/Environment/Sky`) are left for M6 sky presets.
+  Tests: EditMode 153/153 (+`AudioLibraryTests`), PlayMode 19/19.
+
 ## How to run (Unity Editor must be closed)
 
 ```bash
 UNITY="/c/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Unity.exe"
 P="D:/Unity/Projects/GodTower"
-# Settings, art import settings, configs, prefabs, scenes, build list (rerun after changing any builder)
+# Settings, art import settings, font, hero portrait, audio library, configs, prefabs, scenes, build list
+# (rerun after changing any builder; needs a graphics device — no -nographics — for the hero portrait)
 "$UNITY" -batchmode -quit -projectPath "$P" -executeMethod GodTower.Editor.BuildTools.SetupProject -logFile Logs/setup.log
 # Tests: ALWAYS pass -assemblyNames, otherwise Input System's own tests (testables) run too
 "$UNITY" -batchmode -projectPath "$P" -runTests -testPlatform EditMode -assemblyNames GodTower.Tests.EditMode -testResults TestResults/editmode.xml -logFile Logs/editmode.log
 "$UNITY" -batchmode -projectPath "$P" -runTests -testPlatform PlayMode -assemblyNames GodTower.Tests.PlayMode -testResults TestResults/playmode.xml -logFile Logs/playmode.log
+# Screenshot tour for visual review (explicit test, ~15 s) -> TestResults/Screenshots/*.png
+"$UNITY" -batchmode -projectPath "$P" -runTests -testPlatform PlayMode -assemblyNames GodTower.Tests.PlayMode -testFilter GodTower.Tests.PlayMode.ScreenshotTourTests -testResults TestResults/tour.xml -logFile Logs/tour.log
 # APK (switches platform to Android, long reimport the first time)
 "$UNITY" -batchmode -quit -projectPath "$P" -buildTarget Android -executeMethod GodTower.Editor.BuildTools.BuildAndroid -logFile Logs/build.log
 ```
 
+After `SetupProject`, run `git checkout -- Assets/_Project/Animation/` (the Hero/Phoenix controllers are regenerated with new
+fileIDs every run, identical content) and only commit `Scenes/*.unity` when a builder changed (every rebuild rewrites all
+scene fileIDs, a ~5k-line diff).
+
 ## Files delivered
 
 - Runtime (`Assets/_Project/Scripts`, asmdef `GodTower.Runtime`)
-  - `Core/`: `PlayState`, `IPlayState`, `PlayStateService`, `MainThreadDispatcher`, `AppBootstrap`
+  - `Core/`: `PlayState`, `IPlayState`, `PlayStateService`, `MainThreadDispatcher`, `AppBootstrap`, `ProgressService` (+`IProgressStore`, `PlayerPrefsProgressStore`), `SceneFlow` (`ISceneFlow`), `ScreenFader`
   - `Webhook/`: `BumpHttpServer`, `BumpServerOptions`, `HttpRequestReader`, `BumpRequestParser`, `HttpRequestHead`, `BumpEndpoint`, `BumpResponse`, `BumpGate`, `IBumpSignal`
-  - `Gameplay/`: `ClimbInput` (`IClimbInput`, `PointerClimbInput`, `ClimbInputFrame`), `SwipeDetector`, `LaneModel`, `KnockdownModel` (+`KnockdownSettings`), `ClimberSettings`, `ClimberMotor` (+`ClimberState`), `ClimberAnimation`, `ClimberView`, `CameraRig`, `GameplayConfig`
+  - `Gameplay/`: `ClimbInput` (`IClimbInput`, `PointerClimbInput`, `ClimbInputFrame`), `SwipeDetector`, `LaneModel`, `KnockdownModel` (+`KnockdownSettings`), `ClimberSettings`, `ClimberMotor` (+`ClimberState`, `HitReaction`), `ClimberAnimation`, `ClimberView`, `CameraRig`, `GameplayConfig`
   - `Levels/`: `LevelConfig`, `LevelCatalog`, `SelectedLevel`, `TowerSet`, `TowerLayout`, `TowerBuilder`, `LevelRunner` (+`LevelOutcome`)
-  - `Events/`: `EventKinds` (`VillainKind`, `HeroKind`, `HeroEventEntry`), `EventTimeline` (+`VillainStrike`, `HeroBoost`, `TimelineParameters`), `VillainEventConfig`, `HeroEventConfig`, `EventsConfig`, `EventDirector`, `EventPresenter`, `EventStage`
-  - `Scopes/`: `RootLifetimeScope`, `MenuLifetimeScope`, `GameLifetimeScope`
-  - `UI/`: `MenuEntryPoint`, `EventBannerPanel` (+`BannerSide`), `EventBannerView`
-- Editor (`Scripts/Editor`): `BuildTools` (CLI), `PlayerSettingsSetup`, `VContainerRootSetup`, `InputSetup`, `TowerImportSetup`, `HeroImportSetup`, `PropImportSetup`, `UiImportSetup`, `MaterialFactory`, `GameAssetsBuilder` (level table, event configs, tower set), `SceneBuilder` (+`GameSceneAssets`), `GameHudBuilder`, `ProjectPaths`, `AssetFolders`
-- Generated assets: `Configs/{GameplayConfig,TowerSet}.asset`, `Configs/Levels/{Level_01..05,LevelCatalog}.asset`, `Configs/Events/{Villain_*,Hero_*,EventsConfig}.asset`, `Materials/{Environment,Characters,Props,Events}/*`, `Animation/{Hero,Phoenix}.controller`, `Prefabs/{Hero,Props/Phoenix,RootLifetimeScope}.prefab`, `Scenes/{Menu,Game}.unity`
-- Third-party in repo: `Assets/TextMesh Pro` (TMP essential resources).
-- Tests: EditMode `{SwipeDetector,LaneModel,KnockdownModel,ClimberMotor,TowerLayout,EventTimeline}Tests` + M1 tests; PlayMode `LevelPlayModeTests`, `LevelEventsPlayModeTests` (both `InputTestFixture`), `BumpWebhookPlayModeTests`, `SceneScopeSmokeTests`.
+  - `Events/`: `EventKinds`, `EventTimeline` (+`VillainStrike`, `HeroBoost`, `TimelineParameters`), `VillainEventConfig`, `HeroEventConfig`, `EventsConfig`, `EventDirector`, `EventPresenter`, `EventStage`
+  - `Effects/`: `BumpEffectConfig`, `BumpQueue`, `GloveArc`, `BumpStage`, `BumpDirector`, `ScreenFlash`, `WinStage`
+  - `Audio/`: `AudioLibrary` (+`SoundId`, `MusicId`, `SoundEntry`), `AudioService` (`IAudioService`), `GameAudioPresenter`
+  - `UI/`: `EventBannerPanel` (+`BannerSide`), `EventBannerView`, `HudView`, `HeightBarView`, `TimerView`, `HudPresenter`, `PopupView`, `PausePanelView`, `ResultPanelView`, `GameFlowPresenter`, `MenuView`, `LevelButtonView`, `MenuPresenter`, `MenuBackdrop`, `SafeAreaFitter`, `ButtonPressScale`, `UiPointerFilter`
+  - `Scopes/`: `RootLifetimeScope` (audio library field), `MenuLifetimeScope`, `GameLifetimeScope`
+- Editor (`Scripts/Editor`): `BuildTools` (CLI), `PlayerSettingsSetup` (+app icon), `VContainerRootSetup`, `InputSetup`, `TowerImportSetup`, `HeroImportSetup`, `HeroIconRenderer`, `PropImportSetup`, `UiImportSetup`, `FontSetup`, `AudioSetup`, `MaterialFactory`, `GameAssetsBuilder` (level table, event configs, tower set, bump config), `SceneBuilder` (+`GameSceneAssets`), `GameHudBuilder`, `MenuUiBuilder`, `UiFactory`, `ProjectPaths`, `AssetFolders`
+- Generated assets: `Configs/{GameplayConfig,TowerSet,BumpEffectConfig,AudioLibrary}.asset`, `Configs/Levels/*`, `Configs/Events/*`, `Materials/*`, `Animation/{Hero,Phoenix}.controller`, `Prefabs/{Hero,Props/Phoenix,RootLifetimeScope}.prefab`, `UI/Generated/hero_marker.png`, `Scenes/{Menu,Game}.unity`; font `Assets/Art/Fonts/LilitaOne/{LilitaOne-Regular.ttf, OFL.txt, LilitaOne SDF.asset}`
+- Third-party in repo: `Assets/TextMesh Pro` (TMP essential resources), Lilita One (OFL).
+- Tests: EditMode `{SwipeDetector,LaneModel,KnockdownModel,ClimberMotor,TowerLayout,EventTimeline,BumpQueue,GloveArc,ProgressService,AudioLibrary}Tests` + M1 tests (153); PlayMode `LevelPlayModeTests`, `LevelEventsPlayModeTests`, `BumpEffectPlayModeTests`, `GameFlowPlayModeTests` (all `InputTestFixture`), `BumpWebhookPlayModeTests`, `SceneScopeSmokeTests` (18) + explicit `ScreenshotTourTests`; helpers `ClimbBot`, `ScreenshotCapture`, `TestScenes`.
 
-## Notes for the next U run (run 3: M4 bump effect + M5 UI)
+## Notes for the next U run (run 4: M6 polish, then M7)
 
-- **Scene wiring.** Everything in `Game.unity` is created by `SceneBuilder` / `GameHudBuilder` and injected into `GameLifetimeScope` serialized fields. Add new scene objects there (HUD height bar/timer/pause in `GameHudBuilder`, a flash overlay image, ...). Assets referenced by scenes must be loaded by path *after* `EditorSceneManager.NewScene` (it unloads unreferenced assets, leaving stale references; see `GameSceneAssets`).
-- **Game scope order.** `LevelRunner` (ticks first) → `EventDirector` → `EventPresenter`. `LevelRunner` exposes `Climber` (`ClimberMotor`), `Knockdown` (`KnockdownModel`), `Elapsed`, `TimeLeft`, `IsRunning`, `IsPaused`, `Outcome`, `Ended`, `Pause()/Resume()`. Gate gameplay on `runner.IsRunning`; use the level clock (`Elapsed`) for anything that must freeze on pause.
-- **M4 bump.** Subscribe to `IBumpSignal.BumpRequested` in a Game-scope service (unsubscribe in `Dispose`). Knockdown: `runner.Climber.Knockdown(runner.Knockdown.TakeBumpKnockdown(runner.Elapsed))` (rolling cap implemented + tested; `Knockdown(0)` still plays the Hit reaction — decide whether a capped bump still plays Hit). Input lock = Hit state (0.4 s) + fall; `ClimberMotor.AcceptsInput` is false meanwhile. Glove prop: `PropImportSetup.BoxingGlove` (right glove, punches along +Z; mirror scale.x for a left one). Shake: `CameraRig.Shake(force)`. CFXR prefab paths: see `GameAssetsBuilder.BuildEventsConfig`.
-- **M5 UI.** HUD canvas `HUD` (overlay, 1080×1920, match 0.5) exists with `EventBanners`; the hero banner column is flush with the left edge — move it right if the height bar goes on the left. No `EventSystem` in the Game scene yet (add one for the pause button, and make `PointerClimbInput` ignore presses that start over UI). `SelectedLevel.Select(index)` (root scope) picks the level before loading `Game`. The Menu scene is still empty (scope + camera).
-- **Fonts.** Banner labels use TMP LiberationSans SDF (`UiImportSetup.Font`); U-50 should replace it (Google font + TMP asset).
-- **Screenshots in batch mode.** `WaitForEndOfFrame` is never invoked under `-batchmode` and `ScreenCapture` misses overlay UI: switch canvases to Screen Space - Camera, render `Camera.main` into a RenderTexture, `ReadPixels` (worked for the M3 visual check).
-- **Autoplay.** `LevelEventsPlayModeTests` has a reusable bot (`SafeLane` + `SwipeAsync`, which re-presses at the centre so re-centring is not read as a swipe back). M7 per-level autoplay can extend it (pick the level via `SelectedLevel`, add bump spam once M4 knocks down). Level 5 (750 m / 120 s) is tight: ~87 s of pure climbing after boosts, plus bump knockdowns — may need tuning.
-- **Audio** (U-65) not wired yet; clips are in `Audio/Generated/`.
+- **Visual review loop.** Run `SetupProject`, then the screenshot tour (command above): `Hud_Play`, `Bump_100…700ms`, `Boost_Jetpack`, `Win_Deck`, `Win_Panel`; `GameFlowPlayModeTests` also saves `Menu_Main`, `Menu_LevelSelect`, `Result_Win`, `Pause`. Look at them (Read tool; a Pillow contact sheet saves tokens). The batch-mode screen is 640×480 landscape; captures render the camera at 540×960 with canvases switched to Screen Space - Camera, so layout must be anchor-relative (see `HeightBarView`) to look right in captures and on devices.
+- **M6 sky presets (U-61).** The camera background is still a flat `SkyColor` (`SceneBuilder.CreateMainCamera`) in both scenes; sun/ambient come from `SceneBuilder.CreateSun`. Add a `SkyPreset` SO (gradient top/bottom, fog, sun colour/intensity, cloud tint) referenced by `LevelConfig` (Plan level table: Day → Bright afternoon → Golden hour → Sunset → Dusk) and apply it at level start (Game-scope entry point). Clouds: `Assets/Art/Environment/Sky/cloud_01..04.png` (not imported as sprites — `UiImportSetup` covers `Art/UI` only); slow-drifting world-space quads behind the tower would match the reference. The menu backdrop can reuse preset 1.
+- **M6 lighting/bloom (U-67).** The URP volume profile is still `Assets/Settings/SampleSceneProfile.asset`; Hovl/CFXR HDR effects want bloom + HDR on the URP assets (`Mobile_RPAsset` for Android). Reference: saturated blue gradient sky, pale grey-green column — current captures are close; check tonemapping does not wash out the UI-like colours.
+- **Level content check (U-60).** `GameAssetsBuilder.Levels` is the source of truth; only Level 1 is autoplayed so far (`LevelEventsPlayModeTests`, the `BumpEffectPlayModeTests` storm). `GameFlowPlayModeTests` loads Level 2 but does not play it.
+- **M7 autoplay (U-70…U-76).** Reuse `ClimbBot` (hold + swipes away from telegraphs) and the storm pattern of `BumpEffectPlayModeTests` (fire-and-forget `HttpClient` posts). Pick a level with `SelectedLevel.Select(i)` before `SceneManager.LoadSceneAsync(TestScenes.Game)` and reset it to 0 in TearDown (other tests assume Level 1). Use `UniTask.Delay(..., ignoreTimeScale: true)` in tests: a paused level sets `timeScale = 0` and scaled delays never finish. Bumps now cost real time (≈0.55 s lock, ≤6% per 5 s) — Level 5 (750 m / 120 s) may need tuning with bumps every 4–10 s.
+- **UI clicks in tests.** Dispatch with `ExecuteEvents` after an EventSystem raycast (`GameFlowPlayModeTests.ClickAsync`); the Input System UI module's shared default actions break across `InputTestFixture` resets. Add the test `Mouse` *after* loading the first scene of a test.
+- **APK (U-77).** Not built yet. The app icon is set as the default icon (no Android adaptive layers). The webhook needs `adb forward tcp:56789 tcp:56789` (README).
+- **README** must list Lilita One (OFL, Google Fonts) with the other third-party assets, plus the M4/M5 decisions from `decisions.md` (bump cap + flinch, queue, Play = continue, hero facing fix).
 
 ## Known issues
 
@@ -111,3 +125,5 @@ P="D:/Unity/Projects/GodTower"
 - `Hero_Animations.fbx` import logs "has animation import warnings" (importer info; avatar and clips are valid and play correctly in captures).
 - Side lanes (±35°) put the climber near the column's silhouette edge as seen from the camera (Plan-locked angles).
 - Phoenix boost: the phoenix sits below/in front of the climber; worth a visual polish pass in M6 (full-screen fire look of the reference).
+- Bump waves: gloves spawn just outside the screen edges, so the first ~0.2 s of a wave shows nothing; the first contact lands ≈0.35 s after the request.
+- The lose panel shows the retry glyph as its icon (no "sad" icon in the kit).

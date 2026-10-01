@@ -1,3 +1,4 @@
+using GodTower.Audio;
 using GodTower.Effects;
 using GodTower.Events;
 using GodTower.Gameplay;
@@ -66,6 +67,7 @@ namespace GodTower.Scopes
             builder.RegisterComponent(_winStage);
             builder.RegisterEntryPoint<HudPresenter>();
             builder.RegisterEntryPoint<GameFlowPresenter>();
+            builder.RegisterEntryPoint<GameAudioPresenter>();
         }
     }
 }
