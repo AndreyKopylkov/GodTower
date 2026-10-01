@@ -24,6 +24,7 @@ namespace GodTower.Editor
             VContainerRootSetup.Apply();
             InputSetup.Apply();
             TowerImportSetup.Apply();
+            HeroImportSetup.Apply();
 
             GameAssetsBuilder.BuildLevels();
             GameAssetsBuilder.BuildGameplayConfig();

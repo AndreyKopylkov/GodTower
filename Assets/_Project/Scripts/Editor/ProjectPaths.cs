@@ -7,6 +7,7 @@ namespace GodTower.Editor
         public const string Configs = Root + "/Configs";
         public const string LevelConfigs = Configs + "/Levels";
         public const string Materials = Root + "/Materials";
+        public const string Animation = Root + "/Animation";
         public const string Prefabs = Root + "/Prefabs";
         public const string Scenes = Root + "/Scenes";
 

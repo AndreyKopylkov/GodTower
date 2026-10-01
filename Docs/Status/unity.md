@@ -33,6 +33,9 @@ Updated by the lane agent. Format: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] U-27 `CameraRig`: Cinemachine 3 follow with Y damping, impulse source/listener (`Shake`), FOV zoom-out hook (`SetZoomedOut`).
   Tests: EditMode 106/106, PlayMode 13/13 (incl. `LevelPlayModeTests`: hold climbs, release hangs, swipes, pause → 409, timeout → Lose + 409, `/bump` 200 while playing).
 
+### Integrations
+- [x] U-62 Hero: `HeroImportSetup` (Humanoid avatar valid, 16 bones; clips copy the avatar with `preserveHierarchy`; loops on ClimbUp/HangIdle/Fall/Carried; root motion baked), `M_Hero` URP Lit, `Animation/Hero.controller` (9 states named like `ClimberAnimation.States`, default HangIdle), `Prefabs/Hero.prefab`; `SceneBuilder` uses it instead of the capsule when present. Unity logs one benign "animation import warnings" note for `Hero_Animations` (no avatar errors).
+
 ## How to run (Unity Editor must be closed)
 
 ```bash
