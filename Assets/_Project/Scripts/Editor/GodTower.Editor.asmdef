@@ -1,0 +1,19 @@
+{
+    "name": "GodTower.Editor",
+    "rootNamespace": "GodTower.Editor",
+    "references": [
+        "GodTower.Runtime",
+        "VContainer"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

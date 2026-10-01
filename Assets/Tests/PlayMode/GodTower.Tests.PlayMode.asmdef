@@ -1,0 +1,26 @@
+{
+    "name": "GodTower.Tests.PlayMode",
+    "rootNamespace": "GodTower.Tests.PlayMode",
+    "references": [
+        "GodTower.Runtime",
+        "UniTask",
+        "VContainer",
+        "Unity.InputSystem",
+        "Unity.InputSystem.TestFramework",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
