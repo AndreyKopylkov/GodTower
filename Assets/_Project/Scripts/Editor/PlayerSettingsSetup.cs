@@ -12,6 +12,7 @@ namespace GodTower.Editor
         public const string ApplicationId = "com.andreykopylkov.godtower";
         public const string ProductName = "God Tower";
         public const string CompanyName = "Andrey Kopylkov";
+        public const string Version = "1.0.0";
         private const string MobileRenderPipelineAsset = "Mobile_RPAsset";
         private const string AppIcon = "Assets/Art/UI/Logo/app_icon_1024.png";
 
@@ -19,6 +20,7 @@ namespace GodTower.Editor
         {
             PlayerSettings.productName = ProductName;
             PlayerSettings.companyName = CompanyName;
+            PlayerSettings.bundleVersion = Version;
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, ApplicationId);
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Standalone, ApplicationId);
 

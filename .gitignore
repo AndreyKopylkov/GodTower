@@ -60,3 +60,6 @@ Thumbs.db
 /Art/Source/**/RefFrames/
 __pycache__/
 *.pyc
+
+# Unity Android build temp
+/.utmp/

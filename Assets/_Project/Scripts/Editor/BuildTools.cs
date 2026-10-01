@@ -60,6 +60,10 @@ namespace GodTower.Editor
             Debug.Log("[BuildTools] Project validation passed.");
         });
 
+        /// <summary>Level timelines for <c>Tools/Video/record_playthrough.py</c> (rerun after changing the level table).</summary>
+        [MenuItem("GodTower/Export Level Timelines")]
+        public static void ExportLevelTimelines() => RunOrExit(LevelTimelineExporter.Export);
+
         /// <summary>Builds <c>Builds/GodTower.apk</c>. Run with <c>-buildTarget Android</c> to avoid a platform switch inside the call.</summary>
         [MenuItem("GodTower/Build Android APK")]
         public static void BuildAndroid() => RunOrExit(() =>
@@ -79,7 +83,9 @@ namespace GodTower.Editor
             if (summary.result != BuildResult.Succeeded)
                 throw new InvalidOperationException($"Android build {summary.result} with {summary.totalErrors} error(s).");
 
-            Debug.Log($"[BuildTools] Built {ProjectPaths.AndroidBuild} ({summary.totalSize / (1024f * 1024f):F1} MB).");
+            // summary.totalSize counts uncompressed content; the APK file size is what ships.
+            long apkBytes = new FileInfo(ProjectPaths.AndroidBuild).Length;
+            Debug.Log($"[BuildTools] Built {ProjectPaths.AndroidBuild} ({apkBytes / (1024f * 1024f):F1} MB).");
         });
 
         private static void RunOrExit(Action action)
