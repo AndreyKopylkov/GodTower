@@ -5,6 +5,7 @@ using GodTower.Gameplay;
 using GodTower.Levels;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace GodTower.Editor
 {
@@ -66,6 +67,85 @@ namespace GodTower.Editor
 
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return set;
+        }
+
+        /// <summary>Villain/hero presentation configs. Effects come from gitignored asset-store packs and may be missing.</summary>
+        public static EventsConfig BuildEventsConfig()
+        {
+            const string cfxr = "Assets/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/";
+            const string hovl = "Assets/Hovl Studio/Magic effects pack/Prefabs/";
+
+            VillainEventConfig missile = BuildVillain(VillainKind.Missile, "Missile", "icon_missile",
+                PropImportSetup.Missile, 2f, cfxr + "Explosions/CFXR Explosion 1.prefab", 1.6f, approach: 0.8f);
+            VillainEventConfig truck = BuildVillain(VillainKind.Truck, "Truck", "icon_truck",
+                PropImportSetup.Truck, 1.3f, cfxr + "Explosions/CFXR2 WW Explosion.prefab", 1.6f, approach: 0.9f);
+            VillainEventConfig axes = BuildVillain(VillainKind.Axes, "Axes", "icon_axes",
+                PropImportSetup.Axe, 1.3f, cfxr + "Impacts/CFXR Hit A (Red).prefab", 1.5f, approach: 0.8f);
+
+            HeroEventConfig jetpack = BuildHero(HeroKind.Jetpack, "Jetpack", "icon_jetpack", 0.10f, 2f,
+                PropImportSetup.Jetpack, new Vector3(0f, 1.15f, -0.2f), Vector3.zero, 1f,
+                cfxr + "Fire/CFXR Fire.prefab", new Vector3(0f, 0.55f, -0.45f), 0.6f,
+                cfxr + "Misc/CFXR Magic Poof.prefab", 1.5f, zoomOut: false);
+            HeroEventConfig phoenix = BuildHero(HeroKind.Phoenix, "Phoenix", "icon_phoenix", 0.20f, 3f,
+                PropImportSetup.PhoenixPrefab, new Vector3(0f, -2.4f, -1f), new Vector3(-90f, 0f, 0f), 2.5f,
+                cfxr + "Fire/CFXR Fire.prefab", new Vector3(0f, -3.4f, -1f), 3f,
+                hovl + "Hits and explosions/Explosion.prefab", 3f, zoomOut: true);
+
+            EventsConfig config = LoadOrCreate<EventsConfig>(ProjectPaths.EventsConfig);
+            var serialized = new SerializedObject(config);
+            SetArray(Find(serialized, "_villains"), missile, truck, axes);
+            SetArray(Find(serialized, "_heroes"), jetpack, phoenix);
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return config;
+        }
+
+        private static VillainEventConfig BuildVillain(VillainKind kind, string displayName, string icon, string prop,
+            float propScale, string effect, float effectScale, float approach)
+        {
+            var config = LoadOrCreate<VillainEventConfig>($"{ProjectPaths.EventConfigs}/Villain_{kind}.asset");
+            var serialized = new SerializedObject(config);
+            Find(serialized, "_kind").enumValueIndex = (int)kind;
+            Find(serialized, "_displayName").stringValue = displayName;
+            Find(serialized, "_icon").objectReferenceValue = UiImportSetup.Sprite($"Icons/{icon}.png");
+            Find(serialized, "_prop").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(prop);
+            Find(serialized, "_propScale").floatValue = propScale;
+            Find(serialized, "_impactEffect").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(effect);
+            Find(serialized, "_impactEffectScale").floatValue = effectScale;
+            Find(serialized, "_approachDuration").floatValue = approach;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return config;
+        }
+
+        private static HeroEventConfig BuildHero(HeroKind kind, string displayName, string icon, float heightFraction,
+            float duration, string prop, Vector3 propOffset, Vector3 propEuler, float propScale,
+            string trail, Vector3 trailOffset, float trailScale, string startEffect, float startScale, bool zoomOut)
+        {
+            var config = LoadOrCreate<HeroEventConfig>($"{ProjectPaths.EventConfigs}/Hero_{kind}.asset");
+            var serialized = new SerializedObject(config);
+            Find(serialized, "_kind").enumValueIndex = (int)kind;
+            Find(serialized, "_displayName").stringValue = displayName;
+            Find(serialized, "_icon").objectReferenceValue = UiImportSetup.Sprite($"Icons/{icon}.png");
+            Find(serialized, "_heightFraction").floatValue = heightFraction;
+            Find(serialized, "_duration").floatValue = duration;
+            Find(serialized, "_prop").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(prop);
+            Find(serialized, "_propOffset").vector3Value = propOffset;
+            Find(serialized, "_propEuler").vector3Value = propEuler;
+            Find(serialized, "_propScale").floatValue = propScale;
+            Find(serialized, "_trailEffect").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(trail);
+            Find(serialized, "_trailOffset").vector3Value = trailOffset;
+            Find(serialized, "_trailEffectScale").floatValue = trailScale;
+            Find(serialized, "_startEffect").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(startEffect);
+            Find(serialized, "_startEffectScale").floatValue = startScale;
+            Find(serialized, "_zoomOutCamera").boolValue = zoomOut;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return config;
+        }
+
+        private static void SetArray(SerializedProperty array, params Object[] values)
+        {
+            array.arraySize = values.Length;
+            for (int i = 0; i < values.Length; i++)
+                array.GetArrayElementAtIndex(i).objectReferenceValue = values[i];
         }
 
         private static LevelConfig BuildLevel(LevelDefinition definition)

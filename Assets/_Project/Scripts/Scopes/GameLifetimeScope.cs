@@ -1,5 +1,7 @@
+using GodTower.Events;
 using GodTower.Gameplay;
 using GodTower.Levels;
+using GodTower.UI;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -18,6 +20,9 @@ namespace GodTower.Scopes
         [SerializeField] private Transform _towerRoot;
         [SerializeField] private ClimberView _climber;
         [SerializeField] private CameraRig _cameraRig;
+        [SerializeField] private EventsConfig _events;
+        [SerializeField] private EventStage _eventStage;
+        [SerializeField] private EventBannerPanel _banners;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -31,6 +36,13 @@ namespace GodTower.Scopes
             builder.Register<PointerClimbInput>(Lifetime.Scoped).As<IClimbInput>();
 
             builder.RegisterEntryPoint<LevelRunner>().AsSelf();
+
+            // Level events: logic ticks after the runner (registration order), presentation listens.
+            builder.RegisterInstance(_events);
+            builder.RegisterComponent(_eventStage);
+            builder.RegisterComponent(_banners);
+            builder.RegisterEntryPoint<EventDirector>().AsSelf();
+            builder.RegisterEntryPoint<EventPresenter>();
         }
     }
 }

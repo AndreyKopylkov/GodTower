@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7142221575d86ee45a93ac7fc85bce89, type: 3}
+  m_Name: EventsConfig
+  m_EditorClassIdentifier: GodTower.Runtime::GodTower.Events.EventsConfig
+  _villains:
+  - {fileID: 11400000, guid: 8e4082f1960d50b4fa3b90ab5a06237c, type: 2}
+  - {fileID: 11400000, guid: 257c8e38e2629fe4ea47eec067c15285, type: 2}
+  - {fileID: 11400000, guid: b194672b9185ce0468a3f7e4e3e5ceb2, type: 2}
+  _heroes:
+  - {fileID: 11400000, guid: 3308e7db40a5cb84dbc325a2d56b7955, type: 2}
+  - {fileID: 11400000, guid: 4cb443a1cb21d1f4e96f30f3143af17e, type: 2}

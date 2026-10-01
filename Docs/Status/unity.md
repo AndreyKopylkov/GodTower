@@ -35,18 +35,29 @@ Updated by the lane agent. Format: `[ ]` todo · `[~]` in progress · `[x]` done
 
 ### Integrations
 - [x] U-62 Hero: `HeroImportSetup` (Humanoid avatar valid, 16 bones; clips copy the avatar with `preserveHierarchy`; loops on ClimbUp/HangIdle/Fall/Carried; root motion baked), `M_Hero` URP Lit, `Animation/Hero.controller` (9 states named like `ClimberAnimation.States`, default HangIdle), `Prefabs/Hero.prefab`; `SceneBuilder` uses it instead of the capsule when present. Unity logs one benign "animation import warnings" note for `Hero_Animations` (no avatar errors).
+- [x] U-63 (done in U-24): tower segments + top platform used through `TowerSet` (no static batching — SRP Batcher with one shared material).
+- [x] U-64 (events props): missile, truck, axe, jetpack, phoenix (+ glove and trophy import settings) via `PropImportSetup` (`M_Props` palette material, smoothness from alpha; phoenix Generic rig + `Phoenix.controller` + `Prefabs/Props/Phoenix.prefab`). Glove/trophy imported but not used yet (M4/M5).
+
+### M3 — Level events
+- [x] U-30 `EventTimeline` (pure, seeded): `VillainStrike` (impact/telegraph time, lane mask), `HeroBoost`; skips villains around hero boosts; back-to-back pairs. EditMode tests.
+- [x] U-31 Telegraph: pulsing red lane strips behind the climber (`EventStage`) + red banner on the right.
+- [x] U-32 Missile (from the lane's screen side, CFXR explosion), U-33 Truck (drops from above, crash FX + shake), U-34 Axes (two spinning axes, one safe lane).
+- [x] U-35 Jetpack (+10% / 2 s, prop on the back, flame), U-36 Phoenix (+20% / 3 s, phoenix under the climber, Hovl burst, camera zoom-out).
+- [x] U-37 `EventBannerPanel`: blue left / red right stacks, slide in/out, push down, "Name ×1" with the event icon in the badge.
+  `EventDirector` (logic: telegraph → land → hit/dodge → `ClimberMotor.Knockdown`; boosts → `Carry`), `EventPresenter` (banners + stage), `EventStage` (world visuals on the level clock).
+  Tests: EditMode 115/115, PlayMode 15/15 (incl. `LevelEventsPlayModeTests`: bot dodges telegraphs and wins Level 1 at 4× speed with every `/bump` = 200; staying in the targeted lane → Hit + exactly 8% knockdown).
 
 ## How to run (Unity Editor must be closed)
 
 ```bash
 UNITY="/c/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Unity.exe"
 P="D:/Unity/Projects/GodTower"
-# Settings + VContainer root + regenerate scenes/build list
+# Settings, art import settings, configs, prefabs, scenes, build list (rerun after changing any builder)
 "$UNITY" -batchmode -quit -projectPath "$P" -executeMethod GodTower.Editor.BuildTools.SetupProject -logFile Logs/setup.log
-# Tests — ALWAYS pass -assemblyNames, otherwise Input System's own tests (testables) run too
+# Tests: ALWAYS pass -assemblyNames, otherwise Input System's own tests (testables) run too
 "$UNITY" -batchmode -projectPath "$P" -runTests -testPlatform EditMode -assemblyNames GodTower.Tests.EditMode -testResults TestResults/editmode.xml -logFile Logs/editmode.log
 "$UNITY" -batchmode -projectPath "$P" -runTests -testPlatform PlayMode -assemblyNames GodTower.Tests.PlayMode -testResults TestResults/playmode.xml -logFile Logs/playmode.log
-# APK (switches platform to Android → long reimport the first time)
+# APK (switches platform to Android, long reimport the first time)
 "$UNITY" -batchmode -quit -projectPath "$P" -buildTarget Android -executeMethod GodTower.Editor.BuildTools.BuildAndroid -logFile Logs/build.log
 ```
 
@@ -54,23 +65,31 @@ P="D:/Unity/Projects/GodTower"
 
 - Runtime (`Assets/_Project/Scripts`, asmdef `GodTower.Runtime`)
   - `Core/`: `PlayState`, `IPlayState`, `PlayStateService`, `MainThreadDispatcher`, `AppBootstrap`
-  - `Webhook/`: `BumpHttpServer`, `BumpServerOptions`, `HttpRequestReader`, `BumpRequestParser`, `HttpRequestHead`, `BumpEndpoint` (+ `BumpRoute`), `BumpResponse`, `BumpGate`, `IBumpSignal`
+  - `Webhook/`: `BumpHttpServer`, `BumpServerOptions`, `HttpRequestReader`, `BumpRequestParser`, `HttpRequestHead`, `BumpEndpoint`, `BumpResponse`, `BumpGate`, `IBumpSignal`
+  - `Gameplay/`: `ClimbInput` (`IClimbInput`, `PointerClimbInput`, `ClimbInputFrame`), `SwipeDetector`, `LaneModel`, `KnockdownModel` (+`KnockdownSettings`), `ClimberSettings`, `ClimberMotor` (+`ClimberState`), `ClimberAnimation`, `ClimberView`, `CameraRig`, `GameplayConfig`
+  - `Levels/`: `LevelConfig`, `LevelCatalog`, `SelectedLevel`, `TowerSet`, `TowerLayout`, `TowerBuilder`, `LevelRunner` (+`LevelOutcome`)
+  - `Events/`: `EventKinds` (`VillainKind`, `HeroKind`, `HeroEventEntry`), `EventTimeline` (+`VillainStrike`, `HeroBoost`, `TimelineParameters`), `VillainEventConfig`, `HeroEventConfig`, `EventsConfig`, `EventDirector`, `EventPresenter`, `EventStage`
   - `Scopes/`: `RootLifetimeScope`, `MenuLifetimeScope`, `GameLifetimeScope`
-  - `UI/`: `MenuEntryPoint` (sets `PlayState.Menu` when the menu scene starts)
-- Editor (`Scripts/Editor`, asmdef `GodTower.Editor`): `BuildTools` (CLI entry points), `PlayerSettingsSetup`, `VContainerRootSetup`, `SceneBuilder`, `ProjectPaths`, `AssetFolders`
-- Assets: `Configs/VContainerSettings.asset` (preloaded), `Prefabs/RootLifetimeScope.prefab`, `Scenes/Menu.unity`, `Scenes/Game.unity` (generated)
-- Tests: `Assets/Tests/EditMode/*Tests.cs`, `Assets/Tests/PlayMode/{BumpWebhookPlayModeTests,SceneScopeSmokeTests,TestScenes}.cs`
+  - `UI/`: `MenuEntryPoint`, `EventBannerPanel` (+`BannerSide`), `EventBannerView`
+- Editor (`Scripts/Editor`): `BuildTools` (CLI), `PlayerSettingsSetup`, `VContainerRootSetup`, `InputSetup`, `TowerImportSetup`, `HeroImportSetup`, `PropImportSetup`, `UiImportSetup`, `MaterialFactory`, `GameAssetsBuilder` (level table, event configs, tower set), `SceneBuilder` (+`GameSceneAssets`), `GameHudBuilder`, `ProjectPaths`, `AssetFolders`
+- Generated assets: `Configs/{GameplayConfig,TowerSet}.asset`, `Configs/Levels/{Level_01..05,LevelCatalog}.asset`, `Configs/Events/{Villain_*,Hero_*,EventsConfig}.asset`, `Materials/{Environment,Characters,Props,Events}/*`, `Animation/{Hero,Phoenix}.controller`, `Prefabs/{Hero,Props/Phoenix,RootLifetimeScope}.prefab`, `Scenes/{Menu,Game}.unity`
+- Third-party in repo: `Assets/TextMesh Pro` (TMP essential resources).
+- Tests: EditMode `{SwipeDetector,LaneModel,KnockdownModel,ClimberMotor,TowerLayout,EventTimeline}Tests` + M1 tests; PlayMode `LevelPlayModeTests`, `LevelEventsPlayModeTests` (both `InputTestFixture`), `BumpWebhookPlayModeTests`, `SceneScopeSmokeTests`.
 
-## Notes for the next U run (M2+)
+## Notes for the next U run (run 3: M4 bump effect + M5 UI)
 
-- **Scopes.** `RootLifetimeScope` (prefab referenced by `VContainerSettings`, auto-created before the first scene, `DontDestroyOnLoad`) registers: `AppBootstrap`, `PlayStateService` (as self + `IPlayState`), `MainThreadDispatcher` (entry point, ticks every frame), `BumpGate` (self + `IBumpSignal`), `BumpServerOptions`, `BumpHttpServer` (entry point). Scene scopes have no parent reference set → VContainer parents them to the root automatically.
-- **Play-state gate.** `BumpGate.TryTrigger()` (main thread) returns true only when `PlayStateService.Current == Playing`. The real writer is missing: in M2 the `LevelRunner` (Game scope) must call `PlayStateService.Set(Playing)` when the level starts, `Paused`/`Playing` on pause/resume, `Result` on win/lose. `MenuEntryPoint` sets `Menu`. Also set `Menu` (or `Result`) before leaving the Game scene so a scene transition never answers 200.
-- **Bump effect hook.** Subscribe to `IBumpSignal.BumpRequested` (main thread) from the Game scope (M4 `BumpEffect`); unsubscribe on dispose — the signal lives in the root scope and outlives scenes. Queuing/layering (max 3 waves) belongs to the effect, not the gate.
-- **Scenes are generated.** `SceneBuilder.BuildAll()` recreates `Menu.unity` and `Game.unity` from scratch each `SetupProject` run — add new scene content (camera rig, tower, UI canvases) in the builder, not by hand.
-- **Adding tests.** EditMode: plain NUnit in `Assets/Tests/EditMode` (asmdef already references Runtime, UniTask, VContainer). PlayMode: `Assets/Tests/PlayMode`, async tests as `[UnityTest] IEnumerator X() => UniTask.ToCoroutine(async () => { ... })`; the asmdef already references `Unity.InputSystem.TestFramework` for `InputTestFixture`. Root container in tests: `VContainerSettings.Instance.GetOrCreateRootLifetimeScopeInstance().Container`.
-- `Assets/InputSystem_Actions.inputactions` (template) is still the project-wide actions asset — replace or delete it in U-20.
+- **Scene wiring.** Everything in `Game.unity` is created by `SceneBuilder` / `GameHudBuilder` and injected into `GameLifetimeScope` serialized fields. Add new scene objects there (HUD height bar/timer/pause in `GameHudBuilder`, a flash overlay image, ...). Assets referenced by scenes must be loaded by path *after* `EditorSceneManager.NewScene` (it unloads unreferenced assets, leaving stale references; see `GameSceneAssets`).
+- **Game scope order.** `LevelRunner` (ticks first) → `EventDirector` → `EventPresenter`. `LevelRunner` exposes `Climber` (`ClimberMotor`), `Knockdown` (`KnockdownModel`), `Elapsed`, `TimeLeft`, `IsRunning`, `IsPaused`, `Outcome`, `Ended`, `Pause()/Resume()`. Gate gameplay on `runner.IsRunning`; use the level clock (`Elapsed`) for anything that must freeze on pause.
+- **M4 bump.** Subscribe to `IBumpSignal.BumpRequested` in a Game-scope service (unsubscribe in `Dispose`). Knockdown: `runner.Climber.Knockdown(runner.Knockdown.TakeBumpKnockdown(runner.Elapsed))` (rolling cap implemented + tested; `Knockdown(0)` still plays the Hit reaction — decide whether a capped bump still plays Hit). Input lock = Hit state (0.4 s) + fall; `ClimberMotor.AcceptsInput` is false meanwhile. Glove prop: `PropImportSetup.BoxingGlove` (right glove, punches along +Z; mirror scale.x for a left one). Shake: `CameraRig.Shake(force)`. CFXR prefab paths: see `GameAssetsBuilder.BuildEventsConfig`.
+- **M5 UI.** HUD canvas `HUD` (overlay, 1080×1920, match 0.5) exists with `EventBanners`; the hero banner column is flush with the left edge — move it right if the height bar goes on the left. No `EventSystem` in the Game scene yet (add one for the pause button, and make `PointerClimbInput` ignore presses that start over UI). `SelectedLevel.Select(index)` (root scope) picks the level before loading `Game`. The Menu scene is still empty (scope + camera).
+- **Fonts.** Banner labels use TMP LiberationSans SDF (`UiImportSetup.Font`); U-50 should replace it (Google font + TMP asset).
+- **Screenshots in batch mode.** `WaitForEndOfFrame` is never invoked under `-batchmode` and `ScreenCapture` misses overlay UI: switch canvases to Screen Space - Camera, render `Camera.main` into a RenderTexture, `ReadPixels` (worked for the M3 visual check).
+- **Autoplay.** `LevelEventsPlayModeTests` has a reusable bot (`SafeLane` + `SwipeAsync`, which re-presses at the centre so re-centring is not read as a swipe back). M7 per-level autoplay can extend it (pick the level via `SelectedLevel`, add bump spam once M4 knocks down). Level 5 (750 m / 120 s) is tight: ~87 s of pure climbing after boosts, plus bump knockdowns — may need tuning.
+- **Audio** (U-65) not wired yet; clips are in `Audio/Generated/`.
 
 ## Known issues
 
-- APK build not executed yet (U-77). First Android build triggers a full platform switch/reimport.
-- Unity generated `.meta` files for other lanes' assets under `Assets/Art/**` while importing; they are left unstaged for the lanes/orchestrator (not committed by M0/M1).
+- APK build not executed yet (U-77).
+- `Hero_Animations.fbx` import logs "has animation import warnings" (importer info; avatar and clips are valid and play correctly in captures).
+- Side lanes (±35°) put the climber near the column's silhouette edge as seen from the camera (Plan-locked angles).
+- Phoenix boost: the phoenix sits below/in front of the climber; worth a visual polish pass in M6 (full-screen fire look of the reference).

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca2e96b97a39642bbff484b1035245, type: 3}
+  m_Name: Hero_Phoenix
+  m_EditorClassIdentifier: GodTower.Runtime::GodTower.Events.HeroEventConfig
+  _kind: 1
+  _displayName: Phoenix
+  _icon: {fileID: 21300000, guid: ba8a8f25a3353fb46ad3881771c4d29b, type: 3}
+  _heightFraction: 0.2
+  _duration: 3
+  _prop: {fileID: 4309579238371827063, guid: c829b6ba4413f18429c6dc5083444229, type: 3}
+  _propOffset: {x: 0, y: -2.4, z: -1}
+  _propEuler: {x: -90, y: 0, z: 0}
+  _propScale: 2.5
+  _trailEffect: {fileID: 6294508013172393196, guid: 043176b6a68be2b43b073aaaa4782c7d, type: 3}
+  _trailOffset: {x: 0, y: -3.4, z: -1}
+  _trailEffectScale: 3
+  _startEffect: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
+  _startEffectScale: 3
+  _zoomOutCamera: 1

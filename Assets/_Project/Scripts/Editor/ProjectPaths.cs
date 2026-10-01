@@ -18,6 +18,8 @@ namespace GodTower.Editor
         public const string GameplayConfig = Configs + "/GameplayConfig.asset";
         public const string TowerSet = Configs + "/TowerSet.asset";
         public const string LevelCatalog = LevelConfigs + "/LevelCatalog.asset";
+        public const string EventConfigs = Configs + "/Events";
+        public const string EventsConfig = EventConfigs + "/EventsConfig.asset";
 
         public const string MenuScene = Scenes + "/Menu.unity";
         public const string GameScene = Scenes + "/Game.unity";
