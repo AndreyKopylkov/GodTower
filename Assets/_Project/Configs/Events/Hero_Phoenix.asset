@@ -18,12 +18,17 @@ MonoBehaviour:
   _heightFraction: 0.2
   _duration: 3
   _prop: {fileID: 4309579238371827063, guid: c829b6ba4413f18429c6dc5083444229, type: 3}
-  _propOffset: {x: 0, y: -2.4, z: -1}
+  _propOffset: {x: 0, y: -1.6, z: -0.6}
   _propEuler: {x: -90, y: 0, z: 0}
-  _propScale: 2.5
+  _propScale: 2.6
   _trailEffect: {fileID: 6294508013172393196, guid: 043176b6a68be2b43b073aaaa4782c7d, type: 3}
-  _trailOffset: {x: 0, y: -3.4, z: -1}
-  _trailEffectScale: 3
+  _trailOffset: {x: 0, y: -3.2, z: -0.6}
+  _trailEffectScale: 5
   _startEffect: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
-  _startEffectScale: 3
+  _startEffectScale: 5
+  _auraEffect: {fileID: 1206498299807332555, guid: af6c1e3f046eecd4d81330aeb285600f, type: 3}
+  _auraOffset: {x: 0, y: -0.6, z: -0.8}
+  _auraEffectScale: 4
+  _flashColor: {r: 1, g: 0.55, b: 0.12, a: 0.5}
+  _flashDuration: 0.6
   _zoomOutCamera: 1

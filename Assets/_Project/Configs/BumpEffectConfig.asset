@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: BumpEffectConfig
   m_EditorClassIdentifier: GodTower.Runtime::GodTower.Effects.BumpEffectConfig
   _glovePrefab: {fileID: 919132149155446097, guid: 9b992381811221644b0e042e08214a42, type: 3}
-  _gloveScale: 3
+  _gloveScale: 5
   _gloveReach: 0.72
   _minGloves: 6
   _maxGloves: 8
   _flightDuration: {x: 0.32, y: 0.45}
   _stagger: 0.05
   _edgeMargin: 0.06
-  _spawnDepthTowardsCamera: {x: 1, y: 4}
-  _arcBend: {x: 1.2, y: 3}
+  _spawnDepthTowardsCamera: {x: 3, y: 9}
+  _arcBend: {x: 2, y: 5}
   _punchRoll: {x: 140, y: 260}
-  _contactSpread: {x: 0.45, y: 0.55, z: 0.2}
-  _recoilDistance: 1.1
+  _contactSpread: {x: 0.75, y: 0.95, z: 0.3}
+  _recoilDistance: 1.9
   _recoilDuration: 0.32
   _hitEffect: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
   _hitEffectScale: 2

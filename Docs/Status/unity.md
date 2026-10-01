@@ -70,6 +70,14 @@ Updated by the lane agent. Format: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] U-66 UI sprites: kit (panel, buttons, round buttons, height bar), banners, icons (play/pause/home/retry/next/lock/star/trophy + event icons), logo — all used by `GameHudBuilder` / `MenuUiBuilder` / event configs. App icon: `PlayerSettingsSetup.ApplyIcon` (default icon for all platforms from `Art/UI/Logo/app_icon_1024.png`). Clouds (`Art/Environment/Sky`) are left for M6 sky presets.
   Tests: EditMode 153/153 (+`AudioLibraryTests`), PlayMode 19/19.
 
+### M6 — Content and polish (run 4)
+- [x] U-60 Level table verified against Plan §1 (`GameAssetsBuilder.Levels`); EditMode `ProjectValidationTests` checks 5 levels, increasing difficulty, sky per level. Tuning for M7 below.
+- [x] U-61 `SkyPreset` ×5 (`Configs/Sky`, built by `SkySetup`): gradient skybox (`Shaders/SkyGradient.shader`), fog, sun, ambient, cloud tint; `SkyView` + `CloudField` (3 parallax layers of lane I's clouds, wrapping, drifting) + `SkyPresenter` in both scopes (menu = preset 1).
+- [x] Camera framing: far follow camera (58 m, FOV 28°/38°), column ≈ 20% of the width, hero visual 1.75× (≈ 11% of the height), effects/props rescaled.
+- [x] U-67 `RenderingSetup` (post-processing profile: bloom, colour adjustments, vignette; HDR, SRP Batcher, shadow distance; cameras: post-processing + FXAA), `TextureImportPolicy` (≤1024, Android ASTC), phoenix visual pass (rides under the climber, fire aura, orange flash).
+- [x] U-68 `ProjectValidator` (`BuildTools.ValidateProject` + EditMode test): no missing scripts/references in scenes, prefabs, configs; no Asset Store demo content in the build.
+  Tests: EditMode 156/156, PlayMode 20/20.
+
 ## How to run (Unity Editor must be closed)
 
 ```bash

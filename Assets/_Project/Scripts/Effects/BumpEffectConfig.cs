@@ -13,7 +13,7 @@ namespace GodTower.Effects
         [Header("Gloves")]
         [Tooltip("Glove model (right glove punching along +Z, pivot at the wrist); left gloves are mirrored. A cube is used when empty.")]
         [SerializeField] private GameObject _glovePrefab;
-        [SerializeField, Min(0.01f)] private float _gloveScale = 3f;
+        [SerializeField, Min(0.01f)] private float _gloveScale = 5f;
         [Tooltip("Distance from the glove pivot (wrist) to the front of the fist, in model units.")]
         [SerializeField, Min(0f)] private float _gloveReach = 0.72f;
         [SerializeField, Min(1)] private int _minGloves = 6;
@@ -26,14 +26,14 @@ namespace GodTower.Effects
         [Tooltip("How far outside the screen edge gloves spawn (viewport units).")]
         [SerializeField, Min(0f)] private float _edgeMargin = 0.06f;
         [Tooltip("Spawn depth in front of the climber, towards the camera (meters): gloves start big and punch inwards.")]
-        [SerializeField] private Vector2 _spawnDepthTowardsCamera = new(1f, 4f);
+        [SerializeField] private Vector2 _spawnDepthTowardsCamera = new(3f, 9f);
         [Tooltip("Sideways bend of the arc (meters).")]
-        [SerializeField] private Vector2 _arcBend = new(1.2f, 3f);
+        [SerializeField] private Vector2 _arcBend = new(2f, 5f);
         [Tooltip("Roll (degrees) unwound during the flight: the punch-in twist.")]
         [SerializeField] private Vector2 _punchRoll = new(140f, 260f);
         [Tooltip("Spread of the contact points around the climber's chest (meters).")]
-        [SerializeField] private Vector3 _contactSpread = new(0.45f, 0.55f, 0.2f);
-        [SerializeField, Min(0f)] private float _recoilDistance = 1.1f;
+        [SerializeField] private Vector3 _contactSpread = new(0.75f, 0.95f, 0.3f);
+        [SerializeField, Min(0f)] private float _recoilDistance = 1.9f;
         [SerializeField, Min(0.01f)] private float _recoilDuration = 0.32f;
 
         [Header("Impact")]

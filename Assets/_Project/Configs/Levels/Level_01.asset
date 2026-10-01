@@ -22,4 +22,5 @@ MonoBehaviour:
   _heroEvents:
   - _kind: 0
     _time: 30
+  _sky: {fileID: 11400000, guid: 3704398851d840944bfb6cb5179f71cb, type: 2}
   _seed: 1007

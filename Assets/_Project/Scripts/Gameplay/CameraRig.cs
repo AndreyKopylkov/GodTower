@@ -14,11 +14,11 @@ namespace GodTower.Gameplay
         [SerializeField] private Transform _target;
         [SerializeField] private CinemachineImpulseSource _impulse;
 
-        [Tooltip("Target height above the climber's feet (frames the climber at the screen centre).")]
-        [SerializeField] private float _targetHeightOffset = 1f;
+        [Tooltip("Target height above the climber's feet (above the chest: the climber sits slightly below the screen centre, like the reference).")]
+        [SerializeField] private float _targetHeightOffset = 4.2f;
 
-        [SerializeField, Range(10f, 90f)] private float _fieldOfView = 34f;
-        [SerializeField, Range(10f, 90f)] private float _zoomedOutFieldOfView = 46f;
+        [SerializeField, Range(10f, 90f)] private float _fieldOfView = 28f;
+        [SerializeField, Range(10f, 90f)] private float _zoomedOutFieldOfView = 38f;
         [SerializeField, Min(0.01f)] private float _zoomDuration = 0.6f;
 
         private Tween _zoom;

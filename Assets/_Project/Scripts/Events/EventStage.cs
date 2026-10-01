@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using GodTower.Effects;
 using GodTower.Gameplay;
 using GodTower.Levels;
 using PrimeTween;
@@ -16,25 +17,26 @@ namespace GodTower.Events
     /// </summary>
     public sealed class EventStage : MonoBehaviour
     {
-        private const float CenterHeight = 1.1f;
         private const float AfterImpactDuration = 0.8f;
 
         [SerializeField] private Material _markerMaterial;
         [SerializeField] private Material _placeholderMaterial;
-        [SerializeField] private Vector2 _markerSize = new(1.5f, 6f);
+        [SerializeField] private Vector2 _markerSize = new(2.6f, 10f);
 
         [Tooltip("How far props travel during their approach (missile, axes: sideways; truck: drop height).")]
-        [SerializeField, Min(1f)] private float _approachDistance = 14f;
+        [SerializeField, Min(1f)] private float _approachDistance = 24f;
 
         private readonly Dictionary<int, StrikeVisual> _strikes = new();
         private LevelRunner _runner;
         private ClimberView _climber;
         private CameraRig _camera;
+        private ScreenFlash _flash;
         private float _hangRadius;
 
         [Inject]
-        public void Construct(LevelRunner runner, ClimberView climber, CameraRig cameraRig, GameplayConfig gameplay)
+        public void Construct(LevelRunner runner, ClimberView climber, CameraRig cameraRig, ScreenFlash flash, GameplayConfig gameplay)
         {
+            _flash = flash;
             _runner = runner;
             _climber = climber;
             _camera = cameraRig;
@@ -162,7 +164,13 @@ namespace GodTower.Events
                 trail.rotation = Quaternion.Euler(180f, 0f, 0f); // flames point down
             }
 
+            Transform aura = SpawnEffect(config.AuraEffect, climber.TransformPoint(config.AuraOffset), config.AuraEffectScale, 0f);
+            if (aura != null)
+                aura.SetParent(climber, true);
+
             SpawnEffect(config.StartEffect, _climber.Center, config.StartEffectScale, 4f);
+            if (config.FlashColor.a > 0f)
+                _flash.Flash(config.FlashColor, config.FlashColor.a, config.FlashDuration);
             if (config.ZoomOutCamera)
                 _camera.SetZoomedOut(true);
 
@@ -175,6 +183,7 @@ namespace GodTower.Events
             {
                 DestroySafe(prop);
                 DestroySafe(trail);
+                DestroySafe(aura);
                 if (config.ZoomOutCamera && _camera != null)
                     _camera.SetZoomedOut(false);
             }
@@ -197,7 +206,7 @@ namespace GodTower.Events
             {
                 Transform marker = markers[index++];
                 float angle = _runner.Climber.Lanes.AngleOf(lane);
-                marker.position = ClimberView.PositionOnColumn(angle, ClimberHeight + CenterHeight, _hangRadius - 0.2f); // behind the climber
+                marker.position = ClimberView.PositionOnColumn(angle, ClimberHeight + _climber.CenterHeight, _hangRadius - 0.35f); // behind the climber
                 marker.rotation = ClimberView.FacingColumn(angle);
             }
         }
@@ -234,7 +243,7 @@ namespace GodTower.Events
         }
 
         private Vector3 LanePoint(int lane) =>
-            _climber.LanePosition(_runner.Climber.Lanes.AngleOf(lane), ClimberHeight + CenterHeight);
+            _climber.LanePosition(_runner.Climber.Lanes.AngleOf(lane), ClimberHeight + _climber.CenterHeight);
 
         private IEnumerable<int> Lanes(VillainStrike strike)
         {

@@ -24,4 +24,5 @@ MonoBehaviour:
     _time: 35
   - _kind: 1
     _time: 75
+  _sky: {fileID: 11400000, guid: c2f8972f16a4d0a4383cc2f7e4115cf4, type: 2}
   _seed: 5007

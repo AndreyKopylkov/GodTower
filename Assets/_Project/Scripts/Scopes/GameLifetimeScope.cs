@@ -1,6 +1,7 @@
 using GodTower.Audio;
 using GodTower.Effects;
 using GodTower.Events;
+using GodTower.Environment;
 using GodTower.Gameplay;
 using GodTower.Levels;
 using GodTower.UI;
@@ -32,6 +33,7 @@ namespace GodTower.Scopes
         [SerializeField] private PausePanelView _pausePanel;
         [SerializeField] private ResultPanelView _resultPanel;
         [SerializeField] private WinStage _winStage;
+        [SerializeField] private SkyView _sky;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -68,6 +70,11 @@ namespace GodTower.Scopes
             builder.RegisterEntryPoint<HudPresenter>();
             builder.RegisterEntryPoint<GameFlowPresenter>();
             builder.RegisterEntryPoint<GameAudioPresenter>();
+
+            // Sky, fog and light of the selected level.
+            builder.RegisterComponent(_sky);
+            builder.Register(resolver => resolver.Resolve<LevelConfig>().Sky, Lifetime.Scoped);
+            builder.RegisterEntryPoint<SkyPresenter>();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 using GodTower.Effects;
+using GodTower.Environment;
 using GodTower.Events;
 using GodTower.Gameplay;
 using GodTower.Levels;
@@ -20,10 +21,17 @@ namespace GodTower.Editor
     /// </summary>
     public static class SceneBuilder
     {
-        private static readonly Color SkyColor = new(0.24f, 0.55f, 0.93f);
+        /// <summary>
+        /// Far follow camera (with <c>CameraRig</c>'s FOV 28°): ~29 m of tower in view, the column ~20% of the portrait width
+        /// with open sky on both sides like the reference, the (scaled) hero ~11% of the screen height.
+        /// </summary>
+        private static readonly Vector3 CameraOffset = new(0f, 0f, -58f);
 
-        /// <summary>Camera distance and offset that frame a 1.8 m climber at ~12% of the screen height (FOV 34°).</summary>
-        private static readonly Vector3 CameraOffset = new(0f, 0f, -24f);
+        /// <summary>
+        /// The 1.8 m hero model is shown 1.75× bigger: the reference character is about as tall as the column is wide.
+        /// Gameplay distances (displayed meters) are unaffected.
+        /// </summary>
+        public const float HeroScale = 1.75f;
 
         /// <summary>The hero model faces -Z; the climber root faces the column (+Z), so the visual is turned around.</summary>
         private static readonly Quaternion HeroVisualRotation = Quaternion.Euler(0f, 180f, 0f);
@@ -52,15 +60,15 @@ namespace GodTower.Editor
             var scope = CreateScope<MenuLifetimeScope>();
             Camera camera = CreateMainCamera();
             camera.fieldOfView = 40f;
-            camera.transform.position = new Vector3(0f, MenuHeroHeight + 0.6f, -14f);
-            CreateSun();
+            camera.transform.position = new Vector3(0f, MenuHeroHeight + 0.6f * HeroScale, -24f);
+            SkyView sky = CreateSky();
             var towerRoot = new GameObject("Tower").transform;
             CreateMenuHero(GameSceneAssets.ClimberVisual);
             UiFactory.CreateEventSystem();
             GodTower.UI.MenuView menu = MenuUiBuilder.Build();
 
             UiFactory.Bind(scope, ("_levels", GameSceneAssets.Levels), ("_towerSet", GameSceneAssets.TowerSet),
-                ("_towerRoot", towerRoot), ("_menuView", menu));
+                ("_towerRoot", towerRoot), ("_menuView", menu), ("_sky", sky));
             EditorSceneManager.SaveScene(scene, ProjectPaths.MenuScene);
         }
 
@@ -72,6 +80,7 @@ namespace GodTower.Editor
             var root = new GameObject("MenuHero").transform;
             root.SetPositionAndRotation(ClimberView.PositionOnColumn(0f, MenuHeroHeight, GameSceneAssets.Gameplay.Climber.HangRadius),
                 ClimberView.FacingColumn(0f));
+            root.localScale = Vector3.one * HeroScale;
             var visual = (GameObject)PrefabUtility.InstantiatePrefab(visualPrefab, root);
             visual.transform.localRotation = HeroVisualRotation;
         }
@@ -83,7 +92,7 @@ namespace GodTower.Editor
             var scope = CreateScope<GameLifetimeScope>();
             CreateMainCamera().gameObject.AddComponent<CinemachineBrain>();
             CameraRig cameraRig = CreateCameraRig();
-            CreateSun();
+            SkyView sky = CreateSky();
             var towerRoot = new GameObject("Tower").transform;
             ClimberView climber = CreateClimber(GameSceneAssets.ClimberVisual);
             EventStage eventStage = CreateEventStage();
@@ -109,6 +118,7 @@ namespace GodTower.Editor
             GameAssetsBuilder.Find(serialized, "_pausePanel").objectReferenceValue = hud.PausePanel;
             GameAssetsBuilder.Find(serialized, "_resultPanel").objectReferenceValue = hud.ResultPanel;
             GameAssetsBuilder.Find(serialized, "_winStage").objectReferenceValue = winStage;
+            GameAssetsBuilder.Find(serialized, "_sky").objectReferenceValue = sky;
             serialized.ApplyModifiedPropertiesWithoutUndo();
 
             EditorSceneManager.SaveScene(scene, ProjectPaths.GameScene);
@@ -151,10 +161,10 @@ namespace GodTower.Editor
         {
             var cameraObject = new GameObject("Main Camera") { tag = "MainCamera" };
             var camera = cameraObject.AddComponent<Camera>();
-            camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = SkyColor;
-            camera.nearClipPlane = 0.5f;
-            camera.farClipPlane = 400f;
+            camera.clearFlags = CameraClearFlags.Skybox;
+            camera.nearClipPlane = 1f;
+            camera.farClipPlane = 900f;
+            RenderingSetup.ConfigureCamera(camera);
             cameraObject.AddComponent<AudioListener>();
             cameraObject.transform.position = CameraOffset;
             return camera;
@@ -193,24 +203,43 @@ namespace GodTower.Editor
             return rig;
         }
 
-        private static void CreateSun()
+        /// <summary>
+        /// Sun, gradient skybox and cloud layers. The scene is saved with the Day preset applied, so its lighting settings
+        /// keep fog enabled (URP strips fog shader variants from builds when no scene uses fog); the scope applies the
+        /// level's own preset at runtime.
+        /// </summary>
+        private static SkyView CreateSky()
         {
             var sunObject = new GameObject("Sun");
             var sun = sunObject.AddComponent<Light>();
             sun.type = LightType.Directional;
-            sun.intensity = 1.3f;
-            sun.color = new Color(1f, 0.96f, 0.88f);
             sun.shadows = LightShadows.Soft;
-            sunObject.transform.rotation = Quaternion.Euler(35f, -35f, 0f);
 
-            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(0.55f, 0.62f, 0.72f);
+            var cloudsObject = new GameObject("Clouds");
+            var clouds = cloudsObject.AddComponent<CloudField>();
+            var serializedClouds = new SerializedObject(clouds);
+            SerializedProperty sprites = GameAssetsBuilder.Find(serializedClouds, "_sprites");
+            Sprite[] cloudSprites = SkySetup.CloudSprites;
+            sprites.arraySize = cloudSprites.Length;
+            for (int i = 0; i < cloudSprites.Length; i++)
+                sprites.GetArrayElementAtIndex(i).objectReferenceValue = cloudSprites[i];
+            GameAssetsBuilder.Find(serializedClouds, "_material").objectReferenceValue = SkySetup.CloudMaterial;
+            serializedClouds.ApplyModifiedPropertiesWithoutUndo();
+
+            var sky = new GameObject("Sky").AddComponent<SkyView>();
+            UiFactory.Bind(sky, ("_skyMaterial", SkySetup.SkyMaterial), ("_sun", sun), ("_clouds", clouds));
+
+            RenderSettings.skybox = SkySetup.SkyMaterial;
+            RenderSettings.sun = sun;
+            sky.Apply(SkySetup.Preset(1));
+            return sky;
         }
 
         /// <summary>Climber root (positioned by <see cref="ClimberView"/>) with the hero model or a capsule placeholder.</summary>
         private static ClimberView CreateClimber(GameObject visualPrefab)
         {
             var climberObject = new GameObject("Climber");
+            climberObject.transform.localScale = Vector3.one * HeroScale;
             var view = climberObject.AddComponent<ClimberView>();
             Animator animator = null;
 

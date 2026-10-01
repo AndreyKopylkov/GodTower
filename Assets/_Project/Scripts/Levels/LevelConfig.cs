@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GodTower.Environment;
 using GodTower.Events;
 using UnityEngine;
 
@@ -26,6 +27,11 @@ namespace GodTower.Levels
         [Header("Heroes")]
         [SerializeField] private HeroEventEntry[] _heroEvents = { new(HeroKind.Jetpack, 25f) };
 
+        [Header("Look")]
+        [Tooltip("Sky, fog, light and cloud tint of the level (Day → Dusk).")]
+        [SerializeField] private SkyPreset _sky;
+
+        [Header("Generation")]
         [Tooltip("Seed of the villain schedule and the tower segment order (deterministic levels).")]
         [SerializeField] private int _seed = 1;
 
@@ -37,6 +43,7 @@ namespace GodTower.Levels
         public float TelegraphDuration => _telegraphDuration;
         public bool BackToBackPairs => _backToBackPairs;
         public IReadOnlyList<HeroEventEntry> HeroEvents => _heroEvents;
+        public SkyPreset Sky => _sky;
         public int Seed => _seed;
     }
 }

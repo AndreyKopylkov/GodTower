@@ -3,6 +3,7 @@
     "rootNamespace": "GodTower.Tests.EditMode",
     "references": [
         "GodTower.Runtime",
+        "GodTower.Editor",
         "UniTask",
         "VContainer",
         "UnityEngine.TestRunner",

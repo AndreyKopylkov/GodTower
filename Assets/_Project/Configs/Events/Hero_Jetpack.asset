@@ -23,7 +23,7 @@ MonoBehaviour:
   _propScale: 1
   _trailEffect: {fileID: 6294508013172393196, guid: 043176b6a68be2b43b073aaaa4782c7d, type: 3}
   _trailOffset: {x: 0, y: 0.55, z: -0.45}
-  _trailEffectScale: 0.6
+  _trailEffectScale: 1.05
   _startEffect: {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
-  _startEffectScale: 1.5
+  _startEffectScale: 2.6
   _zoomOutCamera: 0

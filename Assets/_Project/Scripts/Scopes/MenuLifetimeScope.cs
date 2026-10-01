@@ -1,3 +1,4 @@
+using GodTower.Environment;
 using GodTower.Levels;
 using GodTower.UI;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace GodTower.Scopes
         [SerializeField] private TowerSet _towerSet;
         [SerializeField] private Transform _towerRoot;
         [SerializeField] private MenuView _menuView;
+        [SerializeField] private SkyView _sky;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -22,6 +24,11 @@ namespace GodTower.Scopes
 
             builder.RegisterEntryPoint<MenuBackdrop>();
             builder.RegisterEntryPoint<MenuPresenter>();
+
+            // The menu uses the first level's sky.
+            builder.RegisterComponent(_sky);
+            builder.Register(_ => _levels.Get(0).Sky, Lifetime.Scoped);
+            builder.RegisterEntryPoint<SkyPresenter>();
         }
     }
 }

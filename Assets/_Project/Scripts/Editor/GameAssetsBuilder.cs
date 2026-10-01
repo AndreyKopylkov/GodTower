@@ -80,20 +80,24 @@ namespace GodTower.Editor
             const string hovl = "Assets/Hovl Studio/Magic effects pack/Prefabs/";
 
             VillainEventConfig missile = BuildVillain(VillainKind.Missile, "Missile", "icon_missile",
-                PropImportSetup.Missile, 2f, cfxr + "Explosions/CFXR Explosion 1.prefab", 1.6f, approach: 0.8f);
+                PropImportSetup.Missile, 3.4f, cfxr + "Explosions/CFXR Explosion 1.prefab", 2.8f, approach: 0.8f);
             VillainEventConfig truck = BuildVillain(VillainKind.Truck, "Truck", "icon_truck",
-                PropImportSetup.Truck, 1.3f, cfxr + "Explosions/CFXR2 WW Explosion.prefab", 1.6f, approach: 0.9f);
+                PropImportSetup.Truck, 2.2f, cfxr + "Explosions/CFXR2 WW Explosion.prefab", 2.8f, approach: 0.9f);
             VillainEventConfig axes = BuildVillain(VillainKind.Axes, "Axes", "icon_axes",
-                PropImportSetup.Axe, 1.3f, cfxr + "Impacts/CFXR Hit A (Red).prefab", 1.5f, approach: 0.8f);
+                PropImportSetup.Axe, 2.2f, cfxr + "Impacts/CFXR Hit A (Red).prefab", 2.6f, approach: 0.8f);
 
             HeroEventConfig jetpack = BuildHero(HeroKind.Jetpack, "Jetpack", "icon_jetpack", 0.10f, 2f,
                 PropImportSetup.Jetpack, new Vector3(0f, 1.15f, -0.2f), Vector3.zero, 1f,
-                cfxr + "Fire/CFXR Fire.prefab", new Vector3(0f, 0.55f, -0.45f), 0.6f,
-                cfxr + "Misc/CFXR Magic Poof.prefab", 1.5f, zoomOut: false);
+                cfxr + "Fire/CFXR Fire.prefab", new Vector3(0f, 0.55f, -0.45f), 1.05f,
+                cfxr + "Misc/CFXR Magic Poof.prefab", 2.6f, zoomOut: false);
+            // Phoenix: the climber rides the bird (prop under the feet), a fire jet below, a fire aura around them,
+            // a big burst and an orange full-screen flash at the start, camera zoom-out.
             HeroEventConfig phoenix = BuildHero(HeroKind.Phoenix, "Phoenix", "icon_phoenix", 0.20f, 3f,
-                PropImportSetup.PhoenixPrefab, new Vector3(0f, -2.4f, -1f), new Vector3(-90f, 0f, 0f), 2.5f,
-                cfxr + "Fire/CFXR Fire.prefab", new Vector3(0f, -3.4f, -1f), 3f,
-                hovl + "Hits and explosions/Explosion.prefab", 3f, zoomOut: true);
+                PropImportSetup.PhoenixPrefab, new Vector3(0f, -1.6f, -0.6f), new Vector3(-90f, 0f, 0f), 2.6f,
+                cfxr + "Fire/CFXR Fire.prefab", new Vector3(0f, -3.2f, -0.6f), 5f,
+                hovl + "Hits and explosions/Explosion.prefab", 5f, zoomOut: true,
+                aura: cfxr + "Fire/CFXR4 Sun.prefab", auraOffset: new Vector3(0f, -0.6f, -0.8f), auraScale: 4f,
+                flash: new Color(1f, 0.55f, 0.12f, 0.5f));
 
             EventsConfig config = LoadOrCreate<EventsConfig>(ProjectPaths.EventsConfig);
             var serialized = new SerializedObject(config);
@@ -135,7 +139,8 @@ namespace GodTower.Editor
 
         private static HeroEventConfig BuildHero(HeroKind kind, string displayName, string icon, float heightFraction,
             float duration, string prop, Vector3 propOffset, Vector3 propEuler, float propScale,
-            string trail, Vector3 trailOffset, float trailScale, string startEffect, float startScale, bool zoomOut)
+            string trail, Vector3 trailOffset, float trailScale, string startEffect, float startScale, bool zoomOut,
+            string aura = null, Vector3 auraOffset = default, float auraScale = 1f, Color flash = default)
         {
             var config = LoadOrCreate<HeroEventConfig>($"{ProjectPaths.EventConfigs}/Hero_{kind}.asset");
             var serialized = new SerializedObject(config);
@@ -153,6 +158,10 @@ namespace GodTower.Editor
             Find(serialized, "_trailEffectScale").floatValue = trailScale;
             Find(serialized, "_startEffect").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(startEffect);
             Find(serialized, "_startEffectScale").floatValue = startScale;
+            Find(serialized, "_auraEffect").objectReferenceValue = aura != null ? AssetDatabase.LoadAssetAtPath<GameObject>(aura) : null;
+            Find(serialized, "_auraOffset").vector3Value = auraOffset;
+            Find(serialized, "_auraEffectScale").floatValue = auraScale;
+            Find(serialized, "_flashColor").colorValue = flash;
             Find(serialized, "_zoomOutCamera").boolValue = zoomOut;
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return config;
@@ -176,6 +185,7 @@ namespace GodTower.Editor
             Find(serialized, "_telegraphDuration").floatValue = definition.Telegraph;
             Find(serialized, "_backToBackPairs").boolValue = definition.BackToBackPairs;
             Find(serialized, "_seed").intValue = 1000 * definition.Number + 7;
+            Find(serialized, "_sky").objectReferenceValue = SkySetup.Preset(definition.Number);
 
             SerializedProperty villains = Find(serialized, "_villains");
             villains.arraySize = definition.Villains.Length;

@@ -29,6 +29,15 @@ namespace GodTower.Events
         [SerializeField] private GameObject _startEffect;
         [SerializeField, Min(0.01f)] private float _startEffectScale = 1f;
 
+        [Tooltip("Looping effect around the climber for the whole boost, e.g. the phoenix fire (optional asset-store effect).")]
+        [SerializeField] private GameObject _auraEffect;
+        [SerializeField] private Vector3 _auraOffset;
+        [SerializeField, Min(0.01f)] private float _auraEffectScale = 1f;
+
+        [Tooltip("Full-screen colour flash at the start of the boost (alpha 0 = none).")]
+        [SerializeField] private Color _flashColor = Color.clear;
+        [SerializeField, Min(0.01f)] private float _flashDuration = 0.6f;
+
         [SerializeField] private bool _zoomOutCamera;
 
         public HeroKind Kind => _kind;
@@ -45,6 +54,11 @@ namespace GodTower.Events
         public float TrailEffectScale => _trailEffectScale;
         public GameObject StartEffect => _startEffect;
         public float StartEffectScale => _startEffectScale;
+        public GameObject AuraEffect => _auraEffect;
+        public Vector3 AuraOffset => _auraOffset;
+        public float AuraEffectScale => _auraEffectScale;
+        public Color FlashColor => _flashColor;
+        public float FlashDuration => _flashDuration;
         public bool ZoomOutCamera => _zoomOutCamera;
     }
 }

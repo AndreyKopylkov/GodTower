@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -30,6 +31,9 @@ namespace GodTower.Editor
             UiImportSetup.Apply();
             FontSetup.Apply();
             AudioSetup.Apply();
+            SkySetup.Apply();
+            TextureImportPolicy.Apply();
+            RenderingSetup.Apply();
 
             GameAssetsBuilder.BuildLevels();
             GameAssetsBuilder.BuildGameplayConfig();
@@ -41,6 +45,19 @@ namespace GodTower.Editor
             SceneBuilder.BuildAll();
             AssetDatabase.SaveAssets();
             Debug.Log("[BuildTools] Project setup complete.");
+        });
+
+        /// <summary>Asset hygiene check (missing scripts/references, Asset Store demo content); exits with code 1 on problems.</summary>
+        [MenuItem("GodTower/Validate Project")]
+        public static void ValidateProject() => RunOrExit(() =>
+        {
+            IReadOnlyList<string> issues = ProjectValidator.Run();
+            foreach (string issue in issues)
+                Debug.LogError("[Validate] " + issue);
+            if (issues.Count > 0)
+                throw new InvalidOperationException($"Project validation found {issues.Count} problem(s).");
+
+            Debug.Log("[BuildTools] Project validation passed.");
         });
 
         /// <summary>Builds <c>Builds/GodTower.apk</c>. Run with <c>-buildTarget Android</c> to avoid a platform switch inside the call.</summary>

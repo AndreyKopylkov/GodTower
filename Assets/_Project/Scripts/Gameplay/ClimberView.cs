@@ -17,8 +17,17 @@ namespace GodTower.Gameplay
         private float _hopDistance;
         private float _flinchUntil;
 
+        /// <summary>Chest height of the unscaled 1.8 m hero model.</summary>
+        private const float ChestHeight = 1.1f;
+
+        /// <summary>Uniform display scale of the climber (the scene shows the hero bigger than 1 m = 1 unit).</summary>
+        public float Scale => transform.lossyScale.y;
+
+        /// <summary>Chest height above the climber's feet in world units.</summary>
+        public float CenterHeight => ChestHeight * Scale;
+
         /// <summary>World point the camera and effects aim at (chest height).</summary>
-        public Vector3 Center => transform.position + Vector3.up * 1.1f;
+        public Vector3 Center => transform.position + Vector3.up * CenterHeight;
 
         public void Configure(ClimberSettings settings)
         {

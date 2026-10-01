@@ -131,7 +131,8 @@ namespace GodTower.Effects
             _flash.Flash(_config.FlashColor, _config.FlashAlpha, _config.FlashDuration);
             _cameraRig.Shake(_config.FirstContactShake);
             Vector3 towardsCamera = _camera != null ? -_camera.transform.forward : Vector3.back;
-            SpawnEffect(_config.ComicEffect, _climber.Center + towardsCamera * 1.5f + Vector3.up * 1.8f, _config.ComicEffectScale, _climber.transform);
+            float scale = _climber.Scale;
+            SpawnEffect(_config.ComicEffect, _climber.Center + (towardsCamera * 1.5f + Vector3.up * 1.8f) * scale, _config.ComicEffectScale, _climber.transform);
             wave.OnFirstContact?.Invoke();
         }
 
@@ -173,7 +174,7 @@ namespace GodTower.Effects
             Vector3 spread = _config.ContactSpread;
             Vector3 towardsCamera = _camera != null ? -_camera.transform.forward : Vector3.back;
             return new Vector3(Random.Range(-spread.x, spread.x), Random.Range(-spread.y, spread.y), 0f)
-                   + towardsCamera * (0.35f + Random.Range(0f, spread.z));
+                   + towardsCamera * (0.35f * _climber.Scale + Random.Range(0f, spread.z));
         }
 
         /// <summary>Spawns a self-destroying burst attached to <paramref name="parent"/> (bursts follow the falling climber).</summary>
