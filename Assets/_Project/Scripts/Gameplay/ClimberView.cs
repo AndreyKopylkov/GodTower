@@ -15,6 +15,7 @@ namespace GodTower.Gameplay
         private ClimberState? _shownState;
         private float _hangRadius;
         private float _hopDistance;
+        private float _flinchUntil;
 
         /// <summary>World point the camera and effects aim at (chest height).</summary>
         public Vector3 Center => transform.position + Vector3.up * 1.1f;
@@ -47,12 +48,28 @@ namespace GodTower.Gameplay
                     FacingColumn(motor.LaneAngle));
             }
 
-            if (_shownState == motor.State)
+            if (_shownState == motor.State || Time.time < _flinchUntil)
                 return;
 
             _shownState = motor.State;
+            CrossFade(ClimberAnimation.HashFor(motor.State, motor.ShiftDirection));
+        }
+
+        /// <summary>
+        /// Plays the hit animation for <paramref name="duration"/> seconds without touching the motor (visual-only reaction,
+        /// e.g. a webhook bump whose knockdown is fully capped). The motor's animation resumes afterwards.
+        /// </summary>
+        public void PlayFlinch(float duration)
+        {
+            _flinchUntil = Time.time + duration;
+            _shownState = null;
+            CrossFade(Animator.StringToHash(ClimberAnimation.Hit));
+        }
+
+        private void CrossFade(int stateHash)
+        {
             if (_animator != null && _animator.runtimeAnimatorController != null)
-                _animator.CrossFadeInFixedTime(ClimberAnimation.HashFor(motor.State, motor.ShiftDirection), _crossFade);
+                _animator.CrossFadeInFixedTime(stateHash, _crossFade);
         }
 
         /// <summary>Hops from the column onto the top deck (the win animation then plays there).</summary>

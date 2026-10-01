@@ -1,4 +1,5 @@
 using System.Linq;
+using GodTower.Effects;
 using GodTower.Events;
 using GodTower.Gameplay;
 using GodTower.Levels;
@@ -58,7 +59,8 @@ namespace GodTower.Editor
             var towerRoot = new GameObject("Tower").transform;
             ClimberView climber = CreateClimber(GameSceneAssets.ClimberVisual);
             EventStage eventStage = CreateEventStage();
-            GodTower.UI.EventBannerPanel banners = GameHudBuilder.Build();
+            BumpStage bumpStage = CreateBumpStage();
+            GameHudBuilder.Result hud = GameHudBuilder.Build();
 
             var serialized = new SerializedObject(scope);
             GameAssetsBuilder.Find(serialized, "_levels").objectReferenceValue = GameSceneAssets.Levels;
@@ -69,7 +71,10 @@ namespace GodTower.Editor
             GameAssetsBuilder.Find(serialized, "_cameraRig").objectReferenceValue = cameraRig;
             GameAssetsBuilder.Find(serialized, "_events").objectReferenceValue = GameSceneAssets.Events;
             GameAssetsBuilder.Find(serialized, "_eventStage").objectReferenceValue = eventStage;
-            GameAssetsBuilder.Find(serialized, "_banners").objectReferenceValue = banners;
+            GameAssetsBuilder.Find(serialized, "_banners").objectReferenceValue = hud.Banners;
+            GameAssetsBuilder.Find(serialized, "_bumpEffect").objectReferenceValue = GameSceneAssets.BumpEffect;
+            GameAssetsBuilder.Find(serialized, "_bumpStage").objectReferenceValue = bumpStage;
+            GameAssetsBuilder.Find(serialized, "_screenFlash").objectReferenceValue = hud.Flash;
             serialized.ApplyModifiedPropertiesWithoutUndo();
 
             EditorSceneManager.SaveScene(scene, ProjectPaths.GameScene);
@@ -81,6 +86,16 @@ namespace GodTower.Editor
             var serialized = new SerializedObject(stage);
             GameAssetsBuilder.Find(serialized, "_markerMaterial").objectReferenceValue =
                 MaterialFactory.Unlit(ProjectPaths.Materials + "/Events/M_TelegraphMarker.mat", new Color(1f, 0.12f, 0.08f, 0.38f), transparent: true);
+            GameAssetsBuilder.Find(serialized, "_placeholderMaterial").objectReferenceValue =
+                MaterialFactory.Lit(ProjectPaths.Materials + "/Events/M_EventPlaceholder.mat", new Color(0.85f, 0.2f, 0.15f));
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return stage;
+        }
+
+        private static BumpStage CreateBumpStage()
+        {
+            var stage = new GameObject("BumpStage").AddComponent<BumpStage>();
+            var serialized = new SerializedObject(stage);
             GameAssetsBuilder.Find(serialized, "_placeholderMaterial").objectReferenceValue =
                 MaterialFactory.Lit(ProjectPaths.Materials + "/Events/M_EventPlaceholder.mat", new Color(0.85f, 0.2f, 0.15f));
             serialized.ApplyModifiedPropertiesWithoutUndo();
@@ -191,6 +206,7 @@ namespace GodTower.Editor
         public static GameplayConfig Gameplay => Load<GameplayConfig>(ProjectPaths.GameplayConfig);
         public static TowerSet TowerSet => Load<TowerSet>(ProjectPaths.TowerSet);
         public static EventsConfig Events => Load<EventsConfig>(ProjectPaths.EventsConfig);
+        public static BumpEffectConfig BumpEffect => Load<BumpEffectConfig>(ProjectPaths.BumpEffectConfig);
 
         /// <summary>Hero prefab, or null for the capsule placeholder.</summary>
         public static GameObject ClimberVisual => AssetDatabase.LoadAssetAtPath<GameObject>(ProjectPaths.HeroPrefab);

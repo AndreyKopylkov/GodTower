@@ -185,6 +185,56 @@ namespace GodTower.Tests.EditMode
         }
 
         [Test]
+        public void Knockdown_WithCustomReaction_UsesItsHitAndMinimumFallDurations()
+        {
+            ClimberMotor motor = Create(start: 100f);
+
+            motor.Knockdown(9f, new HitReaction(hitDuration: 0.25f, minFallDuration: 0.25f));
+            Run(motor, 0.24f, holding: false);
+            Assert.That(motor.State, Is.EqualTo(ClimberState.Hit));
+
+            Run(motor, 0.04f, holding: false);
+            Assert.That(motor.State, Is.EqualTo(ClimberState.Fall));
+
+            // 9 m at 30 m/s = 0.3 s (longer than the 0.25 s minimum).
+            Run(motor, 0.32f, holding: false);
+            Assert.That(motor.State, Is.EqualTo(ClimberState.Idle));
+            Assert.That(motor.Height, Is.EqualTo(91f).Within(0.01f));
+        }
+
+        [Test]
+        public void Knockdown_DuringHit_AddsUp()
+        {
+            ClimberMotor motor = Create(start: 100f);
+
+            motor.Knockdown(10f);
+            Run(motor, 0.2f, holding: false);
+            motor.Knockdown(5f);
+            Run(motor, 0.38f, holding: false);
+            Assert.That(motor.State, Is.EqualTo(ClimberState.Hit), "A new hit restarts the reaction.");
+
+            Run(motor, 2f, holding: false);
+            Assert.That(motor.Height, Is.EqualTo(85f).Within(0.01f));
+        }
+
+        [Test]
+        public void Knockdown_DuringFall_KeepsTheRemainingDistance()
+        {
+            ClimberMotor motor = Create(start: 100f);
+
+            motor.Knockdown(24f);
+            Run(motor, 0.6f, holding: false);
+            Assert.That(motor.State, Is.EqualTo(ClimberState.Fall));
+            Assert.That(motor.Height, Is.LessThan(100f).And.GreaterThan(76f));
+
+            motor.Knockdown(6f);
+            Assert.That(motor.State, Is.EqualTo(ClimberState.Hit));
+            Run(motor, 3f, holding: false);
+            Assert.That(motor.Height, Is.EqualTo(70f).Within(0.01f));
+            Assert.That(motor.State, Is.EqualTo(ClimberState.Idle));
+        }
+
+        [Test]
         public void WinAndLose_AreTerminal()
         {
             ClimberMotor motor = Create();

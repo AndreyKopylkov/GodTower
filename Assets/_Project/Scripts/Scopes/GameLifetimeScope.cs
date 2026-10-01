@@ -1,3 +1,4 @@
+using GodTower.Effects;
 using GodTower.Events;
 using GodTower.Gameplay;
 using GodTower.Levels;
@@ -23,6 +24,9 @@ namespace GodTower.Scopes
         [SerializeField] private EventsConfig _events;
         [SerializeField] private EventStage _eventStage;
         [SerializeField] private EventBannerPanel _banners;
+        [SerializeField] private BumpEffectConfig _bumpEffect;
+        [SerializeField] private BumpStage _bumpStage;
+        [SerializeField] private ScreenFlash _screenFlash;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -43,6 +47,12 @@ namespace GodTower.Scopes
             builder.RegisterComponent(_banners);
             builder.RegisterEntryPoint<EventDirector>().AsSelf();
             builder.RegisterEntryPoint<EventPresenter>();
+
+            // Webhook bump: glove waves layered on top of the level.
+            builder.RegisterInstance(_bumpEffect);
+            builder.RegisterComponent(_bumpStage);
+            builder.RegisterComponent(_screenFlash);
+            builder.RegisterEntryPoint<BumpDirector>().AsSelf();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using GodTower.Effects;
 using GodTower.Events;
 using GodTower.Gameplay;
 using GodTower.Levels;
@@ -95,6 +96,19 @@ namespace GodTower.Editor
             var serialized = new SerializedObject(config);
             SetArray(Find(serialized, "_villains"), missile, truck, axes);
             SetArray(Find(serialized, "_heroes"), jetpack, phoenix);
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return config;
+        }
+
+        /// <summary>Webhook bump effect: glove model and asset-store bursts (missing packs leave the bursts empty).</summary>
+        public static BumpEffectConfig BuildBumpEffectConfig()
+        {
+            const string cfxr = "Assets/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/";
+            BumpEffectConfig config = LoadOrCreate<BumpEffectConfig>(ProjectPaths.BumpEffectConfig);
+            var serialized = new SerializedObject(config);
+            Find(serialized, "_glovePrefab").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(PropImportSetup.BoxingGlove);
+            Find(serialized, "_hitEffect").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(cfxr + "Impacts/CFXR Hit D 3D (Yellow).prefab");
+            Find(serialized, "_comicEffect").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(cfxr + "Texts/CFXR _POW_.prefab");
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return config;
         }

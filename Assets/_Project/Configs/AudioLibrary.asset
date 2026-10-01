@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e35a93fbf95d8f448b03224f996ac8c0, type: 3}
+  m_Name: AudioLibrary
+  m_EditorClassIdentifier: GodTower.Runtime::GodTower.Audio.AudioLibrary
+  _sounds:
+  - _id: 0
+    _clips:
+    - {fileID: 8300000, guid: 13771cc013f1210469fe483ec03bd376, type: 3}
+    - {fileID: 8300000, guid: 3309d8f3db4dead41b99e326818d3b09, type: 3}
+    - {fileID: 8300000, guid: 8263891eeed34a549b754948e1547632, type: 3}
+    _volume: 1
+    _pitch: {x: 0.9, y: 1.15}
+    _ui: 0
+  - _id: 1
+    _clips:
+    - {fileID: 8300000, guid: e705f8dc93080ca4ea0e1fa3bdf79533, type: 3}
+    - {fileID: 8300000, guid: 19fa8a932e4839f47bb66729ddc48915, type: 3}
+    _volume: 0.9
+    _pitch: {x: 0.95, y: 1.05}
+    _ui: 0
+  - _id: 2
+    _clips:
+    - {fileID: 8300000, guid: 998395f86cca614428303ba29ad67f74, type: 3}
+    _volume: 0.9
+    _pitch: {x: 0.95, y: 1.05}
+    _ui: 0
+  - _id: 3
+    _clips:
+    - {fileID: 8300000, guid: 637bb629c75dcbc43ba83e940b393816, type: 3}
+    _volume: 0.85
+    _pitch: {x: 0.9, y: 1.1}
+    _ui: 0
+  - _id: 4
+    _clips:
+    - {fileID: 8300000, guid: 7ddbc60bec3ea144f83bffb5f18eb57f, type: 3}
+    _volume: 0.7
+    _pitch: {x: 0.95, y: 1.05}
+    _ui: 0
+  - _id: 5
+    _clips:
+    - {fileID: 8300000, guid: f6dba679631ec7a4487f02592ad0efa0, type: 3}
+    _volume: 0.8
+    _pitch: {x: 1, y: 1}
+    _ui: 0
+  - _id: 6
+    _clips:
+    - {fileID: 8300000, guid: 22017b00aa23b924b82e522a3ea2f077, type: 3}
+    _volume: 0.7
+    _pitch: {x: 1, y: 1}
+    _ui: 0
+  - _id: 7
+    _clips:
+    - {fileID: 8300000, guid: 67ce6af5cd829e14c99652daaba66f43, type: 3}
+    _volume: 0.9
+    _pitch: {x: 1, y: 1}
+    _ui: 0
+  - _id: 8
+    _clips:
+    - {fileID: 8300000, guid: 89424e0dc03d39346ab033968c0a3cb0, type: 3}
+    - {fileID: 8300000, guid: 53d6a33fea7a8224686a50ff3c117148, type: 3}
+    - {fileID: 8300000, guid: fcea65ef5a1fcae4e99f8ea26256c1c1, type: 3}
+    _volume: 0.35
+    _pitch: {x: 0.9, y: 1.1}
+    _ui: 0
+  - _id: 9
+    _clips:
+    - {fileID: 8300000, guid: 450ff8ac51fcb3040b9f8301fffb1f08, type: 3}
+    _volume: 0.7
+    _pitch: {x: 0.95, y: 1.08}
+    _ui: 0
+  - _id: 10
+    _clips:
+    - {fileID: 8300000, guid: 526337a95d5a70443a72ed82ad1ea42c, type: 3}
+    _volume: 0.7
+    _pitch: {x: 0.95, y: 1.05}
+    _ui: 0
+  - _id: 11
+    _clips:
+    - {fileID: 8300000, guid: ca1ecf4a87d5fbd4f9dd941711ded79b, type: 3}
+    _volume: 1
+    _pitch: {x: 1, y: 1}
+    _ui: 1
+  - _id: 12
+    _clips:
+    - {fileID: 8300000, guid: b29c2e2245c586e4a89715ecb63ca66b, type: 3}
+    _volume: 1
+    _pitch: {x: 1, y: 1}
+    _ui: 1
+  - _id: 13
+    _clips:
+    - {fileID: 8300000, guid: 9f49405527f1ebd4e8b936df0dc83ae0, type: 3}
+    _volume: 0.7
+    _pitch: {x: 1, y: 1}
+    _ui: 0
+  - _id: 14
+    _clips:
+    - {fileID: 8300000, guid: bef31b4030954cb479eef2a336adbfda, type: 3}
+    _volume: 0.8
+    _pitch: {x: 0.97, y: 1.03}
+    _ui: 1
+  - _id: 15
+    _clips:
+    - {fileID: 8300000, guid: 542aa87cb091863428ba1ebaf99a51ac, type: 3}
+    _volume: 0.9
+    _pitch: {x: 1, y: 1}
+    _ui: 1
+  - _id: 16
+    _clips:
+    - {fileID: 8300000, guid: b90eb248e2cd92d4cb514e0bb83ec584, type: 3}
+    _volume: 0.8
+    _pitch: {x: 1, y: 1}
+    _ui: 1
+  _menuMusic: {fileID: 8300000, guid: dd081bae520a93847b37f7dfa4fcfacc, type: 3}
+  _levelMusic: {fileID: 8300000, guid: e8300f991d0f62749a76ccf67df7ce13, type: 3}
+  _musicVolume: 0.55
+  _sfxVolume: 1
+  _musicFade: 0.6

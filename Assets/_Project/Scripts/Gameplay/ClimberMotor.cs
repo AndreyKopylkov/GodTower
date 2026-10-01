@@ -19,6 +19,19 @@ namespace GodTower.Gameplay
         Lose
     }
 
+    /// <summary>Timing of a knockdown: how long the hit reaction lasts and the shortest fall that follows it.</summary>
+    public readonly struct HitReaction
+    {
+        public readonly float HitDuration;
+        public readonly float MinFallDuration;
+
+        public HitReaction(float hitDuration, float minFallDuration)
+        {
+            HitDuration = Mathf.Max(0f, hitDuration);
+            MinFallDuration = Mathf.Max(0f, minFallDuration);
+        }
+    }
+
     /// <summary>
     /// Climber state machine and kinematics in tower space (height in meters, lane angle in degrees).
     /// Pure logic driven by <see cref="Tick"/>; the view only reads it.
@@ -30,6 +43,7 @@ namespace GodTower.Gameplay
         private float _stateTime;
         private float _shiftFromAngle;
         private float _pendingKnockdown;
+        private HitReaction _reaction;
         private float _moveFrom;
         private float _moveTo;
         private float _moveDuration;
@@ -97,7 +111,7 @@ namespace GodTower.Gameplay
                     TickShift(holding);
                     break;
                 case ClimberState.Hit:
-                    if (_stateTime >= _settings.HitDuration)
+                    if (_stateTime >= _reaction.HitDuration)
                         StartFall();
                     break;
                 case ClimberState.Fall:
@@ -127,14 +141,30 @@ namespace GodTower.Gameplay
         }
 
         /// <summary>Hit reaction followed by a fall of <paramref name="meters"/> (floored at the bottom).</summary>
-        public void Knockdown(float meters)
+        public void Knockdown(float meters) =>
+            Knockdown(meters, new HitReaction(_settings.HitDuration, _settings.MinFallDuration));
+
+        /// <summary>
+        /// Knockdown with custom timing. A knockdown during a hit or a fall restarts the hit reaction and adds up:
+        /// the distance still to fall is kept, so stacked hits never cancel each other.
+        /// </summary>
+        public void Knockdown(float meters, HitReaction reaction)
         {
             if (IsFinished)
                 return;
 
+            float remaining = State switch
+            {
+                ClimberState.Hit => _pendingKnockdown,
+                ClimberState.Fall => Mathf.Max(0f, Height - _moveTo),
+                _ => 0f
+            };
+
             CompleteShift();
-            _pendingKnockdown = Mathf.Max(0f, meters);
+            _pendingKnockdown = remaining + Mathf.Max(0f, meters);
+            _reaction = reaction;
             SetState(ClimberState.Hit);
+            _stateTime = 0f;
         }
 
         /// <summary>Lifts the climber by <paramref name="meters"/> over <paramref name="duration"/> seconds (capped at the top).</summary>
@@ -181,7 +211,8 @@ namespace GodTower.Gameplay
         {
             float target = KnockdownModel.Apply(Height, _pendingKnockdown);
             float distance = Height - target;
-            BeginMove(target, Mathf.Max(_settings.MinFallDuration, distance / _settings.FallSpeed));
+            _pendingKnockdown = 0f;
+            BeginMove(target, Mathf.Max(_reaction.MinFallDuration, distance / _settings.FallSpeed));
             SetState(ClimberState.Fall);
         }
 

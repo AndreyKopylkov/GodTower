@@ -1,3 +1,4 @@
+using GodTower.Effects;
 using GodTower.UI;
 using TMPro;
 using UnityEditor;
@@ -12,10 +13,17 @@ namespace GodTower.Editor
     /// </summary>
     public static class GameHudBuilder
     {
+        /// <summary>Components of the built HUD that the scene scope needs.</summary>
+        public sealed class Result
+        {
+            public EventBannerPanel Banners;
+            public ScreenFlash Flash;
+        }
+
         public static readonly Vector2 ReferenceResolution = new(1080f, 1920f);
         private static readonly Vector2 BannerSize = new(520f, 150f);
 
-        public static EventBannerPanel Build()
+        public static Result Build()
         {
             var canvasObject = new GameObject("HUD", typeof(RectTransform));
             var canvas = canvasObject.AddComponent<Canvas>();
@@ -40,7 +48,23 @@ namespace GodTower.Editor
             GameAssetsBuilder.Find(serialized, "_heroTemplate").objectReferenceValue = heroTemplate;
             GameAssetsBuilder.Find(serialized, "_villainTemplate").objectReferenceValue = villainTemplate;
             serialized.ApplyModifiedPropertiesWithoutUndo();
-            return panel;
+
+            return new Result { Banners = panel, Flash = CreateFlash(canvasObject.transform) };
+        }
+
+        /// <summary>Full-screen white overlay for the bump flash (last child: drawn over the rest of the HUD).</summary>
+        private static ScreenFlash CreateFlash(Transform canvas)
+        {
+            RectTransform rect = CreateRect("ScreenFlash", canvas);
+            Stretch(rect);
+            var image = rect.gameObject.AddComponent<Image>();
+            image.color = new Color(1f, 1f, 1f, 0f);
+            image.raycastTarget = false;
+            var flash = rect.gameObject.AddComponent<ScreenFlash>();
+            var serialized = new SerializedObject(flash);
+            GameAssetsBuilder.Find(serialized, "_image").objectReferenceValue = image;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return flash;
         }
 
         private static RectTransform CreateColumn(string name, RectTransform parent, Vector2 anchor)

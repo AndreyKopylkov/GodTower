@@ -27,11 +27,13 @@ namespace GodTower.Editor
             HeroImportSetup.Apply();
             PropImportSetup.Apply();
             UiImportSetup.Apply();
+            AudioSetup.Apply();
 
             GameAssetsBuilder.BuildLevels();
             GameAssetsBuilder.BuildGameplayConfig();
             GameAssetsBuilder.BuildTowerSet();
             GameAssetsBuilder.BuildEventsConfig();
+            GameAssetsBuilder.BuildBumpEffectConfig();
             AssetDatabase.SaveAssets();
 
             SceneBuilder.BuildAll();

@@ -1,7 +1,9 @@
+using GodTower.Audio;
 using GodTower.Core;
 using GodTower.Levels;
 using GodTower.Webhook;
 using VContainer;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace GodTower.Scopes
@@ -13,12 +15,15 @@ namespace GodTower.Scopes
     /// </summary>
     public sealed class RootLifetimeScope : LifetimeScope
     {
+        [SerializeField] private AudioLibrary _audio;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterEntryPoint<AppBootstrap>();
 
             builder.Register<PlayStateService>(Lifetime.Singleton).AsSelf().As<IPlayState>();
             builder.Register<SelectedLevel>(Lifetime.Singleton);
+            builder.RegisterEntryPoint(_ => new AudioService(_audio), Lifetime.Singleton).AsSelf();
 
             // Webhook: the dispatcher ticks every frame, the server lives for the whole session.
             builder.RegisterEntryPoint<MainThreadDispatcher>().AsSelf();
