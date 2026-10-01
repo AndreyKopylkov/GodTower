@@ -72,29 +72,29 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 
 ### M2 — Core loop (≈2 h)
 
-- [ ] **U-20 · U · U-06** — `ClimbInput`: Input System touch + mouse (editor); hold state; swipe detection (horizontal delta ≥ 8% screen width within 0.35 s, works while holding).
+- [x] **U-20 · U · U-06** — `ClimbInput`: Input System touch + mouse (editor); hold state; swipe detection (horizontal delta ≥ 8% screen width within 0.35 s, works while holding).
   EditMode tests for swipe classification.
-- [ ] **U-21 · U** — `LaneModel` (pure): 3 lanes (−35°, 0°, +35°), clamp at edges. Tests.
-- [ ] **U-22 · U** — `KnockdownModel` (pure): villain −8% tower height, bump −3% with cap 6% per rolling 5 s, floor at 0. Tests.
-- [ ] **U-23 · U** — `ClimberController` state machine: Idle(hang) / Climb / Shift / Hit / Fall / Carried / Win / Lose;
+- [x] **U-21 · U** — `LaneModel` (pure): 3 lanes (−35°, 0°, +35°), clamp at edges. Tests.
+- [x] **U-22 · U** — `KnockdownModel` (pure): villain −8% tower height, bump −3% with cap 6% per rolling 5 s, floor at 0. Tests.
+- [x] **U-23 · U** — `ClimberController` state machine: Idle(hang) / Climb / Shift / Hit / Fall / Carried / Win / Lose;
   position on the cylinder arc (column radius 1.5 m + offset), climb speed 6 m/s; Animator parameter mapping ready for the 9 clips; capsule placeholder.
-- [ ] **U-24 · U** — `TowerBuilder`: stacks tower segments up to `LevelConfig.height` from a `TowerSet` config, adds top platform; cylinder placeholders.
-- [ ] **U-25 · U** — `LevelConfig`, `LevelCatalog`, `SelectedLevel` service; `Level_01.asset` from `Plan.md` table.
-- [ ] **U-26 · U** — `LevelRunner`: countdown timer, win at top, lose on timeout, pause/resume, drives `IPlayState`.
-- [ ] **U-27 · U** — Camera: Cinemachine follow on height with damping, framing like `ref.mp4` (character centered, ~12–15% screen height),
+- [x] **U-24 · U** — `TowerBuilder`: stacks tower segments up to `LevelConfig.height` from a `TowerSet` config, adds top platform; cylinder placeholders.
+- [x] **U-25 · U** — `LevelConfig`, `LevelCatalog`, `SelectedLevel` service; `Level_01.asset` from `Plan.md` table.
+- [x] **U-26 · U** — `LevelRunner`: countdown timer, win at top, lose on timeout, pause/resume, drives `IPlayState`.
+- [x] **U-27 · U** — Camera: Cinemachine follow on height with damping, framing like `ref.mp4` (character centered, ~12–15% screen height),
   Impulse source/listener, zoom-out hook for hero boosts.
   **Done when:** Level 1 is playable in PlayMode with placeholders (hold/release/swipe/win/lose). **Commit** `feat: core climbing loop`.
 
 ### M3 — Level events (≈1 h)
 
-- [ ] **U-30 · U · U-26** — `EventTimeline`: seeded schedule from `LevelConfig` (villain interval, allowed villains, hero event times). Ordering tests.
-- [ ] **U-31 · U** — Telegraph: lane warning marker + red banner (right side) for `telegraph` seconds before impact.
-- [ ] **U-32 · U** — Villain **Missile**: horizontal flight into one lane at character height; hit → `Hit`/`Fall`/knockdown; explosion FX (CFX).
-- [ ] **U-33 · U** — Villain **Truck**: falls from above into one lane; crash FX + shake.
-- [ ] **U-34 · U** — Villain **Axes**: spinning axes sweep two lanes, one safe lane.
-- [ ] **U-35 · U** — Hero **Jetpack**: +10% height over ~2 s, `Carried` state, blue banner (left).
-- [ ] **U-36 · U** — Hero **Phoenix**: +20% over ~3 s, full-screen fire VFX (Hovl), camera zoom-out.
-- [ ] **U-37 · U** — Event banners UI: blue left (heroes) / red right (villains), slide-in stack like the reference, own naming (e.g. "Missile ×1"), no "TikTikBox" text.
+- [x] **U-30 · U · U-26** — `EventTimeline`: seeded schedule from `LevelConfig` (villain interval, allowed villains, hero event times). Ordering tests.
+- [x] **U-31 · U** — Telegraph: lane warning marker + red banner (right side) for `telegraph` seconds before impact.
+- [x] **U-32 · U** — Villain **Missile**: horizontal flight into one lane at character height; hit → `Hit`/`Fall`/knockdown; explosion FX (CFX).
+- [x] **U-33 · U** — Villain **Truck**: falls from above into one lane; crash FX + shake.
+- [x] **U-34 · U** — Villain **Axes**: spinning axes sweep two lanes, one safe lane.
+- [x] **U-35 · U** — Hero **Jetpack**: +10% height over ~2 s, `Carried` state, blue banner (left).
+- [x] **U-36 · U** — Hero **Phoenix**: +20% over ~3 s, full-screen fire VFX (Hovl), camera zoom-out.
+- [x] **U-37 · U** — Event banners UI: blue left (heroes) / red right (villains), slide-in stack like the reference, own naming (e.g. "Missile ×1"), no "TikTikBox" text.
   **Done when:** every event fires per config, hits and dodges behave correctly. **Commit** `feat: level events`.
 
 ### M4 — Bump effect (≈1 h)
@@ -121,9 +121,9 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 
 - [ ] **U-60 · U · U-30** — Author `Level_01..05` exactly per `Plan.md` level table.
 - [ ] **U-61 · U** — 5 `SkyPreset`s (sky gradient, fog, directional light color, cloud tint): Day → Bright afternoon → Golden hour → Sunset → Dusk.
-- [ ] **U-62 · U · A-07** — Integrate hero: Humanoid import, avatar, `Hero.controller` with 9 clips mapped to states, replace capsule.
-- [ ] **U-63 · U · B-03** — Integrate tower segments + top platform into `TowerSet`, materials, static batching.
-- [ ] **U-64 · U · B-04..B-09** — Integrate props: glove, missile, truck, axe, jetpack, phoenix.
+- [x] **U-62 · U · A-07** — Integrate hero: Humanoid import, avatar, `Hero.controller` with 9 clips mapped to states, replace capsule.
+- [x] **U-63 · U · B-03** — Integrate tower segments + top platform into `TowerSet`, materials, static batching.
+- [x] **U-64 · U · B-04..B-09** — Integrate props: glove, missile, truck, axe, jetpack, phoenix.
 - [ ] **U-65 · U · S-12** — `AudioService` + mixer (Music/SFX), clip mapping for all events and UI; music loop in levels.
 - [ ] **U-66 · U · I-02..I-05** — Integrate UI sprites (panels, buttons, banners, icons, logo), app icon.
 - [ ] **U-67 · U** — Visual polish: URP bloom (needed by Hovl FX), HDR on, lighting/colors matched to `ref.mp4` (saturated blue sky, pale grey-green stone),
@@ -172,18 +172,18 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 Scale contract: character 1.8 m; **column radius 1.5 m**; tower segment height **3 m** (all segments same radius and height, seamless when stacked).
 Budgets: segment ≤ 3k tris, prop ≤ 1.5k tris, textures ≤ 1024², one material per asset. Style: chunky, bright, Roblox-like. FBX: Y-up, +Z forward, Apply Transform.
 
-- [ ] **B-01 · B** — Study the tower in `ref.mp4` (1–23 s: carved drums, rings, zig-zag friezes, animal/glyph reliefs; 91 s: dish-shaped top). Notes → `Docs/Status/blender.md`.
-- [ ] **B-02 · B** — 4 tileable tower segments: plain drum with rings, zig-zag frieze, relief band (original glyphs — no copied symbols), ribbed band.
+- [x] **B-01 · B** — Study the tower in `ref.mp4` (1–23 s: carved drums, rings, zig-zag friezes, animal/glyph reliefs; 91 s: dish-shaped top). Notes → `Docs/Status/blender.md`.
+- [x] **B-02 · B** — 4 tileable tower segments: plain drum with rings, zig-zag frieze, relief band (original glyphs — no copied symbols), ribbed band.
   Pale grey-green stone material, normal map for carving. → `Assets/Art/Environment/Tower/`.
-- [ ] **B-03 · B** — Top platform: wide dish/saucer cap + short neck, same radius at the joint. → same folder.
-- [ ] **B-04 · B** — Boxing glove: red, glossy, white cuff; pivot at wrist; ~500 tris. → `Assets/Art/Props/`.
-- [ ] **B-05 · B** — Missile: cartoon, red/white, fins; pivot at center, flies along +Z.
-- [ ] **B-06 · B** — Truck: cartoon delivery truck, readable from above and front.
-- [ ] **B-07 · B** — Axe: double-bladed, spinnable around its center.
-- [ ] **B-08 · B** — Jetpack: two tanks + nozzles; attaches to the character's back (pivot at the back contact point).
-- [ ] **B-09 · B** — Phoenix: low-poly stylised bird (≤ 2k tris), simple wing-flap animation loop (1 s); fire VFX is added in Unity.
-- [ ] **B-10 · B** — Trophy (gold cup) for the win screen / top platform.
-- [ ] **B-11 · B** — Status file: file list, tri counts, pivots/orientation notes.
+- [x] **B-03 · B** — Top platform: wide dish/saucer cap + short neck, same radius at the joint. → same folder.
+- [x] **B-04 · B** — Boxing glove: red, glossy, white cuff; pivot at wrist; ~500 tris. → `Assets/Art/Props/`.
+- [x] **B-05 · B** — Missile: cartoon, red/white, fins; pivot at center, flies along +Z.
+- [x] **B-06 · B** — Truck: cartoon delivery truck, readable from above and front.
+- [x] **B-07 · B** — Axe: double-bladed, spinnable around its center.
+- [x] **B-08 · B** — Jetpack: two tanks + nozzles; attaches to the character's back (pivot at the back contact point).
+- [x] **B-09 · B** — Phoenix: low-poly stylised bird (≤ 2k tris), simple wing-flap animation loop (1 s); fire VFX is added in Unity.
+- [x] **B-10 · B** — Trophy (gold cup) for the win screen / top platform.
+- [x] **B-11 · B** — Status file: file list, tri counts, pivots/orientation notes.
 
 ---
 
