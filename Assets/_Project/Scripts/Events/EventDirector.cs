@@ -24,8 +24,14 @@ namespace GodTower.Events
             _runner = runner;
             _config = config;
 
-            LevelConfig level = runner.Level;
-            Timeline = EventTimeline.Build(new TimelineParameters
+            Timeline = BuildTimeline(runner.Level, config);
+        }
+
+        public EventTimeline Timeline { get; }
+
+        /// <summary>The level's seeded timeline (deterministic: the same level always gets the same events).</summary>
+        public static EventTimeline BuildTimeline(LevelConfig level, EventsConfig config) =>
+            EventTimeline.Build(new TimelineParameters
             {
                 TimeLimit = level.TimeLimit,
                 Villains = level.Villains,
@@ -37,9 +43,6 @@ namespace GodTower.Events
                     .ToList(),
                 Seed = level.Seed
             });
-        }
-
-        public EventTimeline Timeline { get; }
 
         /// <summary>A villain is announced: telegraph its lanes now, it lands at <see cref="VillainStrike.ImpactTime"/>.</summary>
         public event Action<VillainStrike> Telegraphed;

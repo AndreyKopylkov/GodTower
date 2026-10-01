@@ -82,6 +82,8 @@ namespace GodTower.Levels
             _cameraRig.SnapTo(Climber.Height);
 
             _playState.Set(PlayState.Playing);
+            // Start/end lines let PC-side tooling follow the level clock through adb logcat (Tools/Video/record_playthrough.py).
+            Debug.Log($"[LevelRunner] Level {Level.Number} started ({Level.TowerHeight:0} m, {Level.TimeLimit:0} s)");
         }
 
         public void Tick()
@@ -164,6 +166,7 @@ namespace GodTower.Levels
             }
 
             _playState.Set(PlayState.Result);
+            Debug.Log($"[LevelRunner] Level {Level.Number} {outcome} at {Elapsed:0.0} s");
             Ended?.Invoke(outcome);
         }
     }
