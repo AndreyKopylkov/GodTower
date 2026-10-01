@@ -37,8 +37,8 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 - [x] **O-02 · O** — Create `Docs/Status/{unity,astra,blender,sound,image}.md` (header + empty checklist).
 - [x] **O-03 · O** — Spawn lanes `U`, `A`, `B`, `S`, `I` in parallel. Each prompt: its section of this file + `Plan.md` + (A) `CharacterPipeline.md`
   + reference paths + the ownership/coordination rules from §0.
-- [~] **O-04 · O** — Run the checkpoint loop (§9) until all non-`H` tasks are `[x]` or `[-]`.
-- [ ] **O-05 · O** — Final report in `Docs/Status/summary.md`: what is done, what is cut, known issues, morning to-do (lane `H`).
+- [x] **O-04 · O** — Run the checkpoint loop (§9) until all non-`H` tasks are `[x]` or `[-]`.
+- [x] **O-05 · O** — Final report in `Docs/Status/summary.md`: what is done, what is cut, known issues, morning to-do (lane `H`).
 
 ---
 
@@ -141,16 +141,16 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 - [x] **U-73 · U** — Autoplay **Level 3**.
 - [x] **U-74 · U** — Autoplay **Level 4**.
 - [x] **U-75 · U** — Autoplay **Level 5**. If a level is not winnable by the bot, tune that level's numbers (log in `decisions.md`), never the bot to cheat.
-- [ ] **U-76 · U** — Full-flow PlayMode test: Menu → Level 1…5 with unlocks, bumps throughout.
-- [ ] **U-77 · U** — Build `Builds/GodTower.apk` via CLI (not committed). Record APK size in `Docs/Status/unity.md`; target < 100 MB.
-- [ ] **U-78 · U** — Write (do not run) `Tools/Video/record_playthrough.py` for the morning: waits for device, `adb forward tcp:56789 tcp:56789`,
+- [x] **U-76 · U** — Full-flow PlayMode test: Menu → Level 1…5 with unlocks, bumps throughout.
+- [x] **U-77 · U** — Build `Builds/GodTower.apk` via CLI (not committed). Record APK size in `Docs/Status/unity.md`; target < 100 MB.
+- [x] **U-78 · U** — Write (do not run) `Tools/Video/record_playthrough.py` for the morning: waits for device, `adb forward tcp:56789 tcp:56789`,
   starts `scrcpy --record`, drives the APK with `adb shell input` (menu taps, hold = long swipe on one point, lane swipes),
   sends `/bump` at random intervals, levels 1–5 in order. Coordinates relative to screen size (from `adb shell wm size`).
-- [ ] **U-79 · U** — Final README: overview + "test task, webhook is the main feature"; how to play; webhook trigger in editor (`curl -X POST http://localhost:56789/bump`)
+- [x] **U-79 · U** — Final README: overview + "test task, webhook is the main feature"; how to play; webhook trigger in editor (`curl -X POST http://localhost:56789/bump`)
   and on device (`adb forward`, why not `adb reverse`), response codes; architecture overview; how to run tests and build via CLI;
   third-party asset table (licenses, links, AI-generated items with tools used); Asset Store import steps; Assumptions (from `decisions.md`);
   known issues; Unity version.
-- [ ] **U-80 · U** — Final commit + push, tag `v1.0-overnight`.
+- [x] **U-80 · U** — Final commit + push, tag `v1.0-overnight`.
 
 ---
 
