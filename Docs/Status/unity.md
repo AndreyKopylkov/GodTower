@@ -88,6 +88,15 @@ Updated by the lane agent. Format: `[ ]` todo · `[~]` in progress · `[x]` done
   Tuning (decisions.md U-71..U-75): per-level bump knockdown share (~9 m per bump on every tower) + longer time limits; nothing else changed. Fix found by autoplay: banner dismiss tween error when leaving mid-slide.
   Tests: EditMode 157/157, PlayMode 25/25 (incl. 5 autoplay, ~2.5 min).
 
+### M7 — Delivery (run 5)
+- [x] U-76 `FullFlowPlayModeTests`: fresh progress → Menu (only L1 unlocked, `/bump` 409) → Play → Levels 1…5 with `ClimbBot` + commentators (4×), Next after each win (`CompletedCount` = N), 409 on every result screen, "CHAMPION!" (no Next, Retry) → Menu, all 5 unlocked, progress saved, no errors. Wins at 68/86/95/122/126 s of 80/110/115/155/180 s; **~144 s real time** (not `[Explicit]`).
+- [x] U-77 `Builds/GodTower.apk` — **43.6 MB** (45,690,941 bytes), versionName 1.0.0 / versionCode 1. Verified with `aapt dump badging`: package `com.andreykopylkov.godtower`, `android.permission.INTERNET`, minSdk 26 / targetSdk 36, native code `arm64-v8a` only, `screenOrientation` portrait, launchable `UnityPlayerGameActivity`; `apksigner verify`: signed with the Android Debug certificate. No build errors (only URP Terrain shader "unsupported" warnings from the package). First Android build ≈ 15 min (reimport + IL2CPP), incremental ≈ 5 min. Project left on the Android target; tests rerun on it.
+- [x] U-78 `Tools/Video/record_playthrough.py` (+ `level_timelines.json` from `BuildTools.ExportLevelTimelines`; `[LevelRunner]` start/end log lines for logcat sync). Dry run OK (`uv run Tools/Video/record_playthrough.py --dry-run`). Not run against a device.
+- [x] U-79 README final (overview, screenshots in `Docs/Media/`, how to play, webhook contract/trigger/adb forward, architecture, CLI, assets/licences, AI-generated assets + regenerate commands, Asset Store import, assumptions, known issues).
+- [x] U-80 commits pushed, annotated tag `v1.0`.
+  Also: Dustyroom pack removed (unused), `.utmp/` (Android build temp) gitignored, `BuildAndroid` logs the real APK size.
+  Tests: EditMode 157/157, PlayMode 26/26 (~6.5 min), `ValidateProject` passed.
+
 ## How to run (Unity Editor must be closed)
 
 ```bash
@@ -105,7 +114,11 @@ P="D:/Unity/Projects/GodTower"
 "$UNITY" -batchmode -projectPath "$P" -runTests -testPlatform PlayMode -assemblyNames GodTower.Tests.PlayMode -testFilter GodTower.Tests.PlayMode.ScreenshotTourTests -testResults TestResults/tour.xml -logFile Logs/tour.log
 # Asset hygiene (missing scripts/references, Asset Store demo content); exit code 1 on problems
 "$UNITY" -batchmode -quit -projectPath "$P" -executeMethod GodTower.Editor.BuildTools.ValidateProject -logFile Logs/validate.log
-# APK (switches platform to Android, long reimport the first time)
+# Level timelines for Tools/Video/record_playthrough.py (rerun after changing the level table)
+"$UNITY" -batchmode -quit -projectPath "$P" -executeMethod GodTower.Editor.BuildTools.ExportLevelTimelines -logFile Logs/export.log
+# Full flow Menu -> L1..L5 -> Menu (~2.5 min, part of the full PlayMode run)
+"$UNITY" -batchmode -projectPath "$P" -runTests -testPlatform PlayMode -assemblyNames GodTower.Tests.PlayMode -testFilter GodTower.Tests.PlayMode.FullFlowPlayModeTests -testResults TestResults/fullflow.xml -logFile Logs/fullflow.log
+# APK (the project is on the Android target now; ~5 min incremental)
 "$UNITY" -batchmode -quit -projectPath "$P" -buildTarget Android -executeMethod GodTower.Editor.BuildTools.BuildAndroid -logFile Logs/build.log
 ```
 
@@ -127,24 +140,20 @@ scene fileIDs, a ~5k-line diff) — otherwise `git checkout -- Assets/_Project/S
   - `UI/`: `EventBannerPanel` (+`BannerSide`), `EventBannerView`, `HudView`, `HeightBarView`, `TimerView`, `HudPresenter`, `PopupView`, `PausePanelView`, `ResultPanelView`, `GameFlowPresenter`, `MenuView`, `LevelButtonView`, `MenuPresenter`, `MenuBackdrop`, `SafeAreaFitter`, `ButtonPressScale`, `UiPointerFilter`
   - `Scopes/`: `RootLifetimeScope` (audio library field), `MenuLifetimeScope`, `GameLifetimeScope` (both with `_sky`)
 - Shader: `Assets/_Project/Shaders/SkyGradient.shader` (`GodTower/Sky Gradient`, screen-space gradient skybox).
-- Editor (`Scripts/Editor`): `BuildTools` (CLI: `SetupProject`, `ValidateProject`, `BuildAndroid`), `PlayerSettingsSetup` (+app icon), `VContainerRootSetup`, `InputSetup`, `TowerImportSetup`, `HeroImportSetup`, `HeroIconRenderer`, `PropImportSetup`, `UiImportSetup`, `FontSetup`, `AudioSetup`, `SkySetup` (cloud import, sky/cloud materials, sky preset table), `TextureImportPolicy`, `RenderingSetup` (URP assets, post-processing profile, camera options), `ProjectValidator`, `MaterialFactory`, `GameAssetsBuilder` (level table, event configs, tower set, bump config), `SceneBuilder` (+`GameSceneAssets`, `HeroScale`), `GameHudBuilder`, `MenuUiBuilder`, `UiFactory`, `ProjectPaths`, `AssetFolders`
+- Editor (`Scripts/Editor`): `BuildTools` (CLI: `SetupProject`, `ValidateProject`, `ExportLevelTimelines`, `BuildAndroid`), `LevelTimelineExporter`, `PlayerSettingsSetup` (+app icon), `VContainerRootSetup`, `InputSetup`, `TowerImportSetup`, `HeroImportSetup`, `HeroIconRenderer`, `PropImportSetup`, `UiImportSetup`, `FontSetup`, `AudioSetup`, `SkySetup` (cloud import, sky/cloud materials, sky preset table), `TextureImportPolicy`, `RenderingSetup` (URP assets, post-processing profile, camera options), `ProjectValidator`, `MaterialFactory`, `GameAssetsBuilder` (level table, event configs, tower set, bump config), `SceneBuilder` (+`GameSceneAssets`, `HeroScale`), `GameHudBuilder`, `MenuUiBuilder`, `UiFactory`, `ProjectPaths`, `AssetFolders`
 - Generated assets: `Configs/{GameplayConfig,TowerSet,BumpEffectConfig,AudioLibrary}.asset`, `Configs/Levels/*`, `Configs/Events/*`, `Configs/Sky/Sky_0N_*.asset`, `Materials/*` (+`Environment/M_Sky`, `M_Cloud`), `Settings/PostProcessProfile.asset`, `Animation/{Hero,Phoenix}.controller`, `Prefabs/{Hero,Props/Phoenix,RootLifetimeScope}.prefab`, `UI/Generated/hero_marker.png`, `Scenes/{Menu,Game}.unity`; font `Assets/Art/Fonts/LilitaOne/{LilitaOne-Regular.ttf, OFL.txt, LilitaOne SDF.asset}`
+- Tools: `Tools/Video/record_playthrough.py` + `level_timelines.json`; README screenshots `Docs/Media/*.png`.
 - Third-party in repo: `Assets/TextMesh Pro` (TMP essential resources), Lilita One (OFL).
-- Tests: EditMode `{SwipeDetector,LaneModel,KnockdownModel,ClimberMotor,TowerLayout,EventTimeline,BumpQueue,GloveArc,ProgressService,AudioLibrary,ProjectValidation}Tests` + M1 tests (157); PlayMode `LevelAutoplayPlayModeTests` (5 levels), `LevelPlayModeTests`, `LevelEventsPlayModeTests`, `BumpEffectPlayModeTests`, `GameFlowPlayModeTests` (all `InputTestFixture`), `BumpWebhookPlayModeTests`, `SceneScopeSmokeTests` (25) + explicit `ScreenshotTourTests` (`BumpWave`, `SkyPresetsAndPhoenix`); helpers `ClimbBot`, `ScreenshotCapture`, `TestScenes`.
+- Tests: EditMode `{SwipeDetector,LaneModel,KnockdownModel,ClimberMotor,TowerLayout,EventTimeline,BumpQueue,GloveArc,ProgressService,AudioLibrary,ProjectValidation}Tests` + M1 tests (157); PlayMode `LevelAutoplayPlayModeTests` (5 levels), `LevelPlayModeTests`, `LevelEventsPlayModeTests`, `BumpEffectPlayModeTests`, `GameFlowPlayModeTests` (all `InputTestFixture`), `BumpWebhookPlayModeTests`, `SceneScopeSmokeTests`, `FullFlowPlayModeTests` (26) + explicit `ScreenshotTourTests` (`BumpWave`, `SkyPresetsAndPhoenix`); helpers `ClimbBot`, `ScreenshotCapture`, `TestScenes`.
 
-## Notes for the next U run (run 5: full flow, APK, record script, README, tag)
+## Notes for the morning (human)
 
-- **U-76 full-flow test.** Combine `GameFlowPlayModeTests` (menu clicks via EventSystem raycast + `ExecuteEvents`, mouse added *after* the first scene load, PlayerPrefs progress saved/restored in TearDown) with the loop of `LevelAutoplayPlayModeTests` (bot + commentators on the level clock, 4× time scale, `UniTask.Delay(..., ignoreTimeScale: true)` around panels). Menu → Level 1 → Win → Next … → Level 5 → Win ("CHAMPION!" panel). Budget ~3 min real time at 4×; give it `[Timeout(600000)]`. Check `LevelButtonView.IsUnlocked` after each win; reset `SelectedLevel.Select(0)` and progress in TearDown.
-- **Level numbers** (source of truth `GameAssetsBuilder.Levels`, tuned in run 4): time 80/110/115/155/180 s, bump knockdown 3/2.25/1.8/1.5/1.2% (~9 m per bump). Bot win times 64/97/81–91/136/138–155 s. Any gameplay change → rerun `LevelAutoplayPlayModeTests` and keep a ≥10% margin.
-- **U-77 APK.** Not built yet. `RenderingSetup` already prepares `Mobile_RPAsset` (HDR, SRP Batcher, bloom without HQ filtering, shadow distance 110, render scale 0.8) and our textures have Android ASTC overrides; scenes keep fog on (URP fog variants are not stripped). The first Android build switches the platform and reimports everything (long). Record the APK size here. Watch the build log for shader errors from `GodTower/Sky Gradient` on GLES3/Vulkan (plain HLSL + URP `Core.hlsl`).
-- **U-78 record script** (`Tools/Video/record_playthrough.py`, write only): coordinates relative to `adb shell wm size`; button anchors in `MenuUiBuilder` / `GameHudBuilder`; hold = `adb shell input swipe x y x y <ms>`; a lane swipe needs ≥ 8% of the width within 0.35 s; `adb forward tcp:56789 tcp:56789`; bumps every 4–10 s.
-- **U-79 README.** Include the framing/hero-scale decision, sky presets, M7 tuning (bump knockdown per level + time limits, with the reason), autoplay at 4× time scale, the validator; third-party: Lilita One (OFL), CFXR Remaster + Hovl Magic effects (Asset Store, gitignored — import steps), TMP essentials; procedural/AI assets per lane (`decisions.md` O-01, I-*, A-*, B-*, S-*).
-- **Visual review loop.** Run `SetupProject`, the screenshot tour and the autoplay, then LOOK at `TestResults/Screenshots` (a Pillow contact sheet via `uv run --with pillow` saves tokens). The batch-mode screen is 640×480 landscape; captures render the camera at 540×960 with canvases switched to Screen Space - Camera (so in captures the HUD moves with camera shakes — on devices the overlay HUD does not). `CloudField` clamps the aspect of its wrap band to 0.5–0.8 so the density is right in both.
-- **UI clicks in tests.** Dispatch with `ExecuteEvents` after an EventSystem raycast (`GameFlowPlayModeTests.ClickAsync`); the Input System UI module's shared default actions break across `InputTestFixture` resets.
+- Install: `adb install -r Builds/GodTower.apk`, then `adb forward tcp:56789 tcp:56789` and `curl -X POST http://localhost:56789/bump` while a level runs.
+- Video: install scrcpy 2.x (`winget install Genymobile.scrcpy`), then `uv run Tools/Video/record_playthrough.py` (add `--reset-progress` for a fresh level select, `--safe-top <px>` if taps land too high on a notched phone, `--no-record` for a rehearsal). It needs the `[LevelRunner]` lines in logcat (present in this APK). Watch the first level: if lane changes are lost the climber gets hit — the script retries a lost level automatically.
+- Not verified on a device yet: frame rate, touch feel (swipe threshold), safe area, audio levels.
 
 ## Known issues
 
-- APK build not executed yet (U-77).
 - `Hero_Animations.fbx` import logs "has animation import warnings" (importer info; avatar and clips are valid and play correctly in captures).
 - Side lanes (±35°) put the climber near the column's silhouette edge as seen from the camera (Plan-locked angles); still readable at the new framing.
 - The jetpack trail (CFXR Fire turned downwards) leaves a dark smoke puff below the climber.
