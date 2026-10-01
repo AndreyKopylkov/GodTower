@@ -29,15 +29,15 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 
 ## 1. Phase O — kickoff
 
-- [ ] **O-01 · O** — Environment check.
+- [x] **O-01 · O** — Environment check.
   **Done when:** no `Unity.exe` process has this project open; `C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Unity.exe` exists;
   `.../PlaybackEngines/AndroidPlayer/{SDK,NDK,OpenJDK}` exist; `uv --version` works; `git status` clean on `main`;
   `Assets/JMO Assets` and `Assets/Hovl Studio` present locally; `Reference/{brief.md,ref.png,ref.mp4}` present.
   Any failure → mark `[!]`, log in `decisions.md`, continue with what is possible.
-- [ ] **O-02 · O** — Create `Docs/Status/{unity,astra,blender,sound,image}.md` (header + empty checklist).
-- [ ] **O-03 · O** — Spawn lanes `U`, `A`, `B`, `S`, `I` in parallel. Each prompt: its section of this file + `Plan.md` + (A) `CharacterPipeline.md`
+- [x] **O-02 · O** — Create `Docs/Status/{unity,astra,blender,sound,image}.md` (header + empty checklist).
+- [x] **O-03 · O** — Spawn lanes `U`, `A`, `B`, `S`, `I` in parallel. Each prompt: its section of this file + `Plan.md` + (A) `CharacterPipeline.md`
   + reference paths + the ownership/coordination rules from §0.
-- [ ] **O-04 · O** — Run the checkpoint loop (§9) until all non-`H` tasks are `[x]` or `[-]`.
+- [~] **O-04 · O** — Run the checkpoint loop (§9) until all non-`H` tasks are `[x]` or `[-]`.
 - [ ] **O-05 · O** — Final report in `Docs/Status/summary.md`: what is done, what is cut, known issues, morning to-do (lane `H`).
 
 ---
