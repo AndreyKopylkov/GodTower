@@ -266,12 +266,12 @@ Integrations (U-62…U-66) are inserted into lane U as soon as the matching asse
 
 ## 11. Lane H — human, morning (do NOT execute tonight)
 
-- [ ] **H-01 · H** — Review `Docs/Status/summary.md`, `decisions.md`, `TestResults/Screenshots/`.
-- [ ] **H-02 · H** — Open the editor, play all 5 levels, `curl` bumps.
-- [ ] **H-03 · H** — Install APK on the phone; `adb forward tcp:56789 tcp:56789`; `curl -X POST http://localhost:56789/bump`.
+- [x] **H-01 · H** — Review `Docs/Status/summary.md`, `decisions.md`, `TestResults/Screenshots/`.
+- [x] **H-02 · H** — Open the editor, play all 5 levels, `curl` bumps.
+- [x] **H-03 · H** — Install APK on the phone; `adb forward tcp:56789 tcp:56789`; `curl -X POST http://localhost:56789/bump`.
 - [ ] **H-04 · H** — Device check: frame rate, touch feel, UI safe area, audio.
 - [ ] **H-05 · H** — Fix loop with agents (rebuild APK, retest).
-- [ ] **H-06 · H** — Final video, **once**, after all tests pass: `Tools/Video/record_playthrough.py` (adb input + curl "commentators" + scrcpy):
+- [x] **H-06 · H** — Final video, **once**, after all tests pass: `Tools/Video/record_playthrough.py` (adb input + curl "commentators" + scrcpy):
   main menu → levels 1–5 completed, bumps visible.
 - [ ] **H-07 · H** — Upload APK + video to cloud storage; one share link together with the GitHub repo link.
 - [ ] **H-08 · H** — Submit before the 24 h deadline.

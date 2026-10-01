@@ -40,3 +40,13 @@ All non-human tasks in [`Tracklist.md`](../Tracklist.md) are done; release tag `
 3. `winget install Genymobile.scrcpy`, rehearse `uv run Tools/Video/record_playthrough.py --no-record --reset-progress`,
    then record once (`--safe-top <px>` for notched phones).
 4. Upload APK + video, submit with the repo link before the deadline.
+
+## Device run (2026-10-01 evening)
+
+- APK installed on a Pixel 7 Pro (Android 17); `/bump` over `adb forward` → 409 in menu, 200 in play.
+- Tuning for the video: 6.6 m/s climb, longer limits, more hero events, rarer villains, smaller bump knockdown
+  (`decisions.md` H-04). EditMode/PlayMode suites were **not re-run** after this tuning (user's call, to save time).
+- Recording script fixes: held finger via a persistent `adb shell` (binary stdin), periodic re-grab, port re-forward.
+- Video recorded (levels 1–5 won; level 5 dodges 70% of threats, max 3 deliberate hits) and published with the APK
+  in GitHub release `v1.1`.
+- Meta Quest Link (`OVRService`) restarts the adb server and breaks long adb sessions; it was stopped for the recording.
