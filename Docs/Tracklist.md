@@ -99,22 +99,22 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 
 ### M4 — Bump effect (≈1 h)
 
-- [ ] **U-40 · U · U-14, U-23** — `BumpEffectConfig` SO (glove count 6–8, arc duration, flash, impulse, knockdown values).
-- [ ] **U-41 · U** — Glove wave: pooled 3D gloves (placeholder until B-04), spawn from random screen edges, arc to the character (PrimeTween), punch-in rotation.
-- [ ] **U-42 · U** — Contact: CFX hit bursts, full-screen white flash overlay, Cinemachine impulse, punch SFX (placeholder until S).
-- [ ] **U-43 · U** — Gameplay: `Hit` animation, input locked 0.5 s, knockdown via `KnockdownModel`.
-- [ ] **U-44 · U** — Layering: max 3 concurrent waves, extra requests queued; PlayMode stress test: 20 requests in 2 s → no errors, play continues, level still completable.
+- [x] **U-40 · U · U-14, U-23** — `BumpEffectConfig` SO (glove count 6–8, arc duration, flash, impulse, knockdown values).
+- [x] **U-41 · U** — Glove wave: pooled 3D gloves (placeholder until B-04), spawn from random screen edges, arc to the character (PrimeTween), punch-in rotation.
+- [x] **U-42 · U** — Contact: CFX hit bursts, full-screen white flash overlay, Cinemachine impulse, punch SFX (placeholder until S).
+- [x] **U-43 · U** — Gameplay: `Hit` animation, input locked 0.5 s, knockdown via `KnockdownModel`.
+- [x] **U-44 · U** — Layering: max 3 concurrent waves, extra requests queued; PlayMode stress test: 20 requests in 2 s → no errors, play continues, level still completable.
   **Commit** `feat: bump boxing glove event`.
 
 ### M5 — UI and flow (≈1.5 h)
 
-- [ ] **U-50 · U** — Font: bold casual font from Google Fonts (OFL/Apache) + license file in repo; TMP font asset.
-- [ ] **U-51 · U** — `ProgressService` (`PlayerPrefs`, sequential unlock). Tests.
-- [ ] **U-52 · U** — Menu scene: main menu (title, Play, Levels), level select (5 buttons, locked state, level number + best result optional).
-- [ ] **U-53 · U** — HUD: left vertical height bar with max value on top, current height number and character marker (like `ref.png`/video), timer, pause button, SafeArea.
-- [ ] **U-54 · U** — Pause panel (Resume / Restart / Menu); pause → `/bump` returns 409.
-- [ ] **U-55 · U** — Win panel (trophy, Next / Menu) and Lose panel (Retry / Menu).
-- [ ] **U-56 · U** — Scene transitions with fade (UniTask), no double-loads.
+- [x] **U-50 · U** — Font: bold casual font from Google Fonts (OFL/Apache) + license file in repo; TMP font asset.
+- [x] **U-51 · U** — `ProgressService` (`PlayerPrefs`, sequential unlock). Tests.
+- [x] **U-52 · U** — Menu scene: main menu (title, Play, Levels), level select (5 buttons, locked state, level number + best result optional).
+- [x] **U-53 · U** — HUD: left vertical height bar with max value on top, current height number and character marker (like `ref.png`/video), timer, pause button, SafeArea.
+- [x] **U-54 · U** — Pause panel (Resume / Restart / Menu); pause → `/bump` returns 409.
+- [x] **U-55 · U** — Win panel (trophy, Next / Menu) and Lose panel (Retry / Menu).
+- [x] **U-56 · U** — Scene transitions with fade (UniTask), no double-loads.
   **Done when:** Menu → Level 1 → Win → Next → Level 2 → Pause → Menu works in PlayMode. **Commit** `feat: menus and HUD`.
 
 ### M6 — Content, asset integration, polish (≈1 h + integrations as assets arrive)
@@ -124,8 +124,8 @@ Task format: `ID · owner · depends on` — deliverable. **Done when:** accepta
 - [x] **U-62 · U · A-07** — Integrate hero: Humanoid import, avatar, `Hero.controller` with 9 clips mapped to states, replace capsule.
 - [x] **U-63 · U · B-03** — Integrate tower segments + top platform into `TowerSet`, materials, static batching.
 - [x] **U-64 · U · B-04..B-09** — Integrate props: glove, missile, truck, axe, jetpack, phoenix.
-- [ ] **U-65 · U · S-12** — `AudioService` + mixer (Music/SFX), clip mapping for all events and UI; music loop in levels.
-- [ ] **U-66 · U · I-02..I-05** — Integrate UI sprites (panels, buttons, banners, icons, logo), app icon.
+- [x] **U-65 · U · S-12** — `AudioService` + mixer (Music/SFX), clip mapping for all events and UI; music loop in levels.
+- [x] **U-66 · U · I-02..I-05** — Integrate UI sprites (panels, buttons, banners, icons, logo), app icon.
 - [ ] **U-67 · U** — Visual polish: URP bloom (needed by Hovl FX), HDR on, lighting/colors matched to `ref.mp4` (saturated blue sky, pale grey-green stone),
   cloud layer, texture import settings (≤1024, ASTC, mipmaps), SRP Batcher on.
 - [ ] **U-68 · U** — Asset hygiene: nothing from Asset Store demo scenes referenced; no missing references (editor validation script over all scenes/prefabs).
