@@ -33,7 +33,10 @@ namespace GodTower.Editor
         public static Sprite Sprite(string relativePath) =>
             AssetDatabase.LoadAssetAtPath<Sprite>($"{Folder}/{relativePath}");
 
-        public static TMP_FontAsset Font => AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(DefaultFont);
+        /// <summary>The UI font (Lilita One), or TMP's LiberationSans when the font asset has not been generated.</summary>
+        public static TMP_FontAsset Font => FontSetup.Font != null ? FontSetup.Font : DefaultFontAsset;
+
+        private static TMP_FontAsset DefaultFontAsset => AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(DefaultFont);
 
         public static void Apply()
         {
@@ -69,7 +72,7 @@ namespace GodTower.Editor
         /// </summary>
         private static void EnsureTmpEssentials()
         {
-            if (Font == null)
+            if (DefaultFontAsset == null)
                 throw new System.InvalidOperationException($"TextMesh Pro essentials missing ({DefaultFont}).");
         }
     }

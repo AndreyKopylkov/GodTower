@@ -23,6 +23,10 @@ namespace GodTower.Scopes
 
             builder.Register<PlayStateService>(Lifetime.Singleton).AsSelf().As<IPlayState>();
             builder.Register<SelectedLevel>(Lifetime.Singleton);
+            builder.Register<PlayerPrefsProgressStore>(Lifetime.Singleton).As<IProgressStore>();
+            builder.Register<ProgressService>(Lifetime.Singleton);
+            builder.Register(_ => new ScreenFader(), Lifetime.Singleton);
+            builder.Register<SceneFlow>(Lifetime.Singleton).As<ISceneFlow>();
             builder.RegisterEntryPoint(_ => new AudioService(_audio), Lifetime.Singleton).AsSelf();
 
             // Webhook: the dispatcher ticks every frame, the server lives for the whole session.

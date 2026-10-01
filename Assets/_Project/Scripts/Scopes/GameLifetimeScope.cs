@@ -27,6 +27,10 @@ namespace GodTower.Scopes
         [SerializeField] private BumpEffectConfig _bumpEffect;
         [SerializeField] private BumpStage _bumpStage;
         [SerializeField] private ScreenFlash _screenFlash;
+        [SerializeField] private HudView _hud;
+        [SerializeField] private PausePanelView _pausePanel;
+        [SerializeField] private ResultPanelView _resultPanel;
+        [SerializeField] private WinStage _winStage;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -37,6 +41,7 @@ namespace GodTower.Scopes
 
             builder.RegisterComponent(_climber);
             builder.RegisterComponent(_cameraRig);
+            builder.Register<UiPointerFilter>(Lifetime.Scoped);
             builder.Register<PointerClimbInput>(Lifetime.Scoped).As<IClimbInput>();
 
             builder.RegisterEntryPoint<LevelRunner>().AsSelf();
@@ -53,6 +58,14 @@ namespace GodTower.Scopes
             builder.RegisterComponent(_bumpStage);
             builder.RegisterComponent(_screenFlash);
             builder.RegisterEntryPoint<BumpDirector>().AsSelf();
+
+            // HUD, pause and result panels, win celebration.
+            builder.RegisterComponent(_hud);
+            builder.RegisterComponent(_pausePanel);
+            builder.RegisterComponent(_resultPanel);
+            builder.RegisterComponent(_winStage);
+            builder.RegisterEntryPoint<HudPresenter>();
+            builder.RegisterEntryPoint<GameFlowPresenter>();
         }
     }
 }

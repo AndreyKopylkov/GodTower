@@ -55,6 +55,16 @@ Updated by the lane agent. Format: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] U-44 `BumpQueue` (pure, tested): max 3 concurrent waves, 24 queued, watchdog; new waves only while `LevelRunner.IsRunning`.
   Tests: EditMode 129/129 (`BumpQueueTests`, `GloveArcTests`, motor stacking/reaction tests), PlayMode 18/18 (`BumpEffectPlayModeTests`: single bump → Hit, 3% knockdown, ≈0.55 s lock; storm 20 requests in 2 s → all 200, max 3 waves, queue drains, Level 1 still won).
 
+### M5 — UI and flow
+- [x] U-50 Font: Lilita One (OFL) + `FontSetup` TMP asset (outline + shadow material); `UiImportSetup.Font` falls back to LiberationSans if missing.
+- [x] U-51 `ProgressService` (+`IProgressStore`, `PlayerPrefsProgressStore`), root scope. EditMode tests.
+- [x] U-52 Menu scene: `MenuUiBuilder` (logo, Play, Levels, level-select popup with 5 tiles: lock / star), `MenuView`, `MenuPresenter` (menu music, Play = first unfinished level), `MenuBackdrop` (runtime column) + hero in close-up.
+- [x] U-53 HUD (`GameHudBuilder`): `HeightBarView` (anchor-relative fill + hero-portrait marker), `TimerView`, `HudView` (level title, pause button), SafeArea (`SafeAreaFitter`), `HudPresenter`. EventSystem (Input System UI module) in both scenes; `PointerClimbInput` ignores presses that start over UI (`UiPointerFilter`).
+- [x] U-54 `PausePanelView` (Resume / Restart / Menu); pause → `PlayState.Paused` → `/bump` 409, gameplay sounds paused.
+- [x] U-55 `ResultPanelView` (win: trophy, Next / Menu; lose: Retry / Menu), `WinStage` (3D trophy + firework on the deck), `GameFlowPresenter` (pause, result, progress, music).
+- [x] U-56 `SceneFlow` (`ISceneFlow`, root) + `ScreenFader`: fade out → load → fade in, `IsLoading` guard.
+  Tests: EditMode 134/134 (`ProgressServiceTests`), PlayMode 19/19 (`GameFlowPlayModeTests`: Menu → Level 1 → Win → Next → Level 2 → Pause → Menu; double click = one load; pause press does not climb; 409 while paused and in the menu).
+
 ## How to run (Unity Editor must be closed)
 
 ```bash

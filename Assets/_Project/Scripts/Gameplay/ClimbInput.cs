@@ -1,4 +1,5 @@
 using System;
+using GodTower.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,16 +32,20 @@ namespace GodTower.Gameplay
     /// <summary>
     /// Hold + swipe input from any pointer: touch on device, mouse in the editor.
     /// Uses code-defined Input System actions bound to <c>&lt;Pointer&gt;</c> (primary touch for touchscreens).
+    /// A press that starts over UI (pause button, panels) is ignored until it is released.
     /// </summary>
     public sealed class PointerClimbInput : IClimbInput, IDisposable
     {
         private readonly InputAction _press = new("Press", InputActionType.Button, "<Pointer>/press");
         private readonly InputAction _position = new("Position", InputActionType.PassThrough, "<Pointer>/position", expectedControlType: "Vector2");
         private readonly SwipeDetector _swipes = new();
+        private readonly UiPointerFilter _uiFilter;
         private bool _wasPressed;
+        private bool _pressStartedOverUi;
 
-        public PointerClimbInput()
+        public PointerClimbInput(UiPointerFilter uiFilter)
         {
+            _uiFilter = uiFilter;
             _press.Enable();
             _position.Enable();
         }
@@ -48,7 +53,17 @@ namespace GodTower.Gameplay
         public ClimbInputFrame Read(float time)
         {
             bool pressed = _press.IsPressed();
-            float x = _position.ReadValue<Vector2>().x;
+            Vector2 position = _position.ReadValue<Vector2>();
+            if (pressed && !_wasPressed)
+                _pressStartedOverUi = _uiFilter != null && _uiFilter.IsOverUi(position);
+            if (_pressStartedOverUi)
+            {
+                _wasPressed = pressed;
+                _pressStartedOverUi = pressed;
+                return ClimbInputFrame.None;
+            }
+
+            float x = position.x;
             int swipe = 0;
 
             if (pressed && !_wasPressed)

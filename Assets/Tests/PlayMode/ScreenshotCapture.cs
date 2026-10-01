@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace GodTower.Tests.PlayMode
     /// <summary>
     /// Saves what the main camera sees, UI included, to <c>TestResults/Screenshots/</c> for visual review.
     /// Works under <c>-batchmode</c> (where <c>WaitForEndOfFrame</c> never fires and <c>ScreenCapture</c> misses overlay UI):
-    /// overlay canvases are switched to Screen Space - Camera and the camera renders into a render texture.
+    /// overlay canvases are switched to Screen Space - Camera for the capture (and back), the camera renders into a render texture.
     /// Needs a graphics device (do not run with <c>-nographics</c>); without one it does nothing.
     /// </summary>
     public static class ScreenshotCapture
@@ -21,6 +22,7 @@ namespace GodTower.Tests.PlayMode
             if (camera == null || SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
                 return;
 
+            var switched = new List<Canvas>();
             foreach (Canvas canvas in Object.FindObjectsByType<Canvas>(FindObjectsInactive.Exclude))
             {
                 if (!canvas.isRootCanvas || canvas.renderMode != RenderMode.ScreenSpaceOverlay)
@@ -29,6 +31,7 @@ namespace GodTower.Tests.PlayMode
                 canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 canvas.worldCamera = camera;
                 canvas.planeDistance = camera.nearClipPlane + 0.5f;
+                switched.Add(canvas);
             }
 
             var target = RenderTexture.GetTemporary(Width, Height, 24);
@@ -51,6 +54,9 @@ namespace GodTower.Tests.PlayMode
             }
             finally
             {
+                foreach (Canvas canvas in switched)
+                    canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                Canvas.ForceUpdateCanvases();
                 camera.targetTexture = previousTarget;
                 RenderTexture.active = previousActive;
                 RenderTexture.ReleaseTemporary(target);

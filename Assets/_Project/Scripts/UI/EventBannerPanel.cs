@@ -50,8 +50,9 @@ namespace GodTower.UI
             banner.Bind(icon, text);
             banner.gameObject.SetActive(true);
 
-            // Off-screen x: banners are anchored to their screen edge, so one width outwards hides them.
-            float hiddenX = (hero ? -1f : 1f) * (banner.Rect.rect.width + 40f);
+            // Off-screen x: banners are anchored to their column's outer edge; one width plus the column inset hides them.
+            RectTransform column = hero ? _heroColumn : _villainColumn;
+            float hiddenX = (hero ? -1f : 1f) * (banner.Rect.rect.width + Mathf.Abs(column.anchoredPosition.x) + 40f);
             banner.Rect.anchoredPosition = new Vector2(hiddenX, 0f);
 
             stack.Insert(0, banner);

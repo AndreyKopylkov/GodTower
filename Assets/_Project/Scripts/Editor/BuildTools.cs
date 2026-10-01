@@ -25,8 +25,10 @@ namespace GodTower.Editor
             InputSetup.Apply();
             TowerImportSetup.Apply();
             HeroImportSetup.Apply();
+            HeroIconRenderer.Render();
             PropImportSetup.Apply();
             UiImportSetup.Apply();
+            FontSetup.Apply();
             AudioSetup.Apply();
 
             GameAssetsBuilder.BuildLevels();

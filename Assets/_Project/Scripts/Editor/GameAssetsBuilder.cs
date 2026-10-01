@@ -16,6 +16,9 @@ namespace GodTower.Editor
     /// </summary>
     public static class GameAssetsBuilder
     {
+        /// <summary>Cartoon FX Remaster prefabs (gitignored Asset Store pack; references stay empty without it).</summary>
+        public const string CfxrPrefabs = "Assets/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/";
+
         private static readonly VillainKind[] AllVillains = { VillainKind.Missile, VillainKind.Truck, VillainKind.Axes };
 
         /// <summary>Docs/Plan.md §1 level table; hero event times chosen to land mid-level.</summary>
@@ -73,7 +76,7 @@ namespace GodTower.Editor
         /// <summary>Villain/hero presentation configs. Effects come from gitignored asset-store packs and may be missing.</summary>
         public static EventsConfig BuildEventsConfig()
         {
-            const string cfxr = "Assets/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/";
+            const string cfxr = CfxrPrefabs;
             const string hovl = "Assets/Hovl Studio/Magic effects pack/Prefabs/";
 
             VillainEventConfig missile = BuildVillain(VillainKind.Missile, "Missile", "icon_missile",
@@ -103,7 +106,7 @@ namespace GodTower.Editor
         /// <summary>Webhook bump effect: glove model and asset-store bursts (missing packs leave the bursts empty).</summary>
         public static BumpEffectConfig BuildBumpEffectConfig()
         {
-            const string cfxr = "Assets/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/";
+            const string cfxr = CfxrPrefabs;
             BumpEffectConfig config = LoadOrCreate<BumpEffectConfig>(ProjectPaths.BumpEffectConfig);
             var serialized = new SerializedObject(config);
             Find(serialized, "_glovePrefab").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(PropImportSetup.BoxingGlove);

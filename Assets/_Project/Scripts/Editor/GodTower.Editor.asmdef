@@ -5,6 +5,7 @@
         "GodTower.Runtime",
         "VContainer",
         "Unity.Cinemachine",
+        "Unity.InputSystem",
         "Unity.TextMeshPro",
         "UnityEngine.UI"
     ],

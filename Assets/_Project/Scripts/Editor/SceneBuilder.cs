@@ -25,6 +25,11 @@ namespace GodTower.Editor
         /// <summary>Camera distance and offset that frame a 1.8 m climber at ~12% of the screen height (FOV 34°).</summary>
         private static readonly Vector3 CameraOffset = new(0f, 0f, -24f);
 
+        /// <summary>The hero model faces -Z; the climber root faces the column (+Z), so the visual is turned around.</summary>
+        private static readonly Quaternion HeroVisualRotation = Quaternion.Euler(0f, 180f, 0f);
+
+        private const float MenuHeroHeight = 21f;
+
         public static void BuildAll()
         {
             AssetFolders.Ensure(ProjectPaths.Scenes);
@@ -40,12 +45,35 @@ namespace GodTower.Editor
                 .ToArray();
         }
 
+        /// <summary>Menu: the column (built at runtime by <c>MenuBackdrop</c>) with the hero hanging on it, framed close up behind the UI.</summary>
         private static void BuildMenuScene()
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            CreateScope<MenuLifetimeScope>();
-            CreateMainCamera();
+            var scope = CreateScope<MenuLifetimeScope>();
+            Camera camera = CreateMainCamera();
+            camera.fieldOfView = 40f;
+            camera.transform.position = new Vector3(0f, MenuHeroHeight + 0.6f, -14f);
+            CreateSun();
+            var towerRoot = new GameObject("Tower").transform;
+            CreateMenuHero(GameSceneAssets.ClimberVisual);
+            UiFactory.CreateEventSystem();
+            GodTower.UI.MenuView menu = MenuUiBuilder.Build();
+
+            UiFactory.Bind(scope, ("_levels", GameSceneAssets.Levels), ("_towerSet", GameSceneAssets.TowerSet),
+                ("_towerRoot", towerRoot), ("_menuView", menu));
             EditorSceneManager.SaveScene(scene, ProjectPaths.MenuScene);
+        }
+
+        private static void CreateMenuHero(GameObject visualPrefab)
+        {
+            if (visualPrefab == null)
+                return;
+
+            var root = new GameObject("MenuHero").transform;
+            root.SetPositionAndRotation(ClimberView.PositionOnColumn(0f, MenuHeroHeight, GameSceneAssets.Gameplay.Climber.HangRadius),
+                ClimberView.FacingColumn(0f));
+            var visual = (GameObject)PrefabUtility.InstantiatePrefab(visualPrefab, root);
+            visual.transform.localRotation = HeroVisualRotation;
         }
 
         private static void BuildGameScene()
@@ -60,6 +88,8 @@ namespace GodTower.Editor
             ClimberView climber = CreateClimber(GameSceneAssets.ClimberVisual);
             EventStage eventStage = CreateEventStage();
             BumpStage bumpStage = CreateBumpStage();
+            WinStage winStage = CreateWinStage();
+            UiFactory.CreateEventSystem();
             GameHudBuilder.Result hud = GameHudBuilder.Build();
 
             var serialized = new SerializedObject(scope);
@@ -75,6 +105,10 @@ namespace GodTower.Editor
             GameAssetsBuilder.Find(serialized, "_bumpEffect").objectReferenceValue = GameSceneAssets.BumpEffect;
             GameAssetsBuilder.Find(serialized, "_bumpStage").objectReferenceValue = bumpStage;
             GameAssetsBuilder.Find(serialized, "_screenFlash").objectReferenceValue = hud.Flash;
+            GameAssetsBuilder.Find(serialized, "_hud").objectReferenceValue = hud.Hud;
+            GameAssetsBuilder.Find(serialized, "_pausePanel").objectReferenceValue = hud.PausePanel;
+            GameAssetsBuilder.Find(serialized, "_resultPanel").objectReferenceValue = hud.ResultPanel;
+            GameAssetsBuilder.Find(serialized, "_winStage").objectReferenceValue = winStage;
             serialized.ApplyModifiedPropertiesWithoutUndo();
 
             EditorSceneManager.SaveScene(scene, ProjectPaths.GameScene);
@@ -99,6 +133,14 @@ namespace GodTower.Editor
             GameAssetsBuilder.Find(serialized, "_placeholderMaterial").objectReferenceValue =
                 MaterialFactory.Lit(ProjectPaths.Materials + "/Events/M_EventPlaceholder.mat", new Color(0.85f, 0.2f, 0.15f));
             serialized.ApplyModifiedPropertiesWithoutUndo();
+            return stage;
+        }
+
+        private static WinStage CreateWinStage()
+        {
+            var stage = new GameObject("WinStage").AddComponent<WinStage>();
+            UiFactory.Bind(stage, ("_trophy", AssetDatabase.LoadAssetAtPath<GameObject>(PropImportSetup.Trophy)),
+                ("_burstEffect", AssetDatabase.LoadAssetAtPath<GameObject>(GameAssetsBuilder.CfxrPrefabs + "Explosions/CFXR4 Firework 1 Cyan-Purple (HDR).prefab")));
             return stage;
         }
 
@@ -175,6 +217,7 @@ namespace GodTower.Editor
             if (visualPrefab != null)
             {
                 var visual = (GameObject)PrefabUtility.InstantiatePrefab(visualPrefab, climberObject.transform);
+                visual.transform.localRotation = HeroVisualRotation;
                 animator = visual.GetComponentInChildren<Animator>();
             }
             else
