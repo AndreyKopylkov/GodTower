@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70dd8bada67ce434d828f57a7fca5f22, type: 3}
+  m_Name: TowerSet
+  m_EditorClassIdentifier: GodTower.Runtime::GodTower.Levels.TowerSet
+  _segments:
+  - {fileID: 919132149155446097, guid: e1249994c6798d44f88fa74ae58d5cab, type: 3}
+  - {fileID: 919132149155446097, guid: 52249eef6e2ad1542a89a5695d5e66e3, type: 3}
+  - {fileID: 919132149155446097, guid: 63659a691cd7b974ca04b3b12a3a7e6a, type: 3}
+  - {fileID: 919132149155446097, guid: 682ac240314f39c42b5501bc1a76216b, type: 3}
+  _segmentHeight: 3
+  _top: {fileID: 919132149155446097, guid: 74a1a6b6efaf556409adb8908474ff37, type: 3}
+  _deckHeight: 3.4
+  _deckLandingRadius: 3
+  _columnRadius: 1.5
+  _placeholderMaterial: {fileID: 2100000, guid: 14bf6be54fff01d4da9950ecec6f66af, type: 2}

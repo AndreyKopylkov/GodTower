@@ -1,3 +1,4 @@
+using GodTower.UI;
 using VContainer;
 using VContainer.Unity;
 
@@ -8,6 +9,7 @@ namespace GodTower.Scopes
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterEntryPoint<MenuEntryPoint>();
         }
     }
 }

@@ -1,4 +1,6 @@
 using GodTower.Core;
+using GodTower.Levels;
+using GodTower.Webhook;
 using VContainer;
 using VContainer.Unity;
 
@@ -14,6 +16,15 @@ namespace GodTower.Scopes
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterEntryPoint<AppBootstrap>();
+
+            builder.Register<PlayStateService>(Lifetime.Singleton).AsSelf().As<IPlayState>();
+            builder.Register<SelectedLevel>(Lifetime.Singleton);
+
+            // Webhook: the dispatcher ticks every frame, the server lives for the whole session.
+            builder.RegisterEntryPoint<MainThreadDispatcher>().AsSelf();
+            builder.Register<BumpGate>(Lifetime.Singleton).AsSelf().As<IBumpSignal>();
+            builder.RegisterInstance(new BumpServerOptions());
+            builder.RegisterEntryPoint<BumpHttpServer>().AsSelf();
         }
     }
 }

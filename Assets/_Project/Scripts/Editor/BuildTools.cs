@@ -13,12 +13,23 @@ namespace GodTower.Editor
     /// </summary>
     public static class BuildTools
     {
-        /// <summary>Applies Player/Quality settings, the VContainer root and (re)generates the scenes and build list.</summary>
+        /// <summary>
+        /// Applies Player/Quality/input settings and the VContainer root, configures art imports,
+        /// (re)generates configs, prefabs, scenes and the build list.
+        /// </summary>
         [MenuItem("GodTower/Setup Project")]
         public static void SetupProject() => RunOrExit(() =>
         {
             PlayerSettingsSetup.Apply();
             VContainerRootSetup.Apply();
+            InputSetup.Apply();
+            TowerImportSetup.Apply();
+
+            GameAssetsBuilder.BuildLevels();
+            GameAssetsBuilder.BuildGameplayConfig();
+            GameAssetsBuilder.BuildTowerSet();
+            AssetDatabase.SaveAssets();
+
             SceneBuilder.BuildAll();
             AssetDatabase.SaveAssets();
             Debug.Log("[BuildTools] Project setup complete.");

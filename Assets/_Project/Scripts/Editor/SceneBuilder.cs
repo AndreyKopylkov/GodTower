@@ -1,5 +1,9 @@
 using System.Linq;
+using GodTower.Gameplay;
+using GodTower.Levels;
 using GodTower.Scopes;
+using Unity.Cinemachine;
+using Unity.Cinemachine.TargetTracking;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -14,6 +18,11 @@ namespace GodTower.Editor
     /// </summary>
     public static class SceneBuilder
     {
+        private static readonly Color SkyColor = new(0.24f, 0.55f, 0.93f);
+
+        /// <summary>Camera distance and offset that frame a 1.8 m climber at ~12% of the screen height (FOV 34°).</summary>
+        private static readonly Vector3 CameraOffset = new(0f, 0f, -24f);
+
         public static void BuildAll()
         {
             AssetFolders.Ensure(ProjectPaths.Scenes);
@@ -33,32 +42,80 @@ namespace GodTower.Editor
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             CreateScope<MenuLifetimeScope>();
-            CreateCamera();
+            CreateMainCamera();
             EditorSceneManager.SaveScene(scene, ProjectPaths.MenuScene);
         }
 
         private static void BuildGameScene()
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            CreateScope<GameLifetimeScope>();
-            CreateCamera();
+
+            var scope = CreateScope<GameLifetimeScope>();
+            CreateMainCamera().gameObject.AddComponent<CinemachineBrain>();
+            CameraRig cameraRig = CreateCameraRig();
             CreateSun();
+            var towerRoot = new GameObject("Tower").transform;
+            ClimberView climber = CreateClimber(GameSceneAssets.ClimberVisual);
+
+            var serialized = new SerializedObject(scope);
+            GameAssetsBuilder.Find(serialized, "_levels").objectReferenceValue = GameSceneAssets.Levels;
+            GameAssetsBuilder.Find(serialized, "_gameplay").objectReferenceValue = GameSceneAssets.Gameplay;
+            GameAssetsBuilder.Find(serialized, "_towerSet").objectReferenceValue = GameSceneAssets.TowerSet;
+            GameAssetsBuilder.Find(serialized, "_towerRoot").objectReferenceValue = towerRoot;
+            GameAssetsBuilder.Find(serialized, "_climber").objectReferenceValue = climber;
+            GameAssetsBuilder.Find(serialized, "_cameraRig").objectReferenceValue = cameraRig;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+
             EditorSceneManager.SaveScene(scene, ProjectPaths.GameScene);
         }
 
-        private static void CreateScope<TScope>() where TScope : LifetimeScope
-        {
+        private static TScope CreateScope<TScope>() where TScope : LifetimeScope =>
             new GameObject(typeof(TScope).Name).AddComponent<TScope>();
-        }
 
-        private static void CreateCamera()
+        private static Camera CreateMainCamera()
         {
             var cameraObject = new GameObject("Main Camera") { tag = "MainCamera" };
             var camera = cameraObject.AddComponent<Camera>();
             camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = new Color(0.36f, 0.66f, 0.95f);
+            camera.backgroundColor = SkyColor;
+            camera.nearClipPlane = 0.5f;
+            camera.farClipPlane = 400f;
             cameraObject.AddComponent<AudioListener>();
-            cameraObject.transform.position = new Vector3(0f, 1f, -10f);
+            cameraObject.transform.position = CameraOffset;
+            return camera;
+        }
+
+        private static CameraRig CreateCameraRig()
+        {
+            var rigObject = new GameObject("CameraRig");
+            var target = new GameObject("CameraTarget").transform;
+            target.SetParent(rigObject.transform, false);
+
+            var impulse = rigObject.AddComponent<CinemachineImpulseSource>();
+            impulse.ImpulseDefinition.ImpulseType = CinemachineImpulseDefinition.ImpulseTypes.Uniform;
+            impulse.ImpulseDefinition.ImpulseShape = CinemachineImpulseDefinition.ImpulseShapes.Bump;
+            impulse.ImpulseDefinition.ImpulseDuration = 0.3f;
+            impulse.DefaultVelocity = new Vector3(0.25f, -0.5f, 0f);
+
+            var cameraObject = new GameObject("FollowCamera");
+            cameraObject.transform.SetParent(rigObject.transform, false);
+            cameraObject.transform.position = CameraOffset;
+            var virtualCamera = cameraObject.AddComponent<CinemachineCamera>();
+            virtualCamera.Target.TrackingTarget = target;
+
+            var follow = cameraObject.AddComponent<CinemachineFollow>();
+            follow.FollowOffset = CameraOffset;
+            follow.TrackerSettings.BindingMode = BindingMode.WorldSpace;
+            follow.TrackerSettings.PositionDamping = new Vector3(0f, 0.35f, 0f);
+            cameraObject.AddComponent<CinemachineImpulseListener>();
+
+            var rig = rigObject.AddComponent<CameraRig>();
+            var serialized = new SerializedObject(rig);
+            GameAssetsBuilder.Find(serialized, "_camera").objectReferenceValue = virtualCamera;
+            GameAssetsBuilder.Find(serialized, "_target").objectReferenceValue = target;
+            GameAssetsBuilder.Find(serialized, "_impulse").objectReferenceValue = impulse;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return rig;
         }
 
         private static void CreateSun()
@@ -66,8 +123,60 @@ namespace GodTower.Editor
             var sunObject = new GameObject("Sun");
             var sun = sunObject.AddComponent<Light>();
             sun.type = LightType.Directional;
-            sun.intensity = 1.2f;
-            sunObject.transform.rotation = Quaternion.Euler(45f, -30f, 0f);
+            sun.intensity = 1.3f;
+            sun.color = new Color(1f, 0.96f, 0.88f);
+            sun.shadows = LightShadows.Soft;
+            sunObject.transform.rotation = Quaternion.Euler(35f, -35f, 0f);
+
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientLight = new Color(0.55f, 0.62f, 0.72f);
         }
+
+        /// <summary>Climber root (positioned by <see cref="ClimberView"/>) with the hero model or a capsule placeholder.</summary>
+        private static ClimberView CreateClimber(GameObject visualPrefab)
+        {
+            var climberObject = new GameObject("Climber");
+            var view = climberObject.AddComponent<ClimberView>();
+            Animator animator = null;
+
+            if (visualPrefab != null)
+            {
+                var visual = (GameObject)PrefabUtility.InstantiatePrefab(visualPrefab, climberObject.transform);
+                animator = visual.GetComponentInChildren<Animator>();
+            }
+            else
+            {
+                GameObject capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                capsule.name = "Placeholder";
+                Object.DestroyImmediate(capsule.GetComponent<Collider>());
+                capsule.transform.SetParent(climberObject.transform, false);
+                capsule.transform.localPosition = new Vector3(0f, 0.9f, 0f);
+                capsule.transform.localScale = new Vector3(0.7f, 0.9f, 0.7f);
+                capsule.GetComponent<MeshRenderer>().sharedMaterial =
+                    MaterialFactory.Lit(ProjectPaths.Materials + "/M_ClimberPlaceholder.mat", new Color(1f, 0.55f, 0.1f));
+            }
+
+            var serialized = new SerializedObject(view);
+            GameAssetsBuilder.Find(serialized, "_animator").objectReferenceValue = animator;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return view;
+        }
+    }
+
+    /// <summary>
+    /// Generated assets the Game scene references. Loaded by path when used: opening a new scene unloads
+    /// unreferenced assets, which would invalidate references held across <c>EditorSceneManager.NewScene</c>.
+    /// </summary>
+    public static class GameSceneAssets
+    {
+        public static LevelCatalog Levels => Load<LevelCatalog>(ProjectPaths.LevelCatalog);
+        public static GameplayConfig Gameplay => Load<GameplayConfig>(ProjectPaths.GameplayConfig);
+        public static TowerSet TowerSet => Load<TowerSet>(ProjectPaths.TowerSet);
+
+        /// <summary>Hero prefab, or null for the capsule placeholder.</summary>
+        public static GameObject ClimberVisual => AssetDatabase.LoadAssetAtPath<GameObject>(ProjectPaths.HeroPrefab);
+
+        private static T Load<T>(string path) where T : Object =>
+            AssetDatabase.LoadAssetAtPath<T>(path) ?? throw new System.InvalidOperationException($"Missing generated asset {path}.");
     }
 }
