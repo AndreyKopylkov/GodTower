@@ -12,7 +12,7 @@ Drives the installed APK from the PC and records the screen:
   (hold = ``input swipe x y x y <ms>`` on one point, lane change = a quick horizontal swipe),
 * dodges villains using the level timelines exported from Unity (``level_timelines.json``, same seeded
   ``EventTimeline`` the game uses), synchronised on the ``[LevelRunner]`` log lines read from ``adb logcat``,
-* plays "commentators": ``POST http://localhost:56789/bump`` at random 4-10 s intervals while a level is played,
+* plays "commentators": ``POST http://localhost:56789/bump`` at random 7-14 s intervals while a level is played,
 * taps Next on every win (Retry after a loss), shows the "CHAMPION!" panel, returns to the menu and stops recording.
 
 Usage (from the repository root, the phone connected over USB with USB debugging on and the APK installed)::
@@ -48,7 +48,7 @@ from pathlib import Path
 
 PACKAGE = "com.andreykopylkov.godtower"
 PORT = 56789
-BUMP_URL = f"http://localhost:{PORT}/bump"
+BUMP_URL = f"http://127.0.0.1:{PORT}/bump"  # adb forward listens on IPv4 loopback only
 SCRIPT_DIR = Path(__file__).resolve().parent
 TIMELINES = SCRIPT_DIR / "level_timelines.json"
 UNITY_ADB = Path("C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/platform-tools/adb.exe")
@@ -76,10 +76,17 @@ def level_tile(index: int) -> tuple[tuple[float, float], tuple[float, float]]:
 
 # Gestures. The game reads a swipe as >= 8% of the screen width within 0.35 s; a lane hop takes 0.2 s (swipes during
 # a hop, a hit, a fall or a hero carry are ignored, so moves are planned away from those).
-HOLD_CHUNK = 1.2           # s; a hold is split so the script can react to the end of the level
-SWIPE_TRAVEL = 0.30        # of the screen width
-SWIPE_MS = 120
-SWIPE_GAP = 0.12           # s between swipes (lets the 0.2 s hop finish together with the adb round trip)
+# The finger stays down for the whole level (``input motionevent``): one-shot ``input swipe`` holds leave gaps of
+# ~0.3 s per adb round trip, which roughly halves the climb speed on a device.
+SWIPE_STEPS = (0.04, 0.10, 0.17)  # cumulative travel (of the screen width) of the MOVE events of one swipe
+SWIPE_GAP = 0.25           # s between swipes (lets the 0.2 s hop finish)
+DRIFT_STEP = 0.02          # of the screen width; slow return to the centre, far below the swipe speed
+DRIFT_PERIOD = 0.25        # s between drift steps
+EDGE_MARGIN = 0.08         # keep the finger this far (of the width) from the screen edges
+POLL = 0.05                # s; main loop period
+FIRST_GRAB_DELAY = 0.6     # s after the start line; the scene fade-in still blocks raycasts, and a press that starts
+                           # over UI is ignored by the game for its whole duration
+REGRAB_PERIOD = 3.0        # s; lift and re-press the finger regularly so a press swallowed by UI never lasts long
 STEP_TIME = 0.42           # s budget per swipe incl. adb overhead (for planning)
 MIN_LEAD = 1.1             # s; moves start at least this long before the impact
 BUMP_QUIET_BEFORE = 1.4    # s; no bump right before a planned move (its ~0.55 s input lock would eat the swipe)
@@ -111,19 +118,30 @@ class LevelPlan:
     bumps: list[float] = field(default_factory=list)
 
 
-def plan_moves(level: dict) -> list[Move]:
-    """Lane changes that keep the climber out of every villain's lanes, starting in the centre lane."""
+def plan_moves(level: dict, dodge_ratio: float = 1.0, max_hits: int = 3) -> list[Move]:
+    """Lane changes that keep the climber out of the villains' lanes, starting in the centre lane.
+
+    ``dodge_ratio`` < 1 lets some threats land on purpose (every n-th threat is taken) so the video shows hits too;
+    at most ``max_hits`` per level, so the dense late levels stay winnable.
+    """
     boosts = [(b["time"], b["time"] + b["duration"]) for b in level["boosts"]]
     strikes = sorted(level["strikes"], key=lambda s: s["impact"])
     moves: list[Move] = []
     lane = CENTRE_LANE
     previous_impact = 0.0
     previous_mask = 0
+    threats = 0
+    dodged = 0
     for strike in strikes:
         mask = strike["laneMask"]
         if not mask & (1 << lane):
             previous_impact, previous_mask = strike["impact"], mask
             continue
+        threats += 1
+        if dodged >= threats * dodge_ratio and threats - dodged <= max_hits:  # take it: stay and get hit
+            previous_impact, previous_mask = strike["impact"], mask
+            continue
+        dodged += 1
 
         safe = [candidate for candidate in range(LANES) if not mask & (1 << candidate)]
         target = min(safe, key=lambda candidate: (abs(candidate - lane), candidate == CENTRE_LANE))
@@ -146,23 +164,23 @@ def plan_moves(level: dict) -> list[Move]:
 
 
 def plan_bumps(time_limit: float, moves: list[Move], rng: random.Random) -> list[float]:
-    """Commentator bumps every 4-10 s (level clock), shifted out of the quiet window around each planned move."""
+    """Commentator bumps every 7-14 s (level clock), shifted out of the quiet window around each planned move."""
     bumps: list[float] = []
-    t = rng.uniform(4.0, 10.0)
+    t = rng.uniform(7.0, 14.0)
     while t < time_limit:
         for move in moves:
             if move.time - BUMP_QUIET_BEFORE <= t <= move.time + STEP_TIME * len(move.swipes) + BUMP_QUIET_AFTER:
                 t = move.time + STEP_TIME * len(move.swipes) + BUMP_QUIET_AFTER
         bumps.append(round(t, 2))
-        t += rng.uniform(4.0, 10.0)
+        t += rng.uniform(7.0, 14.0)
     return bumps
 
 
-def build_plans(timelines: dict, seed: int) -> list[LevelPlan]:
+def build_plans(timelines: dict, seed: int, dodge_ratio: float = 1.0, max_hits: int = 3) -> list[LevelPlan]:
     rng = random.Random(seed)
     plans = []
     for level in timelines["levels"]:
-        moves = plan_moves(level)
+        moves = plan_moves(level, dodge_ratio, max_hits)
         plans.append(LevelPlan(level["number"], level["timeLimit"], moves, plan_bumps(level["timeLimit"], moves, rng)))
     return plans
 
@@ -226,17 +244,71 @@ class Device:
         log(f"tap {label} at ({x}, {y})")
         self.run("shell", "input", "tap", str(x), str(y))
 
-    def hold(self, seconds: float) -> None:
-        x, y = self.width // 2, int(self.height * 0.55)
-        if self.dry_run:
-            return
-        self.run("shell", "input", "swipe", str(x), str(y), str(x), str(y), str(int(seconds * 1000)))
+
+
+class Finger:
+    """One finger held on the screen for a whole level, driven through a persistent ``adb shell``.
+
+    Holding = climbing. A swipe is a few quick MOVE events (the game needs >= 8% of the width within 0.35 s);
+    afterwards the finger drifts back to the centre slowly enough never to count as a swipe.
+    """
+
+    def __init__(self, device: Device):
+        self.device = device
+        self.centre = device.width / 2
+        self.y = int(device.height * 0.55)
+        self.x = self.centre
+        # Binary stdin: a text pipe on Windows sends "\r\n" and the device shell rejects the coordinate "1716\r".
+        self.shell = subprocess.Popen(device.cmd("shell"), stdin=subprocess.PIPE, stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
+        self._next_drift = 0.0
+
+    def _send(self, action: str, x: float) -> None:
+        self.x = x
+        self.shell.stdin.write(f"input motionevent {action} {round(x)} {self.y}\n".encode("ascii"))
+        self.shell.stdin.flush()
+
+    def down(self) -> None:
+        self._send("DOWN", self.centre)
+
+    def up(self) -> None:
+        self._send("UP", self.x)
 
     def swipe(self, direction: int) -> None:
-        y = int(self.height * 0.55)
-        x0 = self.width // 2
-        x1 = int(x0 + direction * SWIPE_TRAVEL * self.width)
-        self.run("shell", "input", "swipe", str(x0), str(y), str(x1), str(y), str(SWIPE_MS))
+        width = self.device.width
+        if not EDGE_MARGIN * width <= self.x + direction * SWIPE_STEPS[-1] * width <= (1 - EDGE_MARGIN) * width:
+            self.up()                      # re-grab in the centre; a 0.1 s release only pauses the climb
+            time.sleep(0.1)
+            self.down()
+            time.sleep(0.1)
+        start = self.x
+        for step in SWIPE_STEPS:
+            self._send("MOVE", start + direction * step * width)
+        self._next_drift = time.monotonic() + SWIPE_GAP
+
+    def regrab(self) -> None:
+        """Lifts and re-presses the finger where it is (no horizontal travel, so never a swipe)."""
+        self._send("UP", self.x)
+        self._send("DOWN", self.x)
+
+    def drift(self) -> None:
+        """Moves one small step back towards the centre (call it from the main loop)."""
+        now = time.monotonic()
+        offset = self.centre - self.x
+        if now < self._next_drift or abs(offset) < 1:
+            return
+        step = DRIFT_STEP * self.device.width
+        self._send("MOVE", self.x + max(-step, min(step, offset)))
+        self._next_drift = now + DRIFT_PERIOD
+
+    def close(self) -> None:
+        try:
+            self.up()
+            self.shell.stdin.close()
+            self.shell.wait(timeout=5)
+        except (OSError, subprocess.TimeoutExpired):  # the adb shell died (server restart / Wi-Fi drop)
+            self.shell.kill()
+            self.device.run("shell", "input", "motionevent", "UP", str(round(self.x)), str(self.y), check=False)
 
 
 class LevelLog:
@@ -245,7 +317,7 @@ class LevelLog:
     def __init__(self, device: Device):
         self.events: queue.Queue[tuple[int, str, float]] = queue.Queue()
         device.run("logcat", "-c", check=False)
-        self.process = subprocess.Popen(device.cmd("logcat", "-v", "brief", "Unity:I", "*:S"),
+        self.process = subprocess.Popen(device.cmd("logcat", "-v", "brief", "-s", "Unity"),
                                         stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, errors="replace")
         threading.Thread(target=self._read, daemon=True).start()
 
@@ -371,7 +443,7 @@ def play_level(device: Device, events: LevelLog | None, plan: LevelPlan, dry_run
             arrows = "".join("R" if s > 0 else "L" for s in move.swipes)
             print(f"   t={move.time:6.2f}s  swipe {arrows:<3} -> lane {move.target}   (dodge {move.reason})")
         print("   bumps at t = " + ", ".join(f"{t:.1f}" for t in plan.bumps))
-        print(f"   hold to climb in {HOLD_CHUNK:.1f} s chunks between moves until the Won line")
+        print("   finger held down (input motionevent) until the Won line; swipes = 3 quick MOVE events")
         return "Won"
 
     started = events.wait(("started",), timeout=20.0) if events else None
@@ -381,32 +453,37 @@ def play_level(device: Device, events: LevelLog | None, plan: LevelPlan, dry_run
     if not started:
         log("warning: no start line in logcat, timing estimated from the tap")
 
+    device.run("forward", f"tcp:{PORT}", f"tcp:{PORT}")  # cheap; survives a restarted adb server
     commentators = Commentators(start, plan.bumps)
+    finger = Finger(device)
+    time.sleep(max(0.0, start + FIRST_GRAB_DELAY - time.monotonic()))
+    finger.down()
+    next_regrab = time.monotonic() + REGRAB_PERIOD
     moves = list(plan.moves)
     outcome = None
-    while outcome is None:
-        now = time.monotonic() - start
-        if moves and now >= moves[0].time:
-            move = moves.pop(0)
-            for direction in move.swipes:
-                device.swipe(direction)
-                time.sleep(SWIPE_GAP)
-            continue
+    try:
+        while outcome is None:
+            if time.monotonic() >= next_regrab:
+                finger.regrab()
+                next_regrab = time.monotonic() + REGRAB_PERIOD
+            now = time.monotonic() - start
+            if moves and now >= moves[0].time:
+                move = moves.pop(0)
+                for direction in move.swipes:
+                    finger.swipe(direction)
+                    time.sleep(SWIPE_GAP)
+                continue
 
-        next_move = moves[0].time - now if moves else HOLD_CHUNK
-        chunk = min(HOLD_CHUNK, next_move)
-        if chunk > 0.15:
-            device.hold(chunk)
-        else:
-            time.sleep(max(chunk, 0.0))
-
-        event = events.poll() if events else None
-        if event and event[1] in ("Won", "Lost"):
-            outcome = event[1]
-        elif now > plan.time_limit + 5.0:
-            outcome = "Lost"  # no end line seen; the timer has run out anyway
-
-    commentators.stop()
+            finger.drift()
+            time.sleep(POLL)
+            event = events.poll() if events else None
+            if event and event[1] in ("Won", "Lost"):
+                outcome = event[1]
+            elif now > plan.time_limit + 5.0:
+                outcome = "Lost"  # no end line seen; the timer has run out anyway
+    finally:
+        finger.close()
+        commentators.stop()
     log(f"Level {plan.number} {outcome}; bump responses {commentators.sent}")
     return outcome
 
@@ -422,11 +499,15 @@ def main() -> int:
     parser.add_argument("--reset-progress", action="store_true", help="clear the app data first (level select starts locked)")
     parser.add_argument("--safe-top", type=int, default=0, help="top safe-area inset in px (notch) if taps land too high")
     parser.add_argument("--no-record", action="store_true", help="drive the game without scrcpy")
+    parser.add_argument("--max-hits", type=int, default=3, help="cap of deliberately taken hits per level")
+    parser.add_argument("--start-level", type=int, default=1, help="first level to play (must be unlocked)")
+    parser.add_argument("--dodge-ratio", type=float, default=1.0,
+                        help="share of threats to dodge (e.g. 0.5 = every other villain hits, to show the hits)")
     args = parser.parse_args()
 
     if not TIMELINES.exists():
         sys.exit(f"{TIMELINES} is missing; export it with BuildTools.ExportLevelTimelines.")
-    plans = build_plans(json.loads(TIMELINES.read_text(encoding="utf-8")), args.seed)
+    plans = build_plans(json.loads(TIMELINES.read_text(encoding="utf-8")), args.seed, args.dodge_ratio, args.max_hits)
 
     adb = find_adb(args.adb) if not args.dry_run else (args.adb or "adb")
     device = Device(adb, args.serial, args.dry_run)
@@ -450,10 +531,14 @@ def main() -> int:
         log("launch the app")
         device.run("shell", "monkey", "-p", PACKAGE, "-c", "android.intent.category.LAUNCHER", "1")
         pause(6.0, args.dry_run)                       # splash + menu fade-in, show the menu for a moment
+        device.run("forward", f"tcp:{PORT}", f"tcp:{PORT}")
+        # A finger left down by an interrupted run blocks every tap: lift it first (harmless when nothing is down).
+        device.run("shell", "input", "motionevent", "UP", str(device.width // 2), str(int(device.height * 0.55)), check=False)
         log(f"menu: /bump -> {post_bump() if not args.dry_run else 409} (409 expected outside a level)")
         device.tap(MENU_LEVELS, "LEVELS")
         pause(2.0, args.dry_run)                       # show the level select (locks / stars)
-        device.tap(level_tile(0), "Level 1 tile", args.safe_top)
+        device.tap(level_tile(args.start_level - 1), f"Level {args.start_level} tile", args.safe_top)
+        plans = plans[args.start_level - 1:]
 
         for index, plan in enumerate(plans):
             while True:

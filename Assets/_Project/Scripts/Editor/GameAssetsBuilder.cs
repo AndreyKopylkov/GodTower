@@ -23,21 +23,27 @@ namespace GodTower.Editor
 
         /// <summary>
         /// Docs/Plan.md §1 level table; hero event times chosen to land mid-level. Tuned in M7 (see decisions.md) so the
-        /// autoplay bot wins every level with commentator bumps every 4–10 s: one bump costs ~9 m on every tower
-        /// (3% of Level 1, a smaller share of taller towers) and the time limits leave a ~10% margin.
+        /// autoplay bot wins every level with commentator bumps every 4–10 s: one bump costs ~6 m on every tower
+        /// (2% of Level 1, a smaller share of taller towers) and the time limits give ~80–100% over a clean climb (raised after the device rehearsal,
+        /// together with more hero events, rarer villains and a 6.6 m/s climb for a shorter, friendlier playthrough).
         /// Columns: number, height (m), time limit (s), villains, interval (s), telegraph (s), back-to-back pairs,
         /// bump knockdown (share of the tower), hero events.
         /// </summary>
         private static readonly LevelDefinition[] Levels =
         {
-            new(1, 300f, 80f, new[] { VillainKind.Missile }, 8f, 1.0f, false, 0.03f, new HeroEventEntry(HeroKind.Jetpack, 30f)),
-            new(2, 400f, 110f, new[] { VillainKind.Missile, VillainKind.Truck }, 7f, 0.9f, false, 0.0225f,
-                new HeroEventEntry(HeroKind.Jetpack, 35f)),
-            new(3, 500f, 115f, AllVillains, 6f, 0.8f, false, 0.018f,
-                new HeroEventEntry(HeroKind.Jetpack, 30f), new HeroEventEntry(HeroKind.Phoenix, 60f)),
-            new(4, 600f, 155f, AllVillains, 5f, 0.7f, false, 0.015f, new HeroEventEntry(HeroKind.Phoenix, 50f)),
-            new(5, 750f, 180f, AllVillains, 4f, 0.6f, true, 0.012f,
-                new HeroEventEntry(HeroKind.Jetpack, 35f), new HeroEventEntry(HeroKind.Phoenix, 75f))
+            new(1, 300f, 100f, new[] { VillainKind.Missile }, 9f, 1.0f, false, 0.02f,
+                new HeroEventEntry(HeroKind.Jetpack, 12f), new HeroEventEntry(HeroKind.Jetpack, 30f)),
+            new(2, 400f, 130f, new[] { VillainKind.Missile, VillainKind.Truck }, 8f, 0.9f, false, 0.015f,
+                new HeroEventEntry(HeroKind.Jetpack, 12f), new HeroEventEntry(HeroKind.Phoenix, 32f)),
+            new(3, 500f, 160f, AllVillains, 7f, 0.8f, false, 0.012f,
+                new HeroEventEntry(HeroKind.Jetpack, 12f), new HeroEventEntry(HeroKind.Phoenix, 32f),
+                new HeroEventEntry(HeroKind.Jetpack, 50f)),
+            new(4, 600f, 190f, AllVillains, 6f, 0.7f, false, 0.01f,
+                new HeroEventEntry(HeroKind.Jetpack, 12f), new HeroEventEntry(HeroKind.Phoenix, 35f),
+                new HeroEventEntry(HeroKind.Jetpack, 58f)),
+            new(5, 750f, 230f, AllVillains, 5f, 0.6f, true, 0.008f,
+                new HeroEventEntry(HeroKind.Jetpack, 10f), new HeroEventEntry(HeroKind.Phoenix, 28f),
+                new HeroEventEntry(HeroKind.Jetpack, 46f), new HeroEventEntry(HeroKind.Phoenix, 64f))
         };
 
         public static GameplayConfig BuildGameplayConfig() => LoadOrCreate<GameplayConfig>(ProjectPaths.GameplayConfig);

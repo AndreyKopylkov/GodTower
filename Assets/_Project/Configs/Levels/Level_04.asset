@@ -14,14 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: GodTower.Runtime::GodTower.Levels.LevelConfig
   _number: 4
   _towerHeight: 600
-  _timeLimit: 155
+  _timeLimit: 190
   _villains: 000000000100000002000000
-  _villainInterval: 5
+  _villainInterval: 6
   _telegraphDuration: 0.7
   _backToBackPairs: 0
   _heroEvents:
+  - _kind: 0
+    _time: 12
   - _kind: 1
-    _time: 50
-  _bumpKnockdownFraction: 0.015
+    _time: 35
+  - _kind: 0
+    _time: 58
+  _bumpKnockdownFraction: 0.01
   _sky: {fileID: 11400000, guid: 0dd57346ed6520248bc22592482d9196, type: 2}
   _seed: 4007

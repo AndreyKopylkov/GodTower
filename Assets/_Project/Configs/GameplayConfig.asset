@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameplayConfig
   m_EditorClassIdentifier: GodTower.Runtime::GodTower.Gameplay.GameplayConfig
   _climber:
-    _climbSpeed: 6
+    _climbSpeed: 6.6
     _laneAngles:
     - -35
     - 0

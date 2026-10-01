@@ -8,7 +8,7 @@ namespace GodTower.Gameplay
     public sealed class ClimberSettings
     {
         [Tooltip("Climb speed in displayed meters per second (1 m = 1 world unit).")]
-        [SerializeField, Min(0.1f)] private float _climbSpeed = 6f;
+        [SerializeField, Min(0.1f)] private float _climbSpeed = 6.6f;
 
         [Tooltip("Lane angles around the column axis in degrees, screen-left to screen-right (0 faces the camera).")]
         [SerializeField] private float[] _laneAngles = { -35f, 0f, 35f };

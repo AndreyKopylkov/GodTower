@@ -31,11 +31,11 @@ centrepiece of the test and of this README; everything else exists to give it a 
 
 | Level | Height | Time | Villains (interval, telegraph) | Hero events | Sky |
 |---|---|---|---|---|---|
-| 1 | 300 m | 80 s | Missile (8 s, 1.0 s) | Jetpack | Day |
-| 2 | 400 m | 110 s | Missile, Truck (7 s, 0.9 s) | Jetpack | Bright afternoon |
-| 3 | 500 m | 115 s | + Axes (6 s, 0.8 s) | Jetpack, Phoenix | Golden hour |
-| 4 | 600 m | 155 s | All (5 s, 0.7 s) | Phoenix | Sunset |
-| 5 | 750 m | 180 s | All + back-to-back pairs (4 s, 0.6 s) | Jetpack, Phoenix | Dusk |
+| 1 | 300 m | 100 s | Missile (9 s, 1.0 s) | Jetpack ×2 | Day |
+| 2 | 400 m | 130 s | Missile, Truck (8 s, 0.9 s) | Jetpack, Phoenix | Bright afternoon |
+| 3 | 500 m | 160 s | + Axes (7 s, 0.8 s) | Jetpack ×2, Phoenix | Golden hour |
+| 4 | 600 m | 190 s | All (6 s, 0.7 s) | Jetpack ×2, Phoenix | Sunset |
+| 5 | 750 m | 230 s | All + back-to-back pairs (5 s, 0.6 s) | Jetpack ×2, Phoenix ×2 | Dusk |
 
 ---
 
@@ -211,7 +211,7 @@ What the tests cover:
   Current totals: **157 EditMode + 26 PlayMode tests, all green** (PlayMode ≈ 6.5 min).
 
 **Recording the video**: `uv run Tools/Video/record_playthrough.py` drives the installed APK over adb (taps, holds,
-swipes that dodge the seeded villains, `/bump` every 4–10 s through `adb forward`) and records with `scrcpy`;
+swipes that dodge the seeded villains, `/bump` every 7–14 s through `adb forward`) and records with `scrcpy`;
 `--dry-run` prints the plan without a device. See the script header for requirements.
 
 ---
@@ -266,7 +266,7 @@ The brief and reference video leave a lot open; every call was logged in
 **Gameplay (reproducing the reference)**
 - Portrait 9:16 (the reference video), reference UI resolution 1080×1920. 3 lanes on the front of the column at
   −35° / 0° / +35°; a lane hop takes 0.2 s; swipe = ≥ 8% of the screen width within 0.35 s, also while holding.
-- Climb speed 6 m/s. Villains are scripted on a seeded per-level timeline (not aimed at the player), telegraphed by a
+- Climb speed 6.6 m/s. Villains are scripted on a seeded per-level timeline (not aimed at the player), telegraphed by a
   red banner + red lane strip; a hit = Hit → Fall, 8% of the tower. Hero events are automatic (jetpack +10% / 2 s,
   phoenix +20% / 3 s, immune while carried). Lose = timer at 0; no lives, no score — the reference shows none.
 - Progress = levels completed in order (`PlayerPrefs`); Play continues with the first unfinished level.
@@ -290,7 +290,7 @@ The brief and reference video leave a lot open; every call was logged in
 
 **Tuning (found by the autoplay tests)**
 - With the starting level table the bot lost Levels 2–5 under a bump every 4–10 s (3% of a 750 m tower = 22 m per
-  bump). Per-level bump share and longer time limits (80/110/115/155/180 s) were introduced; heights, villain
+  bump). Per-level bump share and longer time limits (later raised to 100/130/160/190/230 s after the on-device rehearsal) were introduced; heights, villain
   intervals, telegraphs and hero events are unchanged, so difficulty still rises level to level. The bot wins with a
   ≥ 10% time margin (64 / 97 / ~86 / 136 / ~150 s).
 

@@ -2,50 +2,50 @@
     "levels": [
         {
             "number": 1,
-            "timeLimit": 80.0,
+            "timeLimit": 100.0,
             "towerHeight": 300.0,
             "telegraph": 1.0,
             "strikes": [
                 {
                     "kind": "Missile",
-                    "telegraphTime": 7.0,
-                    "impact": 8.0,
+                    "telegraphTime": 8.0,
+                    "impact": 9.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 15.0,
-                    "impact": 16.0,
+                    "telegraphTime": 17.0,
+                    "impact": 18.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 23.0,
-                    "impact": 24.0,
+                    "telegraphTime": 26.0,
+                    "impact": 27.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 39.0,
-                    "impact": 40.0,
+                    "telegraphTime": 35.0,
+                    "impact": 36.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 47.0,
-                    "impact": 48.0,
+                    "telegraphTime": 44.0,
+                    "impact": 45.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 53.0,
+                    "impact": 54.0,
                     "laneMask": 4
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 55.0,
-                    "impact": 56.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 63.0,
-                    "impact": 64.0,
+                    "telegraphTime": 62.0,
+                    "impact": 63.0,
                     "laneMask": 1
                 },
                 {
@@ -53,9 +53,26 @@
                     "telegraphTime": 71.0,
                     "impact": 72.0,
                     "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 80.0,
+                    "impact": 81.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 89.0,
+                    "impact": 90.0,
+                    "laneMask": 2
                 }
             ],
             "boosts": [
+                {
+                    "kind": "Jetpack",
+                    "time": 12.0,
+                    "duration": 2.0
+                },
                 {
                     "kind": "Jetpack",
                     "time": 30.0,
@@ -65,138 +82,137 @@
         },
         {
             "number": 2,
-            "timeLimit": 110.0,
+            "timeLimit": 130.0,
             "towerHeight": 400.0,
             "telegraph": 0.8999999761581421,
             "strikes": [
                 {
                     "kind": "Missile",
-                    "telegraphTime": 6.099999904632568,
-                    "impact": 7.0,
+                    "telegraphTime": 7.099999904632568,
+                    "impact": 8.0,
                     "laneMask": 4
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 13.100000381469727,
-                    "impact": 14.0,
+                    "telegraphTime": 15.100000381469727,
+                    "impact": 16.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 20.100000381469728,
-                    "impact": 21.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 27.100000381469728,
-                    "impact": 28.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 41.099998474121097,
-                    "impact": 42.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 48.099998474121097,
-                    "impact": 49.0,
+                    "telegraphTime": 23.100000381469728,
+                    "impact": 24.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Truck",
+                    "telegraphTime": 39.099998474121097,
+                    "impact": 40.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 47.099998474121097,
+                    "impact": 48.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
                     "telegraphTime": 55.099998474121097,
                     "impact": 56.0,
                     "laneMask": 2
                 },
                 {
+                    "kind": "Truck",
+                    "telegraphTime": 63.099998474121097,
+                    "impact": 64.0,
+                    "laneMask": 2
+                },
+                {
                     "kind": "Missile",
-                    "telegraphTime": 62.099998474121097,
-                    "impact": 63.0,
+                    "telegraphTime": 71.0999984741211,
+                    "impact": 72.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 69.0999984741211,
-                    "impact": 70.0,
+                    "telegraphTime": 79.0999984741211,
+                    "impact": 80.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 76.0999984741211,
-                    "impact": 77.0,
+                    "telegraphTime": 87.0999984741211,
+                    "impact": 88.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 83.0999984741211,
-                    "impact": 84.0,
+                    "telegraphTime": 95.0999984741211,
+                    "impact": 96.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 90.0999984741211,
-                    "impact": 91.0,
+                    "telegraphTime": 103.0999984741211,
+                    "impact": 104.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 97.0999984741211,
-                    "impact": 98.0,
+                    "telegraphTime": 111.0999984741211,
+                    "impact": 112.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 104.0999984741211,
-                    "impact": 105.0,
+                    "telegraphTime": 119.0999984741211,
+                    "impact": 120.0,
                     "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 127.0999984741211,
+                    "impact": 128.0,
+                    "laneMask": 4
                 }
             ],
             "boosts": [
                 {
                     "kind": "Jetpack",
-                    "time": 35.0,
+                    "time": 12.0,
                     "duration": 2.0
+                },
+                {
+                    "kind": "Phoenix",
+                    "time": 32.0,
+                    "duration": 3.0
                 }
             ]
         },
         {
             "number": 3,
-            "timeLimit": 115.0,
+            "timeLimit": 160.0,
             "towerHeight": 500.0,
             "telegraph": 0.800000011920929,
             "strikes": [
                 {
                     "kind": "Truck",
-                    "telegraphTime": 5.199999809265137,
-                    "impact": 6.0,
+                    "telegraphTime": 6.199999809265137,
+                    "impact": 7.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Axes",
-                    "telegraphTime": 11.199999809265137,
-                    "impact": 12.0,
-                    "laneMask": 5
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 17.200000762939454,
-                    "impact": 18.0,
+                    "telegraphTime": 20.200000762939454,
+                    "impact": 21.0,
                     "laneMask": 6
                 },
                 {
                     "kind": "Axes",
-                    "telegraphTime": 23.200000762939454,
-                    "impact": 24.0,
+                    "telegraphTime": 27.200000762939454,
+                    "impact": 28.0,
                     "laneMask": 3
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 35.20000076293945,
-                    "impact": 36.0,
-                    "laneMask": 2
                 },
                 {
                     "kind": "Truck",
@@ -206,691 +222,728 @@
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 47.20000076293945,
-                    "impact": 48.0,
+                    "telegraphTime": 55.20000076293945,
+                    "impact": 56.0,
                     "laneMask": 4
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 53.20000076293945,
-                    "impact": 54.0,
+                    "telegraphTime": 62.20000076293945,
+                    "impact": 63.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Axes",
-                    "telegraphTime": 65.19999694824219,
-                    "impact": 66.0,
-                    "laneMask": 6
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 71.19999694824219,
-                    "impact": 72.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 77.19999694824219,
-                    "impact": 78.0,
+                    "telegraphTime": 69.19999694824219,
+                    "impact": 70.0,
                     "laneMask": 5
                 },
                 {
                     "kind": "Axes",
-                    "telegraphTime": 83.19999694824219,
-                    "impact": 84.0,
-                    "laneMask": 6
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 89.19999694824219,
-                    "impact": 90.0,
+                    "telegraphTime": 76.19999694824219,
+                    "impact": 77.0,
                     "laneMask": 6
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 95.19999694824219,
-                    "impact": 96.0,
+                    "telegraphTime": 83.19999694824219,
+                    "impact": 84.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 90.19999694824219,
+                    "impact": 91.0,
+                    "laneMask": 5
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 97.19999694824219,
+                    "impact": 98.0,
+                    "laneMask": 6
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 104.19999694824219,
+                    "impact": 105.0,
+                    "laneMask": 6
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 111.19999694824219,
+                    "impact": 112.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Axes",
-                    "telegraphTime": 101.19999694824219,
-                    "impact": 102.0,
+                    "telegraphTime": 118.19999694824219,
+                    "impact": 119.0,
                     "laneMask": 6
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 107.19999694824219,
-                    "impact": 108.0,
+                    "telegraphTime": 125.19999694824219,
+                    "impact": 126.0,
                     "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 132.1999969482422,
+                    "impact": 133.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 139.1999969482422,
+                    "impact": 140.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 146.1999969482422,
+                    "impact": 147.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 153.1999969482422,
+                    "impact": 154.0,
+                    "laneMask": 1
                 }
             ],
             "boosts": [
                 {
                     "kind": "Jetpack",
-                    "time": 30.0,
+                    "time": 12.0,
                     "duration": 2.0
                 },
                 {
                     "kind": "Phoenix",
-                    "time": 60.0,
+                    "time": 32.0,
                     "duration": 3.0
+                },
+                {
+                    "kind": "Jetpack",
+                    "time": 50.0,
+                    "duration": 2.0
                 }
             ]
         },
         {
             "number": 4,
-            "timeLimit": 155.0,
+            "timeLimit": 190.0,
             "towerHeight": 600.0,
             "telegraph": 0.699999988079071,
             "strikes": [
                 {
                     "kind": "Missile",
-                    "telegraphTime": 4.300000190734863,
-                    "impact": 5.0,
+                    "telegraphTime": 5.300000190734863,
+                    "impact": 6.0,
                     "laneMask": 2
                 },
                 {
-                    "kind": "Missile",
-                    "telegraphTime": 9.300000190734864,
-                    "impact": 10.0,
-                    "laneMask": 1
-                },
-                {
                     "kind": "Axes",
-                    "telegraphTime": 14.300000190734864,
-                    "impact": 15.0,
+                    "telegraphTime": 17.299999237060548,
+                    "impact": 18.0,
                     "laneMask": 3
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 19.299999237060548,
-                    "impact": 20.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 24.299999237060548,
-                    "impact": 25.0,
+                    "telegraphTime": 23.299999237060548,
+                    "impact": 24.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Missile",
                     "telegraphTime": 29.299999237060548,
                     "impact": 30.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 34.29999923706055,
-                    "impact": 35.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 39.29999923706055,
-                    "impact": 40.0,
                     "laneMask": 1
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 44.29999923706055,
-                    "impact": 45.0,
+                    "telegraphTime": 41.29999923706055,
+                    "impact": 42.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 47.29999923706055,
+                    "impact": 48.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 53.29999923706055,
+                    "impact": 54.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 54.29999923706055,
-                    "impact": 55.0,
+                    "telegraphTime": 65.30000305175781,
+                    "impact": 66.0,
                     "laneMask": 4
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 59.29999923706055,
-                    "impact": 60.0,
+                    "telegraphTime": 71.30000305175781,
+                    "impact": 72.0,
                     "laneMask": 2
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 64.30000305175781,
-                    "impact": 65.0,
+                    "telegraphTime": 77.30000305175781,
+                    "impact": 78.0,
                     "laneMask": 4
                 },
                 {
                     "kind": "Axes",
-                    "telegraphTime": 69.30000305175781,
-                    "impact": 70.0,
+                    "telegraphTime": 83.30000305175781,
+                    "impact": 84.0,
                     "laneMask": 3
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 74.30000305175781,
-                    "impact": 75.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 79.30000305175781,
-                    "impact": 80.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 84.30000305175781,
-                    "impact": 85.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
                     "telegraphTime": 89.30000305175781,
                     "impact": 90.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 94.30000305175781,
-                    "impact": 95.0,
-                    "laneMask": 6
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 99.30000305175781,
-                    "impact": 100.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 104.30000305175781,
-                    "impact": 105.0,
                     "laneMask": 4
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 109.30000305175781,
-                    "impact": 110.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 114.30000305175781,
-                    "impact": 115.0,
-                    "laneMask": 5
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 119.30000305175781,
-                    "impact": 120.0,
-                    "laneMask": 6
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 124.30000305175781,
-                    "impact": 125.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 129.3000030517578,
-                    "impact": 130.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 134.3000030517578,
-                    "impact": 135.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 139.3000030517578,
-                    "impact": 140.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 144.3000030517578,
-                    "impact": 145.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 149.3000030517578,
-                    "impact": 150.0,
-                    "laneMask": 3
-                }
-            ],
-            "boosts": [
-                {
-                    "kind": "Phoenix",
-                    "time": 50.0,
-                    "duration": 3.0
-                }
-            ]
-        },
-        {
-            "number": 5,
-            "timeLimit": 180.0,
-            "towerHeight": 750.0,
-            "telegraph": 0.6000000238418579,
-            "strikes": [
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 3.4000000953674318,
-                    "impact": 4.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 7.400000095367432,
-                    "impact": 8.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 8.59999942779541,
-                    "impact": 9.199999809265137,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 11.399999618530274,
-                    "impact": 12.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 15.399999618530274,
-                    "impact": 16.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 16.600000381469728,
-                    "impact": 17.200000762939454,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 19.399999618530275,
-                    "impact": 20.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 20.600000381469728,
-                    "impact": 21.200000762939454,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 23.399999618530275,
-                    "impact": 24.0,
-                    "laneMask": 3
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 24.600000381469728,
-                    "impact": 25.200000762939454,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 27.399999618530275,
-                    "impact": 28.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 31.399999618530275,
-                    "impact": 32.0,
-                    "laneMask": 5
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 39.400001525878909,
-                    "impact": 40.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 43.400001525878909,
-                    "impact": 44.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 44.60000228881836,
-                    "impact": 45.20000076293945,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 47.400001525878909,
-                    "impact": 48.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 48.60000228881836,
-                    "impact": 49.20000076293945,
-                    "laneMask": 3
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 51.400001525878909,
-                    "impact": 52.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 55.400001525878909,
-                    "impact": 56.0,
-                    "laneMask": 3
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 56.60000228881836,
-                    "impact": 57.20000076293945,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 59.400001525878909,
-                    "impact": 60.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 63.400001525878909,
-                    "impact": 64.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 64.5999984741211,
-                    "impact": 65.19999694824219,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 67.4000015258789,
-                    "impact": 68.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 71.4000015258789,
-                    "impact": 72.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 72.5999984741211,
-                    "impact": 73.19999694824219,
-                    "laneMask": 3
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 79.4000015258789,
-                    "impact": 80.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 83.4000015258789,
-                    "impact": 84.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 84.5999984741211,
-                    "impact": 85.19999694824219,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 87.4000015258789,
-                    "impact": 88.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 88.5999984741211,
-                    "impact": 89.19999694824219,
-                    "laneMask": 5
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 91.4000015258789,
-                    "impact": 92.0,
-                    "laneMask": 5
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 95.4000015258789,
+                    "telegraphTime": 95.30000305175781,
                     "impact": 96.0,
-                    "laneMask": 2
+                    "laneMask": 4
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 96.5999984741211,
-                    "impact": 97.19999694824219,
+                    "telegraphTime": 101.30000305175781,
+                    "impact": 102.0,
                     "laneMask": 2
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 99.4000015258789,
-                    "impact": 100.0,
-                    "laneMask": 5
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 100.5999984741211,
-                    "impact": 101.19999694824219,
-                    "laneMask": 3
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 103.4000015258789,
-                    "impact": 104.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 107.4000015258789,
+                    "telegraphTime": 107.30000305175781,
                     "impact": 108.0,
                     "laneMask": 2
                 },
                 {
-                    "kind": "Truck",
-                    "telegraphTime": 108.5999984741211,
-                    "impact": 109.19999694824219,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 111.4000015258789,
-                    "impact": 112.0,
-                    "laneMask": 2
-                },
-                {
                     "kind": "Axes",
-                    "telegraphTime": 112.5999984741211,
-                    "impact": 113.19999694824219,
+                    "telegraphTime": 113.30000305175781,
+                    "impact": 114.0,
                     "laneMask": 6
                 },
                 {
-                    "kind": "Truck",
-                    "telegraphTime": 115.4000015258789,
-                    "impact": 116.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 116.5999984741211,
-                    "impact": 117.19999694824219,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 119.4000015258789,
+                    "kind": "Missile",
+                    "telegraphTime": 119.30000305175781,
                     "impact": 120.0,
-                    "laneMask": 1
+                    "laneMask": 2
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 120.5999984741211,
-                    "impact": 121.19999694824219,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 123.4000015258789,
-                    "impact": 124.0,
+                    "telegraphTime": 125.30000305175781,
+                    "impact": 126.0,
                     "laneMask": 4
                 },
                 {
                     "kind": "Missile",
-                    "telegraphTime": 124.5999984741211,
-                    "impact": 125.19999694824219,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 127.4000015258789,
-                    "impact": 128.0,
-                    "laneMask": 6
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 131.39999389648438,
+                    "telegraphTime": 131.3000030517578,
                     "impact": 132.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 135.39999389648438,
-                    "impact": 136.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 139.39999389648438,
-                    "impact": 140.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 140.59999084472657,
-                    "impact": 141.1999969482422,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 143.39999389648438,
-                    "impact": 144.0,
-                    "laneMask": 1
+                    "laneMask": 4
                 },
                 {
                     "kind": "Axes",
-                    "telegraphTime": 144.59999084472657,
-                    "impact": 145.1999969482422,
+                    "telegraphTime": 137.3000030517578,
+                    "impact": 138.0,
                     "laneMask": 5
                 },
                 {
-                    "kind": "Missile",
-                    "telegraphTime": 147.39999389648438,
-                    "impact": 148.0,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 148.59999084472657,
-                    "impact": 149.1999969482422,
-                    "laneMask": 4
-                },
-                {
                     "kind": "Axes",
-                    "telegraphTime": 151.39999389648438,
-                    "impact": 152.0,
+                    "telegraphTime": 143.3000030517578,
+                    "impact": 144.0,
                     "laneMask": 6
                 },
                 {
                     "kind": "Truck",
-                    "telegraphTime": 152.59999084472657,
-                    "impact": 153.1999969482422,
+                    "telegraphTime": 149.3000030517578,
+                    "impact": 150.0,
                     "laneMask": 1
                 },
                 {
-                    "kind": "Missile",
-                    "telegraphTime": 155.39999389648438,
+                    "kind": "Truck",
+                    "telegraphTime": 155.3000030517578,
                     "impact": 156.0,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Axes",
-                    "telegraphTime": 156.59999084472657,
-                    "impact": 157.1999969482422,
-                    "laneMask": 6
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 159.39999389648438,
-                    "impact": 160.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 160.59999084472657,
-                    "impact": 161.1999969482422,
-                    "laneMask": 2
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 163.39999389648438,
-                    "impact": 164.0,
                     "laneMask": 4
                 },
                 {
+                    "kind": "Truck",
+                    "telegraphTime": 161.3000030517578,
+                    "impact": 162.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 167.3000030517578,
+                    "impact": 168.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 173.3000030517578,
+                    "impact": 174.0,
+                    "laneMask": 2
+                },
+                {
                     "kind": "Axes",
-                    "telegraphTime": 164.59999084472657,
-                    "impact": 165.1999969482422,
+                    "telegraphTime": 179.3000030517578,
+                    "impact": 180.0,
                     "laneMask": 3
                 },
                 {
-                    "kind": "Truck",
-                    "telegraphTime": 167.39999389648438,
-                    "impact": 168.0,
+                    "kind": "Missile",
+                    "telegraphTime": 185.3000030517578,
+                    "impact": 186.0,
                     "laneMask": 2
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 168.59999084472657,
-                    "impact": 169.1999969482422,
-                    "laneMask": 4
-                },
-                {
-                    "kind": "Truck",
-                    "telegraphTime": 171.39999389648438,
-                    "impact": 172.0,
-                    "laneMask": 1
-                },
-                {
-                    "kind": "Missile",
-                    "telegraphTime": 175.39999389648438,
-                    "impact": 176.0,
-                    "laneMask": 4
                 }
             ],
             "boosts": [
                 {
                     "kind": "Jetpack",
-                    "time": 35.0,
+                    "time": 12.0,
                     "duration": 2.0
                 },
                 {
                     "kind": "Phoenix",
-                    "time": 75.0,
+                    "time": 35.0,
+                    "duration": 3.0
+                },
+                {
+                    "kind": "Jetpack",
+                    "time": 58.0,
+                    "duration": 2.0
+                }
+            ]
+        },
+        {
+            "number": 5,
+            "timeLimit": 230.0,
+            "towerHeight": 750.0,
+            "telegraph": 0.6000000238418579,
+            "strikes": [
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 4.400000095367432,
+                    "impact": 5.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 14.399999618530274,
+                    "impact": 15.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 19.399999618530275,
+                    "impact": 20.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 20.600000381469728,
+                    "impact": 21.200000762939454,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 24.399999618530275,
+                    "impact": 25.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 25.600000381469728,
+                    "impact": 26.200000762939454,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 34.400001525878909,
+                    "impact": 35.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 39.400001525878909,
+                    "impact": 40.0,
+                    "laneMask": 5
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 49.400001525878909,
+                    "impact": 50.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 54.400001525878909,
+                    "impact": 55.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 55.60000228881836,
+                    "impact": 56.20000076293945,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 59.400001525878909,
+                    "impact": 60.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 60.60000228881836,
+                    "impact": 61.20000076293945,
+                    "laneMask": 3
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 69.4000015258789,
+                    "impact": 70.0,
+                    "laneMask": 3
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 70.5999984741211,
+                    "impact": 71.19999694824219,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 74.4000015258789,
+                    "impact": 75.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 79.4000015258789,
+                    "impact": 80.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 80.5999984741211,
+                    "impact": 81.19999694824219,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 84.4000015258789,
+                    "impact": 85.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 89.4000015258789,
+                    "impact": 90.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 90.5999984741211,
+                    "impact": 91.19999694824219,
+                    "laneMask": 3
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 94.4000015258789,
+                    "impact": 95.0,
+                    "laneMask": 6
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 99.4000015258789,
+                    "impact": 100.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 104.4000015258789,
+                    "impact": 105.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 105.5999984741211,
+                    "impact": 106.19999694824219,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 109.4000015258789,
+                    "impact": 110.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 110.5999984741211,
+                    "impact": 111.19999694824219,
+                    "laneMask": 5
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 114.4000015258789,
+                    "impact": 115.0,
+                    "laneMask": 5
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 119.4000015258789,
+                    "impact": 120.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 120.5999984741211,
+                    "impact": 121.19999694824219,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 124.4000015258789,
+                    "impact": 125.0,
+                    "laneMask": 5
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 125.5999984741211,
+                    "impact": 126.19999694824219,
+                    "laneMask": 3
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 129.39999389648438,
+                    "impact": 130.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 134.39999389648438,
+                    "impact": 135.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 135.59999084472657,
+                    "impact": 136.1999969482422,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 139.39999389648438,
+                    "impact": 140.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 140.59999084472657,
+                    "impact": 141.1999969482422,
+                    "laneMask": 6
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 144.39999389648438,
+                    "impact": 145.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 145.59999084472657,
+                    "impact": 146.1999969482422,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 149.39999389648438,
+                    "impact": 150.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 150.59999084472657,
+                    "impact": 151.1999969482422,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 154.39999389648438,
+                    "impact": 155.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 155.59999084472657,
+                    "impact": 156.1999969482422,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 159.39999389648438,
+                    "impact": 160.0,
+                    "laneMask": 6
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 164.39999389648438,
+                    "impact": 165.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 169.39999389648438,
+                    "impact": 170.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 174.39999389648438,
+                    "impact": 175.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 175.59999084472657,
+                    "impact": 176.1999969482422,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 179.39999389648438,
+                    "impact": 180.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 180.59999084472657,
+                    "impact": 181.1999969482422,
+                    "laneMask": 5
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 184.39999389648438,
+                    "impact": 185.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 185.59999084472657,
+                    "impact": 186.1999969482422,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 189.39999389648438,
+                    "impact": 190.0,
+                    "laneMask": 6
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 190.59999084472657,
+                    "impact": 191.1999969482422,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 194.39999389648438,
+                    "impact": 195.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 195.59999084472657,
+                    "impact": 196.1999969482422,
+                    "laneMask": 6
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 199.39999389648438,
+                    "impact": 200.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 200.59999084472657,
+                    "impact": 201.1999969482422,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 204.39999389648438,
+                    "impact": 205.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Axes",
+                    "telegraphTime": 205.59999084472657,
+                    "impact": 206.1999969482422,
+                    "laneMask": 3
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 209.39999389648438,
+                    "impact": 210.0,
+                    "laneMask": 2
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 210.59999084472657,
+                    "impact": 211.1999969482422,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 214.39999389648438,
+                    "impact": 215.0,
+                    "laneMask": 1
+                },
+                {
+                    "kind": "Missile",
+                    "telegraphTime": 219.39999389648438,
+                    "impact": 220.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 224.39999389648438,
+                    "impact": 225.0,
+                    "laneMask": 4
+                },
+                {
+                    "kind": "Truck",
+                    "telegraphTime": 225.59999084472657,
+                    "impact": 226.1999969482422,
+                    "laneMask": 1
+                }
+            ],
+            "boosts": [
+                {
+                    "kind": "Jetpack",
+                    "time": 10.0,
+                    "duration": 2.0
+                },
+                {
+                    "kind": "Phoenix",
+                    "time": 28.0,
+                    "duration": 3.0
+                },
+                {
+                    "kind": "Jetpack",
+                    "time": 46.0,
+                    "duration": 2.0
+                },
+                {
+                    "kind": "Phoenix",
+                    "time": 64.0,
                     "duration": 3.0
                 }
             ]
