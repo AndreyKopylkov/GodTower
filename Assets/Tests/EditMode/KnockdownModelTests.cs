@@ -51,5 +51,17 @@ namespace GodTower.Tests.EditMode
             Assert.That(KnockdownModel.Apply(100f, 24f), Is.EqualTo(76f));
             Assert.That(KnockdownModel.Apply(10f, 24f), Is.Zero);
         }
+
+        [Test]
+        public void WithBumpFraction_KeepsCapRatio_AndVillainShare()
+        {
+            var settings = new KnockdownSettings(0.08f, 0.03f, 0.06f, 5f).WithBumpFraction(0.012f);
+            var model = new KnockdownModel(750f, settings);
+
+            Assert.That(model.VillainKnockdown, Is.EqualTo(60f).Within(1e-3f));
+            Assert.That(model.TakeBumpKnockdown(0f), Is.EqualTo(9f).Within(1e-3f));
+            Assert.That(model.TakeBumpKnockdown(1f), Is.EqualTo(9f).Within(1e-3f));
+            Assert.That(model.TakeBumpKnockdown(2f), Is.Zero, "Cap = 2.4% of 750 m = 18 m.");
+        }
     }
 }

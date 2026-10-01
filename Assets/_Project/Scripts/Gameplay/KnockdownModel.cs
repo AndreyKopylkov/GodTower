@@ -29,6 +29,16 @@ namespace GodTower.Gameplay
         public float BumpFraction => _bumpFraction;
         public float BumpCapFraction => _bumpCapFraction;
         public float BumpCapWindow => _bumpCapWindow;
+
+        /// <summary>
+        /// Copy with another bump share; the cap keeps its ratio to the bump (Plan: 3% capped at 6% = two bumps per window).
+        /// Levels use it to keep a bump about as many meters on tall towers as on the first one.
+        /// </summary>
+        public KnockdownSettings WithBumpFraction(float bumpFraction)
+        {
+            float capRatio = _bumpFraction > 0f ? _bumpCapFraction / _bumpFraction : 2f;
+            return new KnockdownSettings(_villainFraction, bumpFraction, bumpFraction * capRatio, _bumpCapWindow);
+        }
     }
 
     /// <summary>

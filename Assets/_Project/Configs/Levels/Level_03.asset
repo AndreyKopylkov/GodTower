@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GodTower.Runtime::GodTower.Levels.LevelConfig
   _number: 3
   _towerHeight: 500
-  _timeLimit: 95
+  _timeLimit: 115
   _villains: 000000000100000002000000
   _villainInterval: 6
   _telegraphDuration: 0.8
@@ -24,5 +24,6 @@ MonoBehaviour:
     _time: 30
   - _kind: 1
     _time: 60
+  _bumpKnockdownFraction: 0.018
   _sky: {fileID: 11400000, guid: 497f5e2c96c5f9c4cac8f1246e27c4e2, type: 2}
   _seed: 3007

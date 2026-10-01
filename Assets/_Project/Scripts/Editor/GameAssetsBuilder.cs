@@ -21,15 +21,22 @@ namespace GodTower.Editor
 
         private static readonly VillainKind[] AllVillains = { VillainKind.Missile, VillainKind.Truck, VillainKind.Axes };
 
-        /// <summary>Docs/Plan.md §1 level table; hero event times chosen to land mid-level.</summary>
+        /// <summary>
+        /// Docs/Plan.md §1 level table; hero event times chosen to land mid-level. Tuned in M7 (see decisions.md) so the
+        /// autoplay bot wins every level with commentator bumps every 4–10 s: one bump costs ~9 m on every tower
+        /// (3% of Level 1, a smaller share of taller towers) and the time limits leave a ~10% margin.
+        /// Columns: number, height (m), time limit (s), villains, interval (s), telegraph (s), back-to-back pairs,
+        /// bump knockdown (share of the tower), hero events.
+        /// </summary>
         private static readonly LevelDefinition[] Levels =
         {
-            new(1, 300f, 75f, new[] { VillainKind.Missile }, 8f, 1.0f, false, new HeroEventEntry(HeroKind.Jetpack, 30f)),
-            new(2, 400f, 85f, new[] { VillainKind.Missile, VillainKind.Truck }, 7f, 0.9f, false, new HeroEventEntry(HeroKind.Jetpack, 35f)),
-            new(3, 500f, 95f, AllVillains, 6f, 0.8f, false,
+            new(1, 300f, 80f, new[] { VillainKind.Missile }, 8f, 1.0f, false, 0.03f, new HeroEventEntry(HeroKind.Jetpack, 30f)),
+            new(2, 400f, 110f, new[] { VillainKind.Missile, VillainKind.Truck }, 7f, 0.9f, false, 0.0225f,
+                new HeroEventEntry(HeroKind.Jetpack, 35f)),
+            new(3, 500f, 115f, AllVillains, 6f, 0.8f, false, 0.018f,
                 new HeroEventEntry(HeroKind.Jetpack, 30f), new HeroEventEntry(HeroKind.Phoenix, 60f)),
-            new(4, 600f, 105f, AllVillains, 5f, 0.7f, false, new HeroEventEntry(HeroKind.Phoenix, 50f)),
-            new(5, 750f, 120f, AllVillains, 4f, 0.6f, true,
+            new(4, 600f, 155f, AllVillains, 5f, 0.7f, false, 0.015f, new HeroEventEntry(HeroKind.Phoenix, 50f)),
+            new(5, 750f, 180f, AllVillains, 4f, 0.6f, true, 0.012f,
                 new HeroEventEntry(HeroKind.Jetpack, 35f), new HeroEventEntry(HeroKind.Phoenix, 75f))
         };
 
@@ -82,7 +89,7 @@ namespace GodTower.Editor
             VillainEventConfig missile = BuildVillain(VillainKind.Missile, "Missile", "icon_missile",
                 PropImportSetup.Missile, 3.4f, cfxr + "Explosions/CFXR Explosion 1.prefab", 2.8f, approach: 0.8f);
             VillainEventConfig truck = BuildVillain(VillainKind.Truck, "Truck", "icon_truck",
-                PropImportSetup.Truck, 2.2f, cfxr + "Explosions/CFXR2 WW Explosion.prefab", 2.8f, approach: 0.9f);
+                PropImportSetup.Truck, 2.2f, cfxr + "Explosions/CFXR2 WW Explosion.prefab", 2.2f, approach: 0.9f);
             VillainEventConfig axes = BuildVillain(VillainKind.Axes, "Axes", "icon_axes",
                 PropImportSetup.Axe, 2.2f, cfxr + "Impacts/CFXR Hit A (Red).prefab", 2.6f, approach: 0.8f);
 
@@ -184,6 +191,7 @@ namespace GodTower.Editor
             Find(serialized, "_villainInterval").floatValue = definition.VillainInterval;
             Find(serialized, "_telegraphDuration").floatValue = definition.Telegraph;
             Find(serialized, "_backToBackPairs").boolValue = definition.BackToBackPairs;
+            Find(serialized, "_bumpKnockdownFraction").floatValue = definition.BumpKnockdown;
             Find(serialized, "_seed").intValue = 1000 * definition.Number + 7;
             Find(serialized, "_sky").objectReferenceValue = SkySetup.Preset(definition.Number);
 
@@ -230,10 +238,11 @@ namespace GodTower.Editor
             public readonly float VillainInterval;
             public readonly float Telegraph;
             public readonly bool BackToBackPairs;
+            public readonly float BumpKnockdown;
             public readonly HeroEventEntry[] HeroEvents;
 
             public LevelDefinition(int number, float towerHeight, float timeLimit, VillainKind[] villains,
-                float villainInterval, float telegraph, bool backToBackPairs, params HeroEventEntry[] heroEvents)
+                float villainInterval, float telegraph, bool backToBackPairs, float bumpKnockdown, params HeroEventEntry[] heroEvents)
             {
                 Number = number;
                 TowerHeight = towerHeight;
@@ -242,6 +251,7 @@ namespace GodTower.Editor
                 VillainInterval = villainInterval;
                 Telegraph = telegraph;
                 BackToBackPairs = backToBackPairs;
+                BumpKnockdown = bumpKnockdown;
                 HeroEvents = heroEvents;
             }
         }

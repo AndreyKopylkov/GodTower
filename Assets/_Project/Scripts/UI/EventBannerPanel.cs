@@ -85,7 +85,8 @@ namespace GodTower.UI
             stack.Remove(banner);
             Tween.StopAll(banner.Rect);
             Tween.UIAnchoredPositionX(banner.Rect, hiddenX, _slideDuration, Ease.InBack)
-                .OnComplete(banner, view => Destroy(view.gameObject));
+                // The banner may already be gone with the scene (leaving mid-slide): nothing left to destroy then.
+                .OnComplete(banner, view => Destroy(view.gameObject), warnIfTargetDestroyed: false);
         }
 
         private void OnDestroy()

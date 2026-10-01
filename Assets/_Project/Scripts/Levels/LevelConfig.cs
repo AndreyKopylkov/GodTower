@@ -27,6 +27,10 @@ namespace GodTower.Levels
         [Header("Heroes")]
         [SerializeField] private HeroEventEntry[] _heroEvents = { new(HeroKind.Jetpack, 25f) };
 
+        [Header("Webhook bump")]
+        [Tooltip("Knockdown of one /bump as a fraction of the tower height (capped at twice that per rolling 5 s).")]
+        [SerializeField, Range(0f, 0.2f)] private float _bumpKnockdownFraction = 0.03f;
+
         [Header("Look")]
         [Tooltip("Sky, fog, light and cloud tint of the level (Day → Dusk).")]
         [SerializeField] private SkyPreset _sky;
@@ -43,6 +47,7 @@ namespace GodTower.Levels
         public float TelegraphDuration => _telegraphDuration;
         public bool BackToBackPairs => _backToBackPairs;
         public IReadOnlyList<HeroEventEntry> HeroEvents => _heroEvents;
+        public float BumpKnockdownFraction => _bumpKnockdownFraction;
         public SkyPreset Sky => _sky;
         public int Seed => _seed;
     }

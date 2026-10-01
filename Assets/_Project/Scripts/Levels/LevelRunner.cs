@@ -74,7 +74,7 @@ namespace GodTower.Levels
 
             Climber = new ClimberMotor(_gameplay.Climber, layout.TopY);
             Climber.ReachedTop += OnReachedTop;
-            Knockdown = new KnockdownModel(layout.ClimbHeight, _gameplay.Knockdown);
+            Knockdown = new KnockdownModel(layout.ClimbHeight, _gameplay.Knockdown.WithBumpFraction(Level.BumpKnockdownFraction));
             TimeLeft = Level.TimeLimit;
 
             _climberView.Configure(_gameplay.Climber);
